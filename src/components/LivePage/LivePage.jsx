@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import './LivePage.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
+import './LivePage.css';
 
 function LivePage({ apiKey }) {
   const [comment, setComment] = useState('');
   const [submittedComments, setSubmittedComments] = useState([]);
-
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -18,7 +14,12 @@ function LivePage({ apiKey }) {
   const handleSubmitComment = (e) => {
     e.preventDefault();
     if (comment.trim() !== '') {
-      setSubmittedComments([...submittedComments, comment]);
+      const newComment = {
+        text: comment,
+        user: 'Guest', // Example username, replace this with actual user data
+        profileImage: '/imges/1.jpg' // Example profile image URL
+      };
+      setSubmittedComments([...submittedComments, newComment]);
       setComment('');
     }
   };
@@ -28,13 +29,6 @@ function LivePage({ apiKey }) {
     [13.724894, 100.493025],
     [13.758703, 100.534437]
   ];
-  
-  const polyline = [
-  [51.505, -0.09],
-  [51.51, -0.1],
-  [51.51, -0.12],
-]
-const limeOptions = { color: 'lime' }
 
   const [commentButton,setCommentButton] = useState('CommentBox')
 
@@ -45,7 +39,7 @@ const limeOptions = { color: 'lime' }
       <MapContainer
         center={[13.736717, 100.523186]}
         zoom={13}
-        style={{ height: '50vh', width: '50vw' ,left:'180px' }}
+        style={{ height: '50vh', width: '88vw' ,left:'180px' }}
         zoomControl={false}
 >
         <TileLayer url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?apiKey=${apiKey}`} />
@@ -56,7 +50,6 @@ const limeOptions = { color: 'lime' }
           </Popup>
         </Marker>
       ))}
-      <Polyline pathOptions={limeOptions} positions={positions} />
       </MapContainer>
 
       <div className='ButtonBox'>
@@ -64,32 +57,31 @@ const limeOptions = { color: 'lime' }
 
       </div>
 
-
-      <div className={commentButton}>
-        
+      <div className='comment-section'>
         <form id='CommentForm' onSubmit={handleSubmitComment}>
-        {submittedComments.length > 0 && (
-          <div className="submitted-comments">
-            <div>
+          {submittedComments.length > 0 && (
+            <div className="submitted-comments">
               {submittedComments.map((submittedComment, index) => (
-                <div key={index}>{submittedComment}</div>
+                <div key={index} className="comment">
+                  <img src={submittedComment.profileImage} alt="Profile" className="comment-profile" />
+                  <div className="comment-text">
+                    <strong>{submittedComment.user}</strong>: {submittedComment.text}
+                  </div>
+                </div>
               ))}
             </div>
-          </div>                   
-        )}
-         <div className='areatext'>
-            <input 
-            className='InputBox'
-            value={comment}
-            onChange={handleCommentChange}
-            placeholder="Write your comment here..."
-          />
-          <button type="submit">
-            Send
-          </button>
-
+          )}
+          <div className='areatext'>
+            <input
+              className='InputBox'
+              value={comment}
+              onChange={handleCommentChange}
+              placeholder="Write your comment here..."
+            />
+            <button type="submit">
+              Send
+            </button>
           </div>
-          <button onClick={() => setCommentButton('CommentBox')}>Close</button>
         </form>
       </div>
     </div>
@@ -97,4 +89,3 @@ const limeOptions = { color: 'lime' }
 }
 
 export default LivePage;
-
