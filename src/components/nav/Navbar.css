@@ -7,7 +7,7 @@
     position: sticky;
     top: 0;
     z-index: 999;
-    background-color: #3E362E;
+    background-color: #0f1b2a;
   
   
 }
@@ -29,7 +29,7 @@
 }
 
 #nav .logo {
-    color: #000000;
+    color: #ffffff;
     padding: 3rem;
     font-size: 1.5rem;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;

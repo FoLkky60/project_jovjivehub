@@ -1,100 +1,80 @@
 #con{
     max-width: 90vh;
 }
+
+.Live-text{
+
+}
+
 #the-card{
     display: grid;
-    grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr ;
     gap: 20px;
     padding: 0 10px;
     padding-bottom: 20px; 
-    padding-left: 10rem;
-    margin-right: 25rem;
+    padding-left: 10vw;
+ 
     
 }
 
 
-.FristDetail img {
+
+
+/* CSS Style for Live Stream Card */
+.card {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90vw; /* ขยายรูปภาพให้เต็มความกว้างของหน้าจอ */
-    height: 300px; /* ใช้ความสูงอัตโนมัติเพื่อรักษาสัดส่วน */
-    object-fit: cover; /* ปรับขนาดรูปภาพเพื่อให้ครอบคลุมพื้นที่ที่กำหนด */
-    margin-bottom: 20px; /* ระยะห่างด้านล่างของรูปภาพ */
-
-  }
-  
-  
-
-.Live-text{
-    font-size: 2.3rem;
-    padding-left: 13rem;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: rgb(0, 0, 0);
-}
-.card{
+    flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease; /* เพิ่ม transition เมื่อ hover */
     width: 300px;
-    height: 280px;
-    box-shadow: black;
-}
-.card .thumb{
-    
-    border-radius: 12px;
-    margin-bottom: 12px;
-    overflow: hidden;
+    height: 360px;
+    box-shadow: rgb(255, 255, 255);
+    padding: 10px;
 }
 
-.card .Chanal{
-    width: 44px;
-    height: 32px;
-    display: flex;
-    overflow: hidden;
-}
-.Chanal img{
-    width: 30px;
-    height: 30px;
-    border-radius: 50px;
-    background-size: cover;
-}
-.thumb img{
-    width: 340px;
-    height: 230px;
-    border-radius: 10px;
-    background-size: cover;
-    cursor: pointer;
+.card:hover {
+    transform: translateY(-5px); /* เมื่อ hover ให้เลื่อนบล็อกขึ้นลง */
 }
 
-.thumb img:hover{
-    background-color: rgb(222, 222, 223 ,0.8);
-    border-radius: 10px;
-
+.thumb img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* ปรับขนาดรูปให้พอดีกับพื้นที่ */
+    border-bottom: 1px solid #ddd; /* เพิ่มเส้นขอบด้านล่าง */
 }
 
-.card .about{
-    display: grid;
-    grid-template-columns: 44px auto 40px;
-    
+.about {
+    padding: 15px;
+    background-color: rgb(255, 255, 255);
 }
 
-.card .tital{
-    display: -webkit-box;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    -webkit-box-orient: vertical ;
-    font-size: 1.6rem;
-    line-height: 2.2rem;
-    color: 0f0f0f;
-    margin-bottom: 4px;
-    color: #000000;
-
-
+.Chanal img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
 }
 
-.card .view{
-    font-size: 12px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    padding-right: 5px;
-    color: #000000;
+.Detail-live {
+    margin-top: 11px;
 }
 
+.live-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.creater-name {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.view {
+    font-size: 14px;
+    color: #888;
+}

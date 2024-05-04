@@ -9,201 +9,114 @@ function Content() {
             <h2>Live Stream</h2>
         </div>
         <section id='the-card'>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/1.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/4.jpg" alt="" />
+            <div className='card'>
+                <div className='thumb'>
+                    <img src="./imges/1.jpg" alt="Thumbnail" />
                 </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/1.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/4.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/2.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/4.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/6.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/1.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/10.jpeg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/2.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/6.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/1.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/9.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/6.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/2.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/4.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/6.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/1.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/9.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/2.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/8.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/6.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div><div className='card'>
-            <div className='thumb'>
-                <img src="./imges/10.jpeg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/2.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
-        <div className='card'>
-            <div className='thumb'>
-                <img src="./imges/7.jpg" alt="" />
-            </div>
-            <div className='about'>
-                <div className='Chanal'>
-                    <img src="./imges/1.jpg" alt="" />
-                </div>
-                <div className='tital'>เหงาจุงเบย</div>
-            
-                <div className='view'>
-                    24คน
-                </div>
-            </div>
-        </div>
 
+                <div className='about'>
+                    <div className='Chanal'>
+                        <img src="./imges/4.jpg" alt="Channel Logo" />
+                    </div>
+                    <div className='Detail-live'>
+                        <p className='live-name'>เหงาจาง</p>
+                        <p className='creater-name'>Folk</p>
+                        <div className='view'>2380 viewers</div>
+                    </div>
+                </div>
+            </div>
+            <div className='card'>
+                <div className='thumb'>
+                    <img src="./imges/1.jpg" alt="Thumbnail" />
+                </div>
+
+                <div className='about'>
+                    <div className='Chanal'>
+                        <img src="./imges/4.jpg" alt="Channel Logo" />
+                    </div>
+                    <div className='Detail-live'>
+                        <p className='live-name'>เหงาจาง</p>
+                        <p className='creater-name'>Folk</p>
+                        <div className='view'>2380 viewers</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div className='card'>
+                <div className='thumb'>
+                    <img src="./imges/1.jpg" alt="Thumbnail" />
+                </div>
+
+                <div className='about'>
+                    <div className='Chanal'>
+                        <img src="./imges/4.jpg" alt="Channel Logo" />
+                    </div>
+                    <div className='Detail-live'>
+                        <p className='live-name'>เหงาจาง</p>
+                        <p className='creater-name'>Folk</p>
+                        <div className='view'>2380 viewers</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div className='card'>
+                <div className='thumb'>
+                    <img src="./imges/1.jpg" alt="Thumbnail" />
+                </div>
+
+                <div className='about'>
+                    <div className='Chanal'>
+                        <img src="./imges/4.jpg" alt="Channel Logo" />
+                    </div>
+                    <div className='Detail-live'>
+                        <p className='live-name'>เหงาจาง</p>
+                        <p className='creater-name'>Folk</p>
+                        <div className='view'>2380 viewers</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div className='card'>
+                <div className='thumb'>
+                    <img src="./imges/1.jpg" alt="Thumbnail" />
+                </div>
+
+                <div className='about'>
+                    <div className='Chanal'>
+                        <img src="./imges/4.jpg" alt="Channel Logo" />
+                    </div>
+                    <div className='Detail-live'>
+                        <p className='live-name'>เหงาจาง</p>
+                        <p className='creater-name'>Folk</p>
+                        <div className='view'>2380 viewers</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div className='card'>
+                <div className='thumb'>
+                    <img src="./imges/1.jpg" alt="Thumbnail" />
+                </div>
+
+                <div className='about'>
+                    <div className='Chanal'>
+                        <img src="./imges/4.jpg" alt="Channel Logo" />
+                    </div>
+                    <div className='Detail-live'>
+                        <p className='live-name'>เหงาจาง</p>
+                        <p className='creater-name'>Folk</p>
+                        <div className='view'>2380 viewers</div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+        
        
         </section>
         

@@ -1,5 +1,4 @@
 
-
 /* MapComponent.css */
 
 /* Style for the map container */
@@ -31,12 +30,12 @@
     left: 45%; /* จัดให้อยู่ตรงกลางแนวนอน */
     transform: translateX(-50%); /* ย้ายช่อง comment ไปทางซ้ายเพื่อจัดให้อยู่กลาง */
     width: 80%; /* กำหนดความกว้างของช่อง comment */
-    background-color: #f0f0f0; /* สีพื้นหลังของช่อง comment */
-    padding: 10px; /* การเพิ่มระยะห่างรอบขอบของช่อง comment */
+   
     border-radius: 8px; /* กำหนดขอบมน */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0); /* เพิ่มเงาใต้ช่อง comment */
+    background-color: #f0f0f0;
     z-index: 999; /* กำหนดความสูงให้ช่อง comment อยู่เหนือทุกอย่าง */
-    background-color:rgba(255, 255, 255, 0) ;
+    background-color:rgb(255, 255, 255)  ;
   } 
   
   .InputBox {
@@ -69,13 +68,7 @@
 
   }
   
-  .comment-section {
-    width: 84vw;
-    border: none;
-    overflow-y: auto;
-    max-height: 200px;
-    margin-top: 20px;
-  }
+
   
   .comment-section h2 {
     font-size: 1.5rem;
@@ -132,16 +125,9 @@
     margin-bottom: 10px;
   }
   
-  .submitted-comments li {
-    padding: 10px; /* ระยะห่างของข้อความแต่ละรายการ */
-    margin-bottom: 10px; /* ระยะห่างด้านล่างของข้อความแต่ละรายการ */
-    color: #000000; /* สีของข้อความ */
-    background-color: rgba(255, 255, 255, 0.6); /* สีพื้นหลังของข้อความ */
-    border-radius: 5px; /* กำหนดขอบมนของกรอบข้อความ */
-    display: inline-block; /* แสดงเป็นบล็อกอิงเลย์น์อินเทอร์ */
-  }
-  .submitted-comments li {
-    width: 90%;
+ 
+  .submitted-comments {
+    width: 100%;
     font-size: 2rem;
     margin-bottom: 5px;
     padding: 1rem;
@@ -150,5 +136,47 @@
     display: flex;
     
   }
-
   
+  .CommentBox{
+    width: 84vw;
+    border: none;
+    overflow-y: auto;
+    max-height: 200px;
+    margin-top: 20px;
+    transform: translateY(-300px);
+    transition-duration: 0.3s ;
+
+  }
+  
+
+  .ButtonBox{
+    position: absolute;
+    left: 50%;
+  }
+
+  .comment-section {
+    background-color: #f0f0f0;
+    width: 84vw;
+    border: none;
+    overflow-y: auto;
+    max-height: 200px;
+    margin-top: 20px;
+    transition-duration: 0.3s ;
+
+    animation-name: openComment ;
+    animation-duration: 1s ;
+  
+  }
+
+@keyframes openComment {
+  0%{
+    transform: translateY(-300px)
+    
+  
+  }
+
+  100%{
+    transform: translateY(0);
+  
+  }
+}
