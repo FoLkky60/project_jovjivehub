@@ -28,6 +28,12 @@ function LivePage({ apiKey }) {
     [13.724894, 100.493025],
     [13.758703, 100.534437]
   ];
+  
+  const polyline = [
+  [51.505, -0.09],
+  [51.51, -0.1],
+  [51.51, -0.12],
+]
 
   const [commentButton,setCommentButton] = useState('CommentBox')
 
