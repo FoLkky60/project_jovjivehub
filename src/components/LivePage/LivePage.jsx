@@ -33,29 +33,35 @@ function LivePage({ apiKey }) {
   const [commentButton,setCommentButton] = useState('CommentBox')
 
   return (
-    
-    <div className='maps'>
-      
-      <MapContainer
-        center={[13.736717, 100.523186]}
-        zoom={13}
-        style={{ height: '50vh', width: '88vw' ,left:'180px' }}
-        zoomControl={false}
->
-        <TileLayer url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?apiKey=${apiKey}`} />
-        {positions.map((position, index) => (
-        <Marker key={index} position={position}>
-          <Popup>
-            ประเทศไทย! <br /> ยินดีต้อนรับ!
-          </Popup>
-        </Marker>
-      ))}
-      </MapContainer>
-
-      <div className='ButtonBox'>
-          <button onClick={() => setCommentButton('comment-section')}>Chat</button>
+    <div>
+      <div className='maps'>
+          <MapContainer
+            center={[13.736717, 100.523186]}
+            zoom={13}
+            style={{ height: '50vh', width: '88vw' ,left:'180px' }}
+            zoomControl={false}
+          >
+            <TileLayer url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?apiKey=${apiKey}`} />
+            {positions.map((position, index) => (
+            <Marker key={index} position={position}>
+              
+              <Popup>
+                ประเทศไทย! <br /> ยินดีต้อนรับ!
+              </Popup>
+            </Marker>
+          ))}
+          <div className='WarperRun'>
+          <div className='runDistance'>
+            <p>30 kg</p>
+          </div>
+        </div>
+          </MapContainer>
+        
+          
 
       </div>
+
+      
 
       <div className='comment-section'>
         <form id='CommentForm' onSubmit={handleSubmitComment}>
@@ -84,7 +90,10 @@ function LivePage({ apiKey }) {
           </div>
         </form>
       </div>
+
     </div>
+    
+    
   );
 }
 

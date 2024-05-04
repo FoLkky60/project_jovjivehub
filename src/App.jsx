@@ -5,7 +5,7 @@ import RegisterForm from './components/Login/RegisterForm'
 function App() {
   return (
     <>
-      <MainLayout></MainLayout>
+ 
 
 
     </>
