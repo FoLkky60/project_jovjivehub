@@ -65,7 +65,7 @@ function LivePage({ apiKey }) {
 
   const startTracking = () => {
     if (!isTracking) {
-      const id = setInterval(fetchCurrentPosition, 1000); // Fetch position every 1 second
+      const id = setInterval(fetchCurrentPosition, 2000); // Fetch position every 1 second
       setIntervalId(id);
       setIsTracking(true);
     }
@@ -115,7 +115,7 @@ function LivePage({ apiKey }) {
         zoomControl={false}
       >
         <UpdateMapCenter />
-        
+
         <TileLayer
           url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?apiKey=${apiKey}`}
         />
