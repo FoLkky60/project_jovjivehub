@@ -29,13 +29,11 @@
     bottom: 0px; /* กำหนดระยะห่างจากด้านล่างของหน้าจอ */
     left: 45%; /* จัดให้อยู่ตรงกลางแนวนอน */
     transform: translateX(-50%); /* ย้ายช่อง comment ไปทางซ้ายเพื่อจัดให้อยู่กลาง */
-    width: 80%; /* กำหนดความกว้างของช่อง comment */
-   
+    width: 80vw; /* กำหนดความกว้างของช่อง comment */
     border-radius: 8px; /* กำหนดขอบมน */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0); /* เพิ่มเงาใต้ช่อง comment */
-    background-color: #f0f0f0;
     z-index: 999; /* กำหนดความสูงให้ช่อง comment อยู่เหนือทุกอย่าง */
-    background-color:rgb(255, 255, 255)  ;
+    background-color:rgb(255, 255, 255 ,0)  ;
   } 
   
   .InputBox {
@@ -43,6 +41,7 @@
     padding: 8px; /* ระยะห่างรอบขอบของช่อง input */
     border: 1px solid #ccc; /* เส้นขอบของช่อง input */
     border-radius: 4px; /* กำหนดขอบมนของช่อง input */
+    color: #fff;
   }
   
   button[type="submit"] {
@@ -51,7 +50,7 @@
     border: none; /* ลบเส้นขอบของปุ่ม submit */
     border-radius: 4px; /* กำหนดขอบมนของปุ่ม submit */
     background-color: #007bff; /* สีพื้นหลังของปุ่ม submit */
-    color: white; /* สีตัวอักษรของปุ่ม submit */
+    color: rgb(255, 255, 255); /* สีตัวอักษรของปุ่ม submit */
     cursor: pointer; /* แสดงเคอร์เซอร์เมื่อชี้ที่ปุ่ม submit */
   }
   
@@ -64,7 +63,8 @@
   
   .InputBox {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255,);
+    color: #000000;
 
   }
   
@@ -97,7 +97,6 @@
     max-width: 70px;
     margin: 5px;
     border: none;
-  
     color: white;
     border-radius: 50px;
     cursor: pointer;
@@ -111,7 +110,7 @@
   
   .submitted-comments {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     margin-top: 20px;
     overflow-y: auto; /* เพิ่มแถบเลื่อนเมื่อเนื้อหาเกินขนาดที่กำหนด */
     max-height: 150px;
@@ -120,7 +119,7 @@
   }
   
   .submitted-comments h3 {
-    color: #000000;
+    color: #ffffff;
     font-size: 2.5rem;
     margin-bottom: 10px;
   }
@@ -131,29 +130,13 @@
     font-size: 2rem;
     margin-bottom: 5px;
     padding: 1rem;
-    color: #000000;
+    color: #fff7f7;
     border-radius: 5px;
     display: flex;
     
   }
   
-  .CommentBox{
-    width: 84vw;
-    border: none;
-    overflow-y: auto;
-    max-height: 200px;
-    margin-top: 20px;
-    transform: translateY(-300px);
-    transition-duration: 0.3s ;
-
-  }
   
-
-  .ButtonBox{
-    position: absolute;
-    left: 50%;
-  }
-
   .comment-section {
     background-color: #f0f0f0;
     width: 84vw;
@@ -161,22 +144,29 @@
     overflow-y: auto;
     max-height: 200px;
     margin-top: 20px;
-    transition-duration: 0.3s ;
 
-    animation-name: openComment ;
-    animation-duration: 1s ;
-  
   }
 
-@keyframes openComment {
-  0%{
-    transform: translateY(-300px)
-    
-  
+  .comment-profile{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
   }
 
-  100%{
-    transform: translateY(0);
-  
+  .WarperRun{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    width: 180px;
+    height: 80px;
+    color: #000000;
+    font-size: 2rem;
+    position: absolute;
+    top: 0;
+    background-color: #fff;
+    border-radius: 20px;
+    z-index: 999;
+    background-color: rgba(68, 68, 68, 0.6) ;
+
   }
-}
