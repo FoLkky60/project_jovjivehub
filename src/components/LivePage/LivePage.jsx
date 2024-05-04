@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './LivePage.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -34,6 +34,7 @@ function LivePage({ apiKey }) {
   [51.51, -0.1],
   [51.51, -0.12],
 ]
+const limeOptions = { color: 'lime' }
 
   const [commentButton,setCommentButton] = useState('CommentBox')
 
@@ -55,6 +56,7 @@ function LivePage({ apiKey }) {
           </Popup>
         </Marker>
       ))}
+      <Polyline pathOptions={limeOptions} positions={positions} />
       </MapContainer>
 
       <div className='ButtonBox'>
