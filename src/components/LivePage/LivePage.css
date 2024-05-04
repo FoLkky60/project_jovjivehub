@@ -1,0 +1,154 @@
+
+
+/* MapComponent.css */
+
+/* Style for the map container */
+
+  
+  /* Style for the marker icon */
+  .marker-icon {
+
+    width: 30px; /* Adjust the width of the marker icon */
+    height: 30px; /* Adjust the height of the marker icon */
+    background-color: #ff5722; /* Marker color */
+    border-radius: 50%; /* Rounded border */
+    border: 2px solid #fff; /* Border color and width */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* Box shadow */
+  }
+  
+  /* Style for the popup */
+  .popup-content {
+    padding: 10px; /* Padding inside the popup */
+    background-color: #fff; /* Popup background color */
+    border-radius: 5px; /* Rounded border */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* Box shadow */
+  }
+  
+
+  #CommentForm {
+    position: fixed;
+    bottom: 0px; /* กำหนดระยะห่างจากด้านล่างของหน้าจอ */
+    left: 45%; /* จัดให้อยู่ตรงกลางแนวนอน */
+    transform: translateX(-50%); /* ย้ายช่อง comment ไปทางซ้ายเพื่อจัดให้อยู่กลาง */
+    width: 80%; /* กำหนดความกว้างของช่อง comment */
+    background-color: #f0f0f0; /* สีพื้นหลังของช่อง comment */
+    padding: 10px; /* การเพิ่มระยะห่างรอบขอบของช่อง comment */
+    border-radius: 8px; /* กำหนดขอบมน */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0); /* เพิ่มเงาใต้ช่อง comment */
+    z-index: 999; /* กำหนดความสูงให้ช่อง comment อยู่เหนือทุกอย่าง */
+    background-color:rgba(255, 255, 255, 0) ;
+  } 
+  
+  .InputBox {
+    width: 100%; /* ทำให้ขนาดช่อง input เต็มขนาด */
+    padding: 8px; /* ระยะห่างรอบขอบของช่อง input */
+    border: 1px solid #ccc; /* เส้นขอบของช่อง input */
+    border-radius: 4px; /* กำหนดขอบมนของช่อง input */
+  }
+  
+  button[type="submit"] {
+    width: 100%; /* ทำให้ขนาดปุ่ม submit เต็มขนาด */
+    padding: 10px; /* ระยะห่างรอบขอบของปุ่ม submit */
+    border: none; /* ลบเส้นขอบของปุ่ม submit */
+    border-radius: 4px; /* กำหนดขอบมนของปุ่ม submit */
+    background-color: #007bff; /* สีพื้นหลังของปุ่ม submit */
+    color: white; /* สีตัวอักษรของปุ่ม submit */
+    cursor: pointer; /* แสดงเคอร์เซอร์เมื่อชี้ที่ปุ่ม submit */
+  }
+  
+  .areatext {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .InputBox {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+
+  }
+  
+  .comment-section {
+    width: 84vw;
+    border: none;
+    overflow-y: auto;
+    max-height: 200px;
+    margin-top: 20px;
+  }
+  
+  .comment-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .comment-section form {
+    margin: 3rem;
+    margin-left: 15rem;
+    flex-direction: column;
+    align-items: start;
+  }
+  
+  .comment-section textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 10px;
+    resize: vertical;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .comment-section button[type="submit"] {
+    width: 100%;
+    max-width: 70px;
+    margin: 5px;
+    border: none;
+  
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: #887938 ;
+  }
+  
+  .comment-section button[type="submit"]:hover {
+    background-color: #000000;
+  }
+  
+  .submitted-comments {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 20px;
+    overflow-y: auto; /* เพิ่มแถบเลื่อนเมื่อเนื้อหาเกินขนาดที่กำหนด */
+    max-height: 150px;
+    
+    overflow-y: auto; /* เพิ่มแถบเลื่อนเมื่อมีเนื้อหาเกินขนาดที่กำหนด */
+  }
+  
+  .submitted-comments h3 {
+    color: #000000;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .submitted-comments li {
+    padding: 10px; /* ระยะห่างของข้อความแต่ละรายการ */
+    margin-bottom: 10px; /* ระยะห่างด้านล่างของข้อความแต่ละรายการ */
+    color: #000000; /* สีของข้อความ */
+    background-color: rgba(255, 255, 255, 0.6); /* สีพื้นหลังของข้อความ */
+    border-radius: 5px; /* กำหนดขอบมนของกรอบข้อความ */
+    display: inline-block; /* แสดงเป็นบล็อกอิงเลย์น์อินเทอร์ */
+  }
+  .submitted-comments li {
+    width: 90%;
+    font-size: 2rem;
+    margin-bottom: 5px;
+    padding: 1rem;
+    color: #000000;
+    border-radius: 5px;
+    display: flex;
+    
+  }
+
+  

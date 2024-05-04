@@ -1,0 +1,62 @@
+#side{
+    position: sticky;
+    top: 0;
+    z-Index: 99;
+    background-color: #865D36;
+    
+}
+.side-main{
+  
+    display: grid;
+    grid-auto-rows: 40px;
+    align-items: center;
+    margin-top: 25px;
+    font-size: 1.5rem;
+    
+ 
+    
+ 
+}
+
+.material-symbols-outlined{
+    color: #000000;
+}
+
+
+.side-main .side-item{
+    display: grid;
+    grid-template-columns: 40px auto;
+    align-items: center;
+    height: 60px;
+  
+    bottom:20px;
+    transition: 0.3s ease-in-out ;
+    
+    
+}
+
+.side-main .side-item:hover{
+
+    .material-symbols-outlined{
+        color: #ffffff;
+    }
+    
+
+    .side-taxt{
+      color: #ffffff;  
+    }
+    background-color: #937B58;
+}
+.side-taxt{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #000000;
+}
+
+.side-main:last-child{
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    
+    
+    
+}

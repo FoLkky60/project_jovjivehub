@@ -1,0 +1,39 @@
+html {
+  font-size: 10px;
+  
+}
+
+body{
+  margin: 0;
+  background-color: #ffeebe;
+  ;
+}
+
+#main-layout{
+  
+  width: 100vw;
+  height: 100vw;
+  display: grid;
+  grid-template:
+   "n n" 60px
+ 
+   "s c"  / 170px;
+
+}
+
+#nav{
+  grid-area: n;
+}
+
+#side{
+  grid-area: s;
+}
+
+#con{
+  grid-area: c;
+}
+
+#event{
+  grid-area: d;
+}
+

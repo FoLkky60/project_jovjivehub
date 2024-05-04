@@ -1,0 +1,100 @@
+#con{
+    max-width: 90vh;
+}
+#the-card{
+    display: grid;
+    grid-template-columns:1fr 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    padding: 0 10px;
+    padding-bottom: 20px; 
+    padding-left: 10rem;
+    margin-right: 25rem;
+    
+}
+
+
+.FristDetail img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90vw; /* ขยายรูปภาพให้เต็มความกว้างของหน้าจอ */
+    height: 300px; /* ใช้ความสูงอัตโนมัติเพื่อรักษาสัดส่วน */
+    object-fit: cover; /* ปรับขนาดรูปภาพเพื่อให้ครอบคลุมพื้นที่ที่กำหนด */
+    margin-bottom: 20px; /* ระยะห่างด้านล่างของรูปภาพ */
+
+  }
+  
+  
+
+.Live-text{
+    font-size: 2.3rem;
+    padding-left: 13rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(0, 0, 0);
+}
+.card{
+    width: 300px;
+    height: 280px;
+    box-shadow: black;
+}
+.card .thumb{
+    
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.card .Chanal{
+    width: 44px;
+    height: 32px;
+    display: flex;
+    overflow: hidden;
+}
+.Chanal img{
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    background-size: cover;
+}
+.thumb img{
+    width: 340px;
+    height: 230px;
+    border-radius: 10px;
+    background-size: cover;
+    cursor: pointer;
+}
+
+.thumb img:hover{
+    background-color: rgb(222, 222, 223 ,0.8);
+    border-radius: 10px;
+
+}
+
+.card .about{
+    display: grid;
+    grid-template-columns: 44px auto 40px;
+    
+}
+
+.card .tital{
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    -webkit-box-orient: vertical ;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+    color: 0f0f0f;
+    margin-bottom: 4px;
+    color: #000000;
+
+
+}
+
+.card .view{
+    font-size: 12px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding-right: 5px;
+    color: #000000;
+}
+
