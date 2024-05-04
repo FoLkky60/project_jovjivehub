@@ -5,7 +5,7 @@ import {
   Marker,
   Popup,
   Polyline,
-  useMap
+  useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./LivePage.css";
@@ -17,7 +17,9 @@ function LivePage({ apiKey }) {
   const [isTracking, setIsTracking] = useState(false);
   const [positions, setPositions] = useState([]);
   const [intervalId, setIntervalId] = useState(null);
-  const [currentPosition, setCurrentPosition] = useState([13.736717, 100.523186]);
+  const [currentPosition, setCurrentPosition] = useState([
+    13.736717, 100.523186,
+  ]);
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -91,7 +93,7 @@ function LivePage({ apiKey }) {
     const map = useMap();
     map.flyTo(currentPosition, map.getZoom());
     return null; // We don't want to render anything with this component
-  }  
+  }
   return (
     <div className="maps">
       <div style={{ position: "absolute", zIndex: 999, left: "100px" }}>
