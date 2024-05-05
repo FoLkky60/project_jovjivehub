@@ -49,7 +49,7 @@ function LivePage({ apiKey }) {
   [51.51, -0.1],
   [51.51, -0.12],
 ]
-const limeOptions = { color: 'lime' }
+const limeOptions = { color: 'blue' }
 
   const [commentButton, setCommentButton] = useState("CommentBox");
 
