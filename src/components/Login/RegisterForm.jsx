@@ -1,7 +1,8 @@
+import React from "react";
 import { useState } from "react";
 import "./RegisterForm.css";
 import FormInput from "./FormInput";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const RegisterForm = () => {
   const [showLogin, setShowLogin] = useState(true); // เริ่มต้นโชว์ฟอร์ม Login
@@ -16,7 +17,7 @@ const RegisterForm = () => {
     password: "",
     confirmPassword: "",
   });
-  const inputlogin =[
+  const inputlogin = [
     {
       id: 1,
       name: "username",
@@ -24,22 +25,21 @@ const RegisterForm = () => {
       placeholder: "Username",
       errorMessage:
         "Username should be 3-16 characters and shouldn't include any special character!",
-      
+
       pattern: "^[A-Za-z0-9]{3,16}$",
       required: true,
     },
 
-      {
-        id: 4,
-        name: "password",
-        type: "password",
-        placeholder: "Password",
-        errorMessage:
-          "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
-        pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
-        required: true,
-      }
-
+    {
+      id: 4,
+      name: "password",
+      type: "password",
+      placeholder: "Password",
+      errorMessage:
+        "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
+      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+      required: true,
+    },
   ];
 
   const inputs = [
@@ -50,7 +50,7 @@ const RegisterForm = () => {
       placeholder: "Username",
       errorMessage:
         "Username should be 3-16 characters and shouldn't include any special character!",
-      
+
       pattern: "^[A-Za-z0-9]{3,16}$",
       required: true,
     },
@@ -75,7 +75,7 @@ const RegisterForm = () => {
       placeholder: "Password",
       errorMessage:
         "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
-      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+      // pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
       required: true,
     },
     {
@@ -84,14 +84,38 @@ const RegisterForm = () => {
       type: "password",
       placeholder: "Confirm Password",
       errorMessage: "Passwords don't match!",
-     
+
       pattern: values.password,
       required: true,
     },
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(values);
+    const url = showLogin
+      ? "http://localhost:5000/api/login"
+      : "http://localhost:5000/api/register";
+    const config = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    };
+
+    try {
+      const response = await fetch(url, config);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data); // Process the response data as needed
+        alert(`Success: ${data.message}`);
+      } else {
+        throw new Error("Failed to fetch");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const onChange = (e) => {
@@ -117,11 +141,13 @@ const RegisterForm = () => {
                 <button className="LoginForm">Login</button>
               </div>
               <div>
-                <button className="LoginForm" onClick={handleToggleForm}>Sign up</button>
+                <button className="LoginForm" onClick={handleToggleForm}>
+                  Sign up
+                </button>
               </div>
             </div>
             <div>
-                <button className="Submit">Sumit </button>
+              <button className="Submit">Sumit </button>
             </div>
           </form>
         </div>
@@ -139,18 +165,18 @@ const RegisterForm = () => {
             ))}
             <div className="btn-submit">
               <div>
-                <button className="LoginForm" onClick={handleToggleForm}>Login</button>
+                <button className="LoginForm" onClick={handleToggleForm}>
+                  Login
+                </button>
               </div>
               <div>
                 <button className="LoginForm">Sign up</button>
               </div>
-              
             </div>
             <div>
-            <div>
-                <button className="Submit">Submit </button>
-            </div>
-
+              <div>
+                <button className="Submit" type="submit">Submit </button>
+              </div>
             </div>
           </form>
         </div>
