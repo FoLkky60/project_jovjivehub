@@ -8,7 +8,7 @@ function HostLive() {
     <section id='main-layout'>
 
           <Navbar></Navbar>
-          <Sidebar></Sidebar>
+          {/* <Sidebar></Sidebar> */}
           <LivePage></LivePage>
          
         </section>

@@ -4,10 +4,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
+    position: fixed;
+    width: 100%;
+    height: 7vh;
     top: 0;
     z-index: 999;
-    background-color: #0f1b2a;
+    background-color: #485169;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+  
   
   
 }
@@ -54,9 +59,10 @@
     left:0;
     width: 200px;
     height: 95vh;
-    background: #faf4e3;
+    background: #485169;
     padding: 0;
     transition: right 0.3s ease; /* เพิ่ม transition เพื่อให้มีการเคลื่อนไหวอย่างนุ่มนวล */
+    border-radius: 15px 50px 30px;
 }
 
 #Nav.active {

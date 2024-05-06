@@ -49,7 +49,7 @@ function LivePage({ apiKey }) {
   [51.51, -0.1],
   [51.51, -0.12],
 ]
-const limeOptions = { color: 'lime' }
+const limeOptions = { color: 'blue' }
 
   const [commentButton, setCommentButton] = useState("CommentBox");
 
@@ -99,32 +99,32 @@ const limeOptions = { color: 'lime' }
       }
     };
   }, [intervalId]);
-  // Create a new component to update the map center
   function UpdateMapCenter() {
     const map = useMap();
     map.flyTo(currentPosition, map.getZoom());
-    return null; // We don't want to render anything with this component
+    return null; 
   }
   return (
     <div className="maps">
-      <div style={{ position: "absolute", zIndex: 999, left: "100px" }}>
-        <h1>GPS Tracker</h1>
-        <button onClick={isTracking ? stopTracking : startTracking}>
+     
+        <div  style={{ position: "absolute", zIndex: 999, left: "100px" }}>
+        <button className="trackBox" onClick={isTracking ? stopTracking : startTracking}>
           {isTracking ? "Stop Tracking" : "Start Tracking"}
         </button>
-        <ul>
+        {/* <ul>
           {positions.map((pos, index) => (
             <li key={index}>
               Latitude: {pos[0]}, Longitude: {pos[1]}
             </li>
           ))}
-        </ul>
+        </ul> */}
       </div>
 
       <MapContainer
+        className="mapContainer"
         center={currentPosition}
         zoom={13}
-        style={{ height: "50vh", width: "50vw", left: "180px" }}
+        
         zoomControl={false}
       >
         <UpdateMapCenter />
@@ -132,22 +132,17 @@ const limeOptions = { color: 'lime' }
         <TileLayer
           url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?apiKey=${apiKey}`}
         />
-        {/* {positions.map((position, index) => (
+        {positions.map((position, index) => (
           <Marker key={index} position={position}>
             <Popup>
-              ประเทศไทย! <br /> ยินดีต้อนรับ!
+              Latitude: {position[0]}, Longitude: {position[1]}
             </Popup>
           </Marker>
-        ))} */}
+))}
         <Polyline pathOptions={limeOptions} positions={positions} />
       </MapContainer>
 
-      <div className="ButtonBox">
-        <button onClick={() => setCommentButton("comment-section")}>
-          Chat
-        </button>
-      </div>
-
+   
       
 
       <div className='comment-section'>
@@ -157,10 +152,10 @@ const limeOptions = { color: 'lime' }
               {submittedComments.map((submittedComment, index) => (
                 <div key={index} className="comment">
                   <img src={submittedComment.profileImage} alt="Profile" className="comment-profile" />
-                  <div className="comment-text">
-                    <strong>{submittedComment.user}</strong>: {submittedComment.text}
-                  </div>
+                <div className="comment-text">
+                    <div>{submittedComment.text}</div>
                 </div>
+              </div>
               ))}
             </div>
           )}
@@ -175,11 +170,13 @@ const limeOptions = { color: 'lime' }
               Send
             </button>
           </div>
-          <button onClick={() => setCommentButton("CommentBox")}>Close</button>
+         
         </form>
       </div>
 
-    </div>
+      </div>
+      
+
     
     
   );
