@@ -19,14 +19,11 @@ const RegisterForm = () => {
   });
   const inputlogin = [
     {
-      id: 1,
-      name: "username",
-      type: "text",
-      placeholder: "Username",
-      errorMessage:
-        "Username should be 3-16 characters and shouldn't include any special character!",
-
-      pattern: "^[A-Za-z0-9]{3,16}$",
+      id: 2,
+      name: "email",
+      type: "email",
+      placeholder: "Email",
+      errorMessage: "It should be a valid email address!",
       required: true,
     },
 
@@ -37,7 +34,7 @@ const RegisterForm = () => {
       placeholder: "Password",
       errorMessage:
         "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
-      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
+      // pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
       required: true,
     },
   ];
@@ -51,7 +48,7 @@ const RegisterForm = () => {
       errorMessage:
         "Username should be 3-16 characters and shouldn't include any special character!",
 
-      pattern: "^[A-Za-z0-9]{3,16}$",
+      // pattern: "^[A-Za-z0-9]{3,16}$",
       required: true,
     },
     {
@@ -85,7 +82,7 @@ const RegisterForm = () => {
       placeholder: "Confirm Password",
       errorMessage: "Passwords don't match!",
 
-      pattern: values.password,
+      // pattern: values.password,
       required: true,
     },
   ];
@@ -111,7 +108,10 @@ const RegisterForm = () => {
         console.log(data); // Process the response data as needed
         alert(`Success: ${data.message}`);
       } else {
+        const data = await response.json();
+        alert(`Success: ${data.message}`);
         throw new Error("Failed to fetch");
+        
       }
     } catch (error) {
       console.error("Error:", error);
@@ -147,7 +147,7 @@ const RegisterForm = () => {
               </div>
             </div>
             <div>
-              <button className="Submit">Sumit </button>
+              <button className="Submit" type="submit">Sumit </button>
             </div>
           </form>
         </div>
@@ -175,7 +175,9 @@ const RegisterForm = () => {
             </div>
             <div>
               <div>
-                <button className="Submit" type="submit">Submit </button>
+                <button className="Submit" type="submit">
+                  Submit{" "}
+                </button>
               </div>
             </div>
           </form>

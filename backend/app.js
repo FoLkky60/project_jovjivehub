@@ -6,6 +6,9 @@ const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const stroreUsercontroller = require('./controllers/stroreUsercontroller')
+const loginUserController = require('./controllers/loginUserController');
+
+
 
 
 
@@ -55,18 +58,7 @@ app.post('/api/register', stroreUsercontroller);
 //   res.status(200).json({ message: 'Logged in successfully' });
 // });
 
-// app.post('/api/login', (req, res) => {
-//   const { email, password } = req.body;
-//   const user = users[email];
-// console.log(user);
-//   if (!user) {
-//     return res.status(404).json({ message: 'User not found' });
-//   }
-//   if (user.password !== password) { // In real applications, use hashed password comparison
-//     return res.status(401).json({ message: 'Invalid credentials' });
-//   }
-//   res.status(200).json({ message: 'Logged in successfully' });
-// });
+app.post('/api/login', loginUserController);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
