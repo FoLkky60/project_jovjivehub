@@ -9,7 +9,7 @@ function ContainPage() {
         <section id='main-layout'>
 
           <Navbar></Navbar>
-          <Sidebar></Sidebar>
+          {/* <Sidebar></Sidebar> */}
       
           <Content></Content>
          

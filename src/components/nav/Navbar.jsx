@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import './Navbar.css';
 import { Link } from 'react-router-dom'
 
-
 function Navbar() {
-    const [isOpen, setIsOpen] = useState(false); // State สำหรับเก็บสถานะของ Navbar
+    const [isOpen, setIsOpen] = useState(true); // State สำหรับเก็บสถานะของ Navbar
 
     // Function เมื่อคลิกที่ปุ่ม Hamburger
     const handleToggle = () => {
@@ -73,7 +73,7 @@ function Navbar() {
                 </span>
 
                 </div>
-                <div className='side-taxt'>Coin</div>
+                <div className='side-taxt'>Community</div>
             </div>
         </div>
         <div className='side-main'>

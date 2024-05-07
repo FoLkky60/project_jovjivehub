@@ -49,7 +49,7 @@ function LivePage({ apiKey }) {
   [51.51, -0.1],
   [51.51, -0.12],
 ]
-const limeOptions = { color: 'blue' }
+const limeOptions = { color: 'none' }
 
   const [commentButton, setCommentButton] = useState("CommentBox");
 
@@ -107,9 +107,9 @@ const limeOptions = { color: 'blue' }
   return (
     <div className="maps">
      
-        <div  style={{ position: "absolute", zIndex: 999, left: "100px" }}>
-        <button className="trackBox" onClick={isTracking ? stopTracking : startTracking}>
-          {isTracking ? "Stop Tracking" : "Start Tracking"}
+        <div  style={{ position: "absolute", zIndex: 999 ,width:"100%" }}>
+        <button className="trackButton" onClick={isTracking ? stopTracking : startTracking}>
+          {isTracking ? "Stop" : "Start"}
         </button>
         {/* <ul>
           {positions.map((pos, index) => (
@@ -124,11 +124,9 @@ const limeOptions = { color: 'blue' }
         className="mapContainer"
         center={currentPosition}
         zoom={13}
-        
         zoomControl={false}
       >
         <UpdateMapCenter />
-
         <TileLayer
           url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?apiKey=${apiKey}`}
         />
@@ -145,7 +143,7 @@ const limeOptions = { color: 'blue' }
    
       
 
-      <div className='comment-section'>
+      {/* <div className='comment-section'>
         <form id='CommentForm' onSubmit={handleSubmitComment}>
           {submittedComments.length > 0 && (
             <div className="submitted-comments">
@@ -172,7 +170,7 @@ const limeOptions = { color: 'blue' }
           </div>
          
         </form>
-      </div>
+      </div> */}
 
       </div>
       

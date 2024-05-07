@@ -1,27 +1,24 @@
 
-
-
 import React from 'react'
 import './index.css'
-import Navbar from './components/nav/Navbar'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter,Router,RouterProvider } from 'react-router-dom'
-import MainLayout from './components/Layout/MainLayout'
 import ContainPage from './app/ContainPage'
 import HostLive from './app/HostLive'
 import RegisterForm from './components/Login/RegisterForm'
+import LoginForm from './components/Login/LoginForm'
 
 const router = createBrowserRouter([
   {
-    path:"/Home",
+    path:"Home",
     element: <ContainPage/>
   },
   {
-  path:"/HostLive",
-  element: <HostLive/>
+  path:"HostLive",
+    element: <HostLive/>
   },
   {
-    path:"/Login",
+    path:"Login",
     element: <RegisterForm/>
   }
 ])
