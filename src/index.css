@@ -1,3 +1,9 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 html {
   font-size: 10px;
   
@@ -5,35 +11,7 @@ html {
 
 body{
   margin: 0;
-  background-color: #0f1b2a;
+  background-color: rgb(255, 255, 255);
   ;
-}
-
-#main-layout{
-  
-  width: 100vw;
-  height: 100vh;
-  display: grid;
-  grid-template:
-   "n n" 60px
-   "s c" 180px
-   "s c"  / 170px;
-
-}
-
-#nav{
-  grid-area: n;
-}
-
-#side{
-  grid-area: s;
-}
-
-#con{
-  grid-area: c;
-}
-
-#event{
-  grid-area: d;
 }
 

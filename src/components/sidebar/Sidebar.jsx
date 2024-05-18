@@ -33,7 +33,7 @@ function Sidebar() {
         <div className='side-main'>
             <div className='side-item'>
                 <div className='icon'>
-                    <Link to="Calender">
+                    <Link to="/Calender">
                     <span class="material-symbols-outlined">
                     calendar_month
                 </span>

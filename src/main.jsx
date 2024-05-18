@@ -1,20 +1,18 @@
-
-
-
 import React from 'react'
 import './index.css'
-import Navbar from './components/nav/Navbar'
+
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter,Router,RouterProvider } from 'react-router-dom'
-import MainLayout from './components/Layout/MainLayout'
-import ContainPage from './app/ContainPage'
+
+import ContentPage from './app/ContentPage'
 import HostLive from './app/HostLive'
 import RegisterForm from './components/Login/RegisterForm'
+import CalenderPage from './app/CalenderPage'
 
 const router = createBrowserRouter([
   {
     path:"/Home",
-    element: <ContainPage/>
+    element: <ContentPage/>
   },
   {
   path:"/HostLive",
@@ -23,12 +21,18 @@ const router = createBrowserRouter([
   {
     path:"/Login",
     element: <RegisterForm/>
+  },
+  {
+    path:"/Calender",
+    element: <CalenderPage/>
   }
+
+
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </React.StrictMode>
   
 )

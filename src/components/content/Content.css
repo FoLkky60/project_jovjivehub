@@ -1,52 +1,32 @@
-#con{
-    max-width: 90vh;
-}
 
-.Live-text{
-
-}
-
-#the-card{
-    display: grid;
-    grid-template-columns:1fr 1fr 1fr 1fr ;
-    gap: 20px;
-    padding: 0 10px;
-    padding-bottom: 20px; 
-    padding-left: 10vw;
- 
-    
-}
-
-
-
-
-/* CSS Style for Live Stream Card */
 .card {
     display: flex;
     flex-direction: column;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease; /* เพิ่ม transition เมื่อ hover */
-    width: 300px;
-    height: 360px;
-    box-shadow: rgb(255, 255, 255);
+   
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    transition: transform 0.3s ease; 
+    max-width: 400px;
+    max-height: 410px;
+    width: 317px;
+    height:350px;
     padding: 10px;
 }
 
-.card:hover {
-    transform: translateY(-5px); /* เมื่อ hover ให้เลื่อนบล็อกขึ้นลง */
-}
 
 .thumb img {
-    width: 100%;
-    height: auto;
-    object-fit: cover; /* ปรับขนาดรูปให้พอดีกับพื้นที่ */
-    border-bottom: 1px solid #ddd; /* เพิ่มเส้นขอบด้านล่าง */
+    width: 293px;
+    height: 250px;
+    object-fit: cover; 
+    border-bottom: 1px solid #ddd; 
+    border-radius: 5px;
 }
 
 .about {
-    padding: 15px;
+    display: flex ;
+    align-items: center;
+    padding: 2px;
     background-color: rgb(255, 255, 255);
 }
 
@@ -54,11 +34,11 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px;
+    margin-right: 15px;
 }
 
 .Detail-live {
-    margin-top: 11px;
+    margin-top: 0;
 }
 
 .live-name {
@@ -69,12 +49,12 @@
 }
 
 .creater-name {
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
     margin-bottom: 5px;
 }
 
 .view {
-    font-size: 14px;
+    font-size: 12px;
     color: #888;
 }
