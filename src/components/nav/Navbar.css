@@ -1,80 +1,96 @@
-/* Navbar Container */
-#nav {
-    
+.nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background-color: #0f1b2a;
-  
-  
-}
-
-#nav .Start {
-    display: grid;
-    grid-template-columns: 40px auto;
-    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
-    padding-left: 10px;
+    height: 80px;
+  
+  
+  
 }
 
-#nav .Hamberger {
+.Start {
     display: flex;
+    align-items: center;
+    margin: 15px;
+    letter-spacing: 1px;
+}
+
+.Hamberger {
     cursor: pointer;
-    width: 40px;
-    height: 22px;
-    padding: 1.6rem;
+    display: none;
+    margin-right: 25px ;
 }
 
-#nav .logo {
-    color: #ffffff;
-    padding: 3rem;
+.logo {
+    font-size: 1.5em;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+}
+
+#Nav {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-width: 600px;
+}
+
+.side-main {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    width: 100%;
+}
+
+.side-item {
+    display: flex;
+    align-items: center;
+    margin-right: 50px;
+}
+#last-taxt{
+    color: orange;
+    letter-spacing: 1px;
+}
+.icon {
+    margin-right: 8px;
+}
+
+.side-taxt {
+    display: flex;  
     font-size: 1.5rem;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
-#last-taxt {
-    color: chocolate;
-}
-
-#nav .End {
-    padding: 5rem;
+.End {
+    display: flex;
+    align-items: center;
+    margin: 25px;
 }
 
 .end-item {
-    color: #000000;
+    margin-left: 20px;
 }
 
-/* Navbar Links */
-#Nav {
-    position: absolute;
-    top: 40px;
-    left:0;
-    width: 200px;
-    height: 95vh;
-    background: #faf4e3;
-    padding: 0;
-    transition: right 0.3s ease; /* เพิ่ม transition เพื่อให้มีการเคลื่อนไหวอย่างนุ่มนวล */
+.material-symbols-outlined{
+    color:rgb(0, 0, 0);
 }
 
-#Nav.active {
-    right: 0; /* เลื่อนแถบ Navbar เข้ามาแสดงบนหน้าจอ */
-}
+@media (max-width: 768px) {
+    .navbar {
+        display: none; /* Hide navbar on smaller screens */
+    }
 
-#Nav li {
-    margin-bottom: 40px;
-}
+    .side-taxt {
+        display: none;
+    }
 
-
-
-#mobile i {
-    font-size: 30px;
-}
-
-
-.side-item{
-
-    padding-left: 10px;
+    .Hamberger {
+        display: block;
+    }
 }
