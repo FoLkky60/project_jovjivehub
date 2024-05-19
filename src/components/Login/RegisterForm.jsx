@@ -2,10 +2,14 @@ import React from "react";
 import { useState } from "react";
 import "./RegisterForm.css";
 import FormInput from "./FormInput";
-import { Link } from "react-router-dom";
+import { Link  , useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useCookies } from 'react-cookie';
 
 const RegisterForm = () => {
   const [showLogin, setShowLogin] = useState(true); // เริ่มต้นโชว์ฟอร์ม Login
+  const [cookies, setCookie] = useCookies(['user']);
+  const navigate = useNavigate();
 
   const handleToggleForm = () => {
     setShowLogin(!showLogin); // สลับสถานะการแสดงฟอร์ม
@@ -93,25 +97,27 @@ const RegisterForm = () => {
     const url = showLogin
       ? "http://localhost:5000/api/login"
       : "http://localhost:5000/api/register";
+
     const config = {
-      method: "POST",
       headers: {
+        // 'Access-Control-Allow-Origin': '*', 
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(values),
+      // withCredentials: 'include',
     };
 
     try {
-      const response = await fetch(url, config);
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data); // Process the response data as needed
-        alert(`Success: ${data.message}`);
+      const response = await axios.post(url, values, config);
+
+      if (response.status === 200) {
+        console.log(response.data); // Process the response data as needed
+        setCookie('UID', response.data.userDate, { path: '/' });
+        // alert(`Success: ${response.data.message}`);
+        // return <Redirect to="/" />;
+        navigate('/')
       } else {
-        const data = await response.json();
-        alert(`Success: ${data.message}`);
+        alert(`Error: ${response.data.message}`);
         throw new Error("Failed to fetch");
-        
       }
     } catch (error) {
       console.error("Error:", error);
@@ -122,67 +128,41 @@ const RegisterForm = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  const renderFormInputs = (inputs) => {
+    return inputs.map((input) => (
+      <FormInput
+        key={input.id}
+        {...input}
+        value={values[input.name]}
+        onChange={onChange}
+      />
+    ));
+  };
+
   return (
     <div className="Wrapper">
-      {showLogin ? (
-        <div className="Register">
-          <form onSubmit={handleSubmit}>
-            <h1 id="RegisBar">Login</h1>
-            {inputlogin.map((input) => (
-              <FormInput
-                key={input.id}
-                {...input}
-                value={values[input.name]}
-                onChange={onChange}
-              />
-            ))}
-            <div className="btn-submit">
-              <div>
-                <button className="LoginForm">Login</button>
-              </div>
-              <div>
-                <button className="LoginForm" onClick={handleToggleForm}>
-                  Sign up
-                </button>
-              </div>
+      <div className="Register">
+        <form onSubmit={handleSubmit}>
+          <h1 id="RegisBar">{showLogin ? "Login" : "Register"}</h1>
+          {showLogin ? renderFormInputs(inputlogin) : renderFormInputs(inputs)}
+          <div className="btn-submit">
+            <div>
+              <button
+                className="LoginForm"
+                onClick={handleToggleForm}
+                type="button"
+              >
+                {showLogin ? "Sign up" : "Login"}
+              </button>
             </div>
             <div>
-              <button className="Submit" type="submit">Sumit </button>
+              <button className="Submit" type="submit">
+                Submit
+              </button>
             </div>
-          </form>
-        </div>
-      ) : (
-        <div className="Register">
-          <form onSubmit={handleSubmit}>
-            <h1 id="RegisBar">Register</h1>
-            {inputs.map((input) => (
-              <FormInput
-                key={input.id}
-                {...input}
-                value={values[input.name]}
-                onChange={onChange}
-              />
-            ))}
-            <div className="btn-submit">
-              <div>
-                <button className="LoginForm" onClick={handleToggleForm}>
-                  Login
-                </button>
-              </div>
-              <div>
-                <button className="LoginForm">Sign up</button>
-              </div>
-            </div>
-            <div>
-              <div>
-                <button className="Submit" type="submit">
-                  Submit{" "}
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      )}
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
