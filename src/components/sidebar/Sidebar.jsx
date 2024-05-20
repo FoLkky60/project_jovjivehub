@@ -1,9 +1,19 @@
 import React from 'react'
 import './Sidebar.css'
 
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 function Sidebar() {
+    const navigate = useNavigate();
+
+    const HandleLogout =() =>{
+        const cookie = new Cookies();
+        cookie.remove("UID")
+        console.log('logout');
+        navigate('/' ,{replace: true})
+    }
+    
   return (
     <section id='side'>
          <div className='side-main'>
@@ -82,14 +92,15 @@ function Sidebar() {
                 <div className='side-taxt'>Help</div>
             </div>
         </div>
-        <div className='side-main'>
+
+        <div className='side-main' id = "logout " onClick={HandleLogout}>
             <div className='side-item'>
                 <div className='icon'>
                 <span class="material-symbols-outlined">
                     logout
                 </span>
                 </div>
-                <div className='side-taxt'>Logout</div>
+                <div className='side-taxt' >Logout</div>
             </div>
         </div>
         

@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../nav/Navbar'
+import MyNavbar from '../nav/MyNavbar'
 import Content from '../content/Content'
 import Sidebar from '../sidebar/Sidebar'
 import Event from '../event/Event'
@@ -13,7 +13,7 @@ import LivePage from '../LivePage/LivePage'
 function MainLayout() {
   return (
     <section id='main-layout'>
-      <Navbar></Navbar>
+      <MyNavbar></MyNavbar>
  
       <Content></Content>
      
