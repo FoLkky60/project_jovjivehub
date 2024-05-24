@@ -94,16 +94,6 @@ function Navbar() {
                 <div className="side-taxt">Calender</div>
               </div>
             </div>
-            <div className="side-main">
-              <div className="side-item">
-                <div className="icon">
-                  <Link to="/HostLive">
-                    <span className="material-symbols-outlined">live_tv</span>
-                  </Link>
-                </div>
-                <div className="side-taxt">Live</div>
-              </div>
-            </div>
           </div>
         </nav>
       )}

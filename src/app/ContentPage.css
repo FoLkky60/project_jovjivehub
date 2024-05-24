@@ -14,18 +14,17 @@
 
 }
 .conTainerForm{
+    padding: 20px;
+    min-height: 750px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
     width: 100vw;
 }
 .itemCon{
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 56.65vw;
-   
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    
 }
 .Live_text{
     display: flex;
