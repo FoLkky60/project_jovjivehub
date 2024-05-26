@@ -5,14 +5,35 @@ import { Cookies } from "react-cookie";
 import axios from "axios";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(true); // State for toggling Navbar
-  const [userData, setUserData] = useState(null); // State for user data
+  const [isOpen, setIsOpen] = useState(window.innerWidth <= 790);
+  const [userData, setUserData] = useState(null);
   const [isLogin, setLogin] = useState(false);
   const navigate = useNavigate();
-  // Function for handling hamburger menu toggle
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 3000) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(false);
+      }
+    };
+
+    // Initial check
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +50,6 @@ function Navbar() {
           );
           setUserData(response.data.userDate);
           setLogin(true);
-          //   console.log(response.data.userDate);
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -38,13 +58,14 @@ function Navbar() {
     fetchData();
   }, [isLogin]);
 
-  const HandleLogout = () => {
+  const handleLogout = () => {
     const cookie = new Cookies();
     cookie.remove("UID");
     console.log("logout");
     setLogin(false);
     navigate("/", { replace: true });
   };
+
   return (
     <div className="nav">
       <div className="Start">
@@ -58,7 +79,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* แสดง Navbar เมื่อ isOpen เป็น true */}
       {isOpen && (
         <nav className="navbar">
           <div id="Nav">
@@ -75,20 +95,18 @@ function Navbar() {
             <div className="side-main">
               <div className="side-item">
                 <div className="icon">
-                  <span className="material-symbols-outlined">
-                    account_circle
-                  </span>
+                  <Link to="/feed">
+                    <span className="material-symbols-outlined">chat_bubble</span>
+                  </Link>
                 </div>
-                <div className="side-taxt">Profile</div>
+                <div className="side-taxt">Feed</div>
               </div>
             </div>
             <div className="side-main">
               <div className="side-item">
                 <div className="icon">
                   <Link to="/Calender">
-                    <span className="material-symbols-outlined">
-                      calendar_month
-                    </span>
+                    <span className="material-symbols-outlined">calendar_month</span>
                   </Link>
                 </div>
                 <div className="side-taxt">Calender</div>
@@ -101,11 +119,11 @@ function Navbar() {
       <div className="End">
         <div className="end-item">
           {isLogin ? (
-            <div className="side-main" id="logout " onClick={HandleLogout}>
+            <div className="side-main" id="logout" onClick={handleLogout}>
               <div className="side-item">
                 <p>{userData.username}</p>
                 <div className="icon">
-                  <span class="material-symbols-outlined">logout</span>
+                  <span className="material-symbols-outlined">logout</span>
                 </div>
                 <div className="side-taxt">Logout</div>
               </div>

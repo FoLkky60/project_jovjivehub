@@ -1,8 +1,15 @@
-
-.maps{
-  width: 100%;
+.mapContainer{
   display: flex;
   justify-content:center ;
+  width: 100%;
+  height: 75vh;
+  margin-top: 50px;
+  padding: 30px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+}
+
+.maps{
+
   margin: 10px;
 }
 .MapBox{
@@ -40,3 +47,114 @@
   font-size: 1.5rem;
   margin: 20px ;
 }
+
+.roomName{
+  width: 50vw;
+  background-color: rgba(0, 0, 0, 0.9);
+  position:absolute;
+  padding: 20px;
+  z-index: 1010;
+}
+.textRoom{
+  padding-left: 20px;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.userBox{
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  display: flex;
+  border-bottom: 2px solid rgb(215, 215, 215);
+
+}
+.userImg img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+
+}
+
+.userName{
+  font-weight: bold;
+  font-size: 1.5rem;
+
+
+}
+
+.detailUser{
+  display: grid;
+  gap: 2px;
+}
+/* ChatBox.css */
+
+.containerBox {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 300px;
+  height: 60vh;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.chat_text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.comment_box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.inputText {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  width: 100%;
+}
+
+.btnSubmit {
+  width: 80px;
+  height: 30px;
+  border: none;
+  padding: 0;
+  margin-top: 0;
+  border-radius: 4px;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+}
+
+.btnSubmit:hover {
+  background-color: #777777;
+}
+
+#commentOutput {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+ 

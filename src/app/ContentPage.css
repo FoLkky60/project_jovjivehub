@@ -24,6 +24,7 @@
 .itemCon{
     display: grid;
     grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 20px;
     
 }
 .Live_text{
@@ -32,5 +33,96 @@
     align-items: center;
     font-size: 2rem;
     margin: 40px;
+    margin-top: 30px;
     margin-bottom: 30px;
+}
+.feed-head{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+    font-size: 5rem;
+    color: rgb(255, 255, 255);
+    background: url(../../public/imges/Bg-feed.jpg) ;
+    background-size: cover;
+}
+
+@media screen and (max-width: 1350px) {
+    .itemCon{
+        display: grid;
+        grid-template-columns: repeat(3,minmax(0,1fr));
+        gap: 20px;
+        
+    }
+}
+@media screen and (max-width: 1050px) {
+    .itemCon{
+        display: grid;
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 20px;
+        
+    }
+}
+@media screen and (max-width: 750px) {
+    .itemCon{
+        display: grid;
+        grid-template-columns: repeat(1,minmax(0,1fr));
+        gap: 20px;
+        
+    }
+    /* .card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+        
+        transition: transform 0.3s ease; 
+        max-width: 200px;
+        max-height: 205px;
+        width: 100%;
+        height:100%;
+        padding: 10px;
+    }
+    .thumb img {
+        width: 170px;
+        height: 125px;
+        object-fit: cover; 
+        border-bottom: 1px solid #ddd; 
+        border-radius: 5px;
+    }
+    
+    .about {
+        display: flex ;
+        align-items: center;
+        padding: 1px;
+        background-color: rgb(255, 255, 255);
+    }
+    
+    .Chanal img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+    .live-name {
+        font-size: 9px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 2.5px;
+    }
+    
+    .creater-name {
+        font-size: 6px;
+        color: #666;
+        margin-bottom: 2.5px;
+    }
+    
+    .view {
+        font-size: 6px;
+        color: #888;
+    } */
 }

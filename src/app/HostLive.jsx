@@ -1,14 +1,18 @@
 import React from "react";
 import Navbar from "../components/nav/MyNavbar";
 import LivePage from "../components/LivePage/LivePage";
+import '../app/HostLive.css'
 
 function HostLive() {
   return (
-    <section id="main-layout">
+    <>
       <Navbar></Navbar>
 
       <LivePage></LivePage>
-    </section>
+      
+         
+      <footer className="footer">ig :jogjivehub_01</footer>
+    </>
   );
 }
 
