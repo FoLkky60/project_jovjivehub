@@ -1,0 +1,100 @@
+/* CreateRoom.css */
+.create-room-container {
+  position: relative;
+  z-index: 1000;
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 60px;
+  right: 60px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  background-color: #333;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.floating-button:hover {
+  background-color: #5b5b5b;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-contents {
+  background-color: none;
+  padding: 20px;
+  border-radius: 8px;
+
+  max-width: 500px;
+  width: 100%;
+}
+
+.formHeader{
+  background-color:  rgba(255, 255, 255, 1);
+}
+
+.form-group {
+  margin-bottom: 10px;
+  
+}
+
+.form-group label {
+  display: block;
+  
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+button {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #333;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #5f5f5f;
+}
+
+.close-button {
+  background-color: #dc3545;
+}
+
+.close-button:hover {
+  background-color: #c82333;
+}
