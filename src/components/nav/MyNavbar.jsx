@@ -5,7 +5,7 @@ import { Cookies } from "react-cookie";
 import axios from "axios";
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(window.innerWidth <= 790);
+  const [isOpen, setIsOpen] = useState(true);
   const [userData, setUserData] = useState(null);
   const [isLogin, setLogin] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function Navbar() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 3000) {
+      if (window.innerWidth = 790) {
         setIsOpen(true);
       } else {
         setIsOpen(false);
@@ -83,34 +83,38 @@ function Navbar() {
         <nav className="navbar">
           <div id="Nav">
             <div className="side-main">
+            <Link to="/">
               <div className="side-item">
                 <div className="icon">
-                  <Link to="/">
+                  
                     <span className="material-symbols-outlined">home</span>
-                  </Link>
+                 
                 </div>
                 <div className="side-taxt">Home</div>
               </div>
+              </Link>
             </div>
             <div className="side-main">
+            <Link to="/feed">
               <div className="side-item">
                 <div className="icon">
-                  <Link to="/feed">
+                  
                     <span className="material-symbols-outlined">chat_bubble</span>
-                  </Link>
+                  
                 </div>
                 <div className="side-taxt">Feed</div>
               </div>
+              </Link>
             </div>
             <div className="side-main">
+            <Link to="/Calender">
               <div className="side-item">
                 <div className="icon">
-                  <Link to="/Calender">
                     <span className="material-symbols-outlined">calendar_month</span>
-                  </Link>
                 </div>
                 <div className="side-taxt">Calender</div>
               </div>
+              </Link>
             </div>
           </div>
         </nav>

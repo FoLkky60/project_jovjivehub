@@ -8,6 +8,7 @@ import ContentPage from "./app/ContentPage";
 import HostLive from "./app/HostLive";
 import RegisterForm from "./components/Login/RegisterForm";
 import CalenderPage from "./app/CalenderPage";
+import FeedPage from "./app/FeedPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,12 @@ const router = createBrowserRouter([
     path: "/Calender",
     element: <CalenderPage />,
   },
+  {
+    path: "/feed",
+    element: <FeedPage />,
+  },
+  
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
