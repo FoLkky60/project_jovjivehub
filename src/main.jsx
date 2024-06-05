@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     element: <ContentPage />,
   },
   {
-    path: "/HostLive",
+    path: "/HostLive/",
     element: <HostLive />,
   },
   {

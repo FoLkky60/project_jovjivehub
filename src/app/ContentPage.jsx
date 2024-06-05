@@ -1,119 +1,27 @@
-import React from "react";
+import React, {useState,useEffect }from "react";
 import Navbar from "../components/nav/MyNavbar";
 import Content from "../components/content/Content";
 import "./ContentPage.css";
 import CreateRoom from "../components/content/CreateRoom";
-
-const contentData = [
-  {
-    thumbnail: './imges/1.jpg',
-    channelLogo: './imges/4.jpg',
-    liveName: 'เหงาจาง',
-    creatorName: 'Folk',
-    viewers: 2380,
-  },
-  {
-    thumbnail: './imges/2.jpg',
-    channelLogo: './imges/6.jpg',
-    liveName: 'Another Live',
-    creatorName: 'John',
-    viewers: 1500,
-  },
-  {
-    thumbnail: './imges/4.jpg',
-    channelLogo: './imges/8.jpg',
-    liveName: 'Yet Another Live',
-    creatorName: 'Jane',
-    viewers: 980,
-  },
-  {
-    thumbnail: './imges/1.jpg',
-    channelLogo: './imges/4.jpg',
-    liveName: 'เหงาจาง',
-    creatorName: 'Folk',
-    viewers: 2380,
-  },
-  {
-    thumbnail: './imges/2.jpg',
-    channelLogo: './imges/6.jpg',
-    liveName: 'Another Live',
-    creatorName: 'John',
-    viewers: 1500,
-  },
-  {
-    thumbnail: './imges/4.jpg',
-    channelLogo: './imges/8.jpg',
-    liveName: 'Yet Another Live',
-    creatorName: 'Jane',
-    viewers: 980,
-  },
-  {
-    thumbnail: './imges/1.jpg',
-    channelLogo: './imges/4.jpg',
-    liveName: 'เหงาจาง',
-    creatorName: 'Folk',
-    viewers: 2380,
-  },
-  {
-    thumbnail: './imges/2.jpg',
-    channelLogo: './imges/6.jpg',
-    liveName: 'Another Live',
-    creatorName: 'John',
-    viewers: 1500,
-  },
-  {
-    thumbnail: './imges/4.jpg',
-    channelLogo: './imges/8.jpg',
-    liveName: 'Yet Another Live',
-    creatorName: 'Jane',
-    viewers: 980,
-  },
-  {
-    thumbnail: './imges/1.jpg',
-    channelLogo: './imges/4.jpg',
-    liveName: 'เหงาจาง',
-    creatorName: 'Folk',
-    viewers: 2380,
-  },
-  {
-    thumbnail: './imges/2.jpg',
-    channelLogo: './imges/6.jpg',
-    liveName: 'Another Live',
-    creatorName: 'John',
-    viewers: 1500,
-  },
-  {
-    thumbnail: './imges/4.jpg',
-    channelLogo: './imges/8.jpg',
-    liveName: 'Yet Another Live',
-    creatorName: 'Jane',
-    viewers: 980,
-  },
-  {
-    thumbnail: './imges/1.jpg',
-    channelLogo: './imges/4.jpg',
-    liveName: 'เหงาจาง',
-    creatorName: 'Folk',
-    viewers: 2380,
-  },
-  {
-    thumbnail: './imges/2.jpg',
-    channelLogo: './imges/6.jpg',
-    liveName: 'Another Live',
-    creatorName: 'John',
-    viewers: 1500,
-  },
-  {
-    thumbnail: './imges/4.jpg',
-    channelLogo: './imges/8.jpg',
-    liveName: 'Yet Another Live',
-    creatorName: 'Jane',
-    viewers: 980,
-  },
-  
-];
+import axios from "axios";
 
 function ContentPage() {
+  const [contents, setContents] = useState([]);
+  useEffect(() => {
+    const fetchContents = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/getAllPost');
+        setContents(response.data);
+      } catch (error) {
+        console.error('Error fetching content:', error);
+      }
+    };
+
+    fetchContents();
+  }, [contents]);
+
+  // cnsole.log(contents);
+
   return (
     <>
       <Navbar />
@@ -122,9 +30,10 @@ function ContentPage() {
       <CreateRoom />
       <div className="conTainerForm">
         <div className="itemCon">
-          {contentData.map((data, index) => (
+          {contents.map((data, index) => (
             <Content
               key={index}
+              id = {data._id}
               thumbnail={data.thumbnail}
               channelLogo={data.channelLogo}
               liveName={data.liveName}
