@@ -25,7 +25,6 @@ function Sidebar() {
                     </span>
 
                     </Link>
-                    
                 </div>
                 <div className='side-taxt'>Home</div>
             </div>

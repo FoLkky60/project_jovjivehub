@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 module.exports = (req, res) => {
   const { UID } = req.query;
-  console.log(UID);
+  // console.log(UID);
 
   User.findOne({ _id: UID })
     .then((user) => {
