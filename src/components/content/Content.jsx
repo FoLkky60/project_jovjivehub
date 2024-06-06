@@ -2,13 +2,12 @@ import React from 'react';
 import './Content.css';
 import { Link } from 'react-router-dom';
 
-function Content({ thumbnail, channelLogo, liveName, creatorName, viewers }) {
+function Content({ id ,thumbnail, channelLogo, liveName, creatorName, viewers }) {
   return (
     <div>
-        
       <div className='card'>
         <div className='thumb'>
-        <Link to='/HostLive'>
+        <Link to={`/HostLive/?id=${id}`}>
           <img src={thumbnail} alt="Thumbnail" />
         </Link>
         </div>

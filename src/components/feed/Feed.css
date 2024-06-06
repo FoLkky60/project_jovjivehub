@@ -1,0 +1,151 @@
+
+.feed-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    margin-top: 50px;
+  }
+  
+
+  .message-input {
+    height: 40px;
+    margin: 10px;
+    width: calc(100% - 120px); 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+  }
+  
+  .post-button {
+    width: 100px; 
+    height: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+
+  .post-button:hover {
+    background-color: #0056b3;
+  }
+  
+
+  .post-list {
+    width: 100%;
+    margin-top: 30px;
+  }
+  
+
+  .post {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  
+  .profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  
+  .author-name {
+    font-weight: bold;
+  }
+  
+  
+  .post-content {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    width: 650px;
+    margin: 20px;
+  }
+  
+ 
+  .post-actions {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  .like-buttons {
+    width: 35px;
+    background: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 5px;
+  }
+  
+
+  .like-count {
+    margin-left: 5px;
+    font-weight: bold;
+  }
+  
+  .comment-input{
+    width: 70%;
+    height: 40px;
+    
+  }
+  .comment-buttons{
+    width: 50px;
+    background: none;
+    margin-top: 5px;
+  }
+  .like-buttons:hover {
+    background: none;
+  }
+  .comment-buttons:hover {
+    background: none;
+  }
+  .comment-section{
+    display: flex;
+    align-items: center;
+  }
+  .profile-pic-popup{
+    width: 20px;
+  }
+
+  .post-buttons{
+    width: 100px; 
+    height: 40px;
+    background: none;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 6px;
+    
+  }
+  .post-buttons:hover{
+    background: none;
+  }
+  .comment-popup{
+    
+    padding: 10px;
+   
+    
+  }
+  .comment-input{
+    width: 70%;
+  }
+  
