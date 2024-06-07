@@ -19,7 +19,7 @@ const CreateRoom = () => {
       if (uid) {
         try {
           const response = await axios.get(
-            "http://localhost:5000/api/getUserDataByID",
+            "http://localhost:5001/api/getUserDataByID",
             {
               params: { UID: uid },
               headers: { "Content-Type": "application/json" },
@@ -47,7 +47,7 @@ const CreateRoom = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/content",
+        "http://localhost:5001/content",
         formData,
         {
           headers: {
@@ -122,13 +122,13 @@ const CreateRoom = () => {
               </div>
 
               <button type="submit">Create Content</button>
-              <button
+              {/* <button
                 type="button"
                 className="close-button"
                 onClick={() => setShowPopup(false)}
               >
                 Close
-              </button>
+              </button> */}
             </form>
           </div>
         </div>

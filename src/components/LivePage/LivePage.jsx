@@ -22,7 +22,7 @@ function LivePage({ apiKey }) {
         const id = query.get("id");
         console.log(id);
         const response = await axios.get(
-          "http://localhost:5000/api/getPostDataByID",
+          "http://localhost:5001/api/getPostDataByID",
           {
             params: { pid: id },
             headers: { "Content-Type": "application/json" },

@@ -10,8 +10,12 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background: url(../../../public/imges/Bg_login.jpg);
+  background-size: cover;
   background-position: center;
-  background-color:ffeebe;
+  overflow: hidden;
+  
+
 }
 
 form {
@@ -43,10 +47,11 @@ form {
 }
 
 .LoginForm,
-.SignUpForm {
+.RegisForm {
   width: 140px;
   height: 50px;
   padding: 10px 10px;
+  margin: 5px;
   border: none;
   background-color: #333;
   color: white;
@@ -60,7 +65,7 @@ form {
 
 .btn-submit {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .LoginForm:hover,

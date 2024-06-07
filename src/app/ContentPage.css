@@ -46,7 +46,7 @@
     object-fit: cover;
     font-size: 5rem;
     color: rgb(255, 255, 255);
-    background: url(../../public/imges/Bg-feed.jpg) ;
+    background: url(../../../public/imges/Bg_login.jpg);
     background-size: cover;
 }
 

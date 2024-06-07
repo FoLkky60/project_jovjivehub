@@ -7,13 +7,13 @@ import axios from "axios";
 import { useCookies } from 'react-cookie';
 
 const RegisterForm = () => {
-  const [showLogin, setShowLogin] = useState(true); // เริ่มต้นโชว์ฟอร์ม Login
+  const [showLogin, setShowLogin] = useState(true);
   const [cookies, setCookie] = useCookies(['user']);
   const navigate = useNavigate();
-
   const handleToggleForm = () => {
-    setShowLogin(!showLogin); // สลับสถานะการแสดงฟอร์ม
+    setShowLogin(false); 
   };
+
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -95,8 +95,8 @@ const RegisterForm = () => {
     e.preventDefault();
     console.log(values);
     const url = showLogin
-      ? "http://localhost:5000/api/login"
-      : "http://localhost:5000/api/register";
+      ? "http://localhost:5001/api/login"
+      : "http://localhost:5001/api/register";
 
     const config = {
       headers: {
@@ -143,18 +143,26 @@ const RegisterForm = () => {
     <div className="Wrapper">
       <div className="Register">
         <form onSubmit={handleSubmit}>
-          <h1 id="RegisBar">{showLogin ? "Login" : "Register"}</h1>
-          {showLogin ? renderFormInputs(inputlogin) : renderFormInputs(inputs)}
-          <div className="btn-submit">
-            <div>
+          {/* <h1 id="RegisBar">{showLogin ? "Login" : "Register"}</h1> */}
+          <div>
+          <button
+                className="RegisForm"
+                onClick={() => setShowLogin(true)}
+                type="button"
+              >
+                Login
+              </button>
               <button
                 className="LoginForm"
                 onClick={handleToggleForm}
                 type="button"
               >
-                {showLogin ? "Sign up" : "Login"}
+                Register
               </button>
+              
             </div>
+          {showLogin ? renderFormInputs(inputlogin) : renderFormInputs(inputs)}
+          <div className="btn-submit">
             <div>
               <button className="Submit" type="submit">
                 Submit

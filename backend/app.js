@@ -18,13 +18,34 @@ const getAllPost = require('./controllers/getAllpost')
 const getPostDataByID = require('./controllers/getPostDataByID')
 const getUserDataByID = require("./controllers/getUserDataByID");
 
-const PORT = 5000;
+
+
+
+const PORT = 5001;
 
 const app = express();
 
 app.use(cookieParser());
 app.use(bodyParser.json());
+// app.use(cors());
+
+// const corsOptions = {
+//   origin: 'https://localhost:5173/', 
+//   optionsSuccessStatus: 200 
+// };
+// app.use(cors(corsOptions));
+// Enable CORS for all origins
 app.use(cors());
+
+// If you want to allow requests from specific origins:
+// Replace 'https://localhost:5173' with your desired origin
+app.use(cors({
+  origin: 'https://localhost:5173',
+  methods: ['GET', 'POST'], 
+  credentials: true 
+}));
+
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
