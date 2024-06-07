@@ -3,6 +3,7 @@ import './Content.css';
 import { Link } from 'react-router-dom';
 
 function Content({ id ,thumbnail, channelLogo, liveName, creatorName, viewers }) {
+  // console.log(thumbnail);
   return (
     <div>
       <div className='card'>

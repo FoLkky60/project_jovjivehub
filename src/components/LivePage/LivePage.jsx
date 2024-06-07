@@ -4,12 +4,20 @@ import "leaflet/dist/leaflet.css";
 import "./LivePage.css";
 import axios from "axios"; // Import axios
 import { useLocation } from "react-router-dom";
+import L from "leaflet";
 
 function LivePage({ apiKey }) {
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const latestCommentRef = useRef(null);
   const [onwPostData, setOwmPostData] = useState(null);
+
+  const customIcon = L.icon({
+    iconUrl: "/imges/4.jpg",
+    iconSize: [38, 38], // size of the icon
+    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+  });
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -20,7 +28,7 @@ function LivePage({ apiKey }) {
     const fetchData = async () => {
       try {
         const id = query.get("id");
-        console.log(id);
+        // console.log(id);
         const response = await axios.get(
           "http://localhost:5000/api/getPostDataByID",
           {
@@ -35,9 +43,9 @@ function LivePage({ apiKey }) {
     };
 
     fetchData();
-  }, [query]);
+  }, []);
 
-  console.log(onwPostData);
+  // console.log(onwPostData);
 
   const handleInputChange = (event) => {
     setCommentInput(event.target.value);
@@ -80,7 +88,7 @@ function LivePage({ apiKey }) {
             url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`}
           />
           {positions.map((position, index) => (
-            <Marker key={index} position={position}>
+            <Marker key={index} position={position} icon={customIcon}>
               <Popup>
                 ประเทศไทย! <br /> ยินดีต้อนรับ!
               </Popup>

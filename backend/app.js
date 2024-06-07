@@ -5,18 +5,21 @@ const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const multer = require('multer');
-const path = require('path');
-
+const multer = require("multer");
+const path = require("path");
 
 const storeUserController = require("./controllers/stroreUsercontroller");
 const loginUserController = require("./controllers/loginUserController");
-const addPost = require("./controllers/addPost")
+const addContent = require("./controllers/addContent");
 
-
-const getAllPost = require('./controllers/getAllpost')
-const getPostDataByID = require('./controllers/getPostDataByID')
+const getAllContent = require("./controllers/getAllContent");
+const getPostDataByID = require("./controllers/getPostDataByID");
 const getUserDataByID = require("./controllers/getUserDataByID");
+const postTask = require("./controllers/postTask");
+const getTaskByID = require("./controllers/getTaskByID");
+const getAllPost = require("./controllers/getAllPost.js");
+const addPosts = require("./controllers/addPosts.js");
+const addPostsComments =require("./controllers/addPostsComments.js");
 
 const PORT = 5000;
 
@@ -28,11 +31,11 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../public/uploads');
+    cb(null, "../public/uploads");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
-  }
+  },
 });
 const upload = multer({ storage: storage });
 
@@ -53,13 +56,21 @@ mongoose
 
 app.post("/api/register", storeUserController);
 app.post("/api/login", loginUserController);
-app.post('/content', upload.fields([{ name: 'thumbnail' }, { name: 'channelLogo' }]), addPost);
-
+app.post(
+  "/content",
+  upload.fields([{ name: "thumbnail" }, { name: "channelLogo" }]),
+  addContent
+);
+app.post("/tasks", postTask);
+app.post("/api/posts", addPosts);
+app.post('/api/posts/:id/comments',addPostsComments)
 // Uncomment and define the route if needed
 
-app.get('/api/getUserDataByID', getUserDataByID);
-app.get('/api/getAllPost', getAllPost);
-app.get('/api/getPostDataByID', getPostDataByID);
+app.get("/api/getUserDataByID", getUserDataByID);
+app.get("/api/getAllContent", getAllContent);
+app.get("/api/getPostDataByID", getPostDataByID);
+app.get("/api/tasks/:userId/:date", getTaskByID);
+app.get("/api/getAllposts", getAllPost);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
