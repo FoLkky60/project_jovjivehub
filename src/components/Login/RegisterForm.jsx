@@ -2,9 +2,9 @@ import React from "react";
 import { useState } from "react";
 import "./RegisterForm.css";
 import FormInput from "./FormInput";
-import { Link  , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 
 const RegisterForm = () => {
   const [showLogin, setShowLogin] = useState(true);
@@ -100,7 +100,7 @@ const RegisterForm = () => {
 
     const config = {
       headers: {
-        // 'Access-Control-Allow-Origin': '*', 
+        // 'Access-Control-Allow-Origin': '*',
         "Content-Type": "application/json",
       },
       // withCredentials: 'include',
@@ -111,10 +111,10 @@ const RegisterForm = () => {
 
       if (response.status === 200) {
         console.log(response.data); // Process the response data as needed
-        setCookie('UID', response.data.userDate, { path: '/' });
+        setCookie("UID", response.data.userDate, { path: "/" });
         // alert(`Success: ${response.data.message}`);
         // return <Redirect to="/" />;
-        navigate('/')
+        navigate("/");
       } else {
         alert(`Error: ${response.data.message}`);
         throw new Error("Failed to fetch");
