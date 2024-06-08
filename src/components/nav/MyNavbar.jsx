@@ -121,7 +121,11 @@ function Navbar() {
       )}
 
       <div className="End">
+        
         <div className="end-item">
+        <Link to="/profile">
+          <span className="material-symbols-outlined">calendar_month</span>
+        </Link>
           {isLogin ? (
             <div className="side-main" id="logout" onClick={handleLogout}>
               <div className="side-item">

@@ -9,6 +9,7 @@ import HostLive from "./app/HostLive";
 import RegisterForm from "./components/Login/RegisterForm";
 import CalenderPage from "./app/CalenderPage";
 import FeedPage from "./app/FeedPage";
+import Profile from "./app/Profile";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/feed",
     element: <FeedPage />,
+  },
+  {
+    path: "/profile",
+    element: <Profile/>,
   },
   
   
