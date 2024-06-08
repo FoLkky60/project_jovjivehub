@@ -58,8 +58,7 @@
   width: 100%; /* หรือความกว้างที่คุณต้องการ */
 }
 
-<<<<<<< HEAD
-=======
+
   .popup button:hover {
     background-color: #0056b3;
   }
@@ -130,7 +129,6 @@
   .fc-event-description {
     font-size: 1.1em; /* Adjust the font size of the description */
   }
-<<<<<<< Updated upstream
   .fc-event-title {
     white-space: normal !important; /* Allow text to wrap */
     word-wrap: break-word; /* Break long words */
@@ -139,6 +137,3 @@
   .fc-event {
     height: auto !important; /* Ensure event height adjusts to content */
   }
-=======
->>>>>>> 62659fd77a74aa83403bc7470968804a2a409753
->>>>>>> Stashed changes
