@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 
 module.exports = (req, res) => {
   const { email, password } = req.body;
-  //   console.log(req.body);
+    console.log(req.body);
 
   User.findOne({ email: email })
     .then((user) => {
@@ -13,6 +13,7 @@ module.exports = (req, res) => {
           .compare(password, user.password)
           .then((match) => {
             if (match) {
+              console.log('macthed');
               // res.setHeader("Access-Control-Allow-Origin", "https://localhost:5173");
               res.status(200).json({
                 message: "Logged in successfully",

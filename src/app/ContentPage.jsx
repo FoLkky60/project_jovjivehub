@@ -10,7 +10,7 @@ function ContentPage() {
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/api/getAllPost');
+        const response = await axios.get('http://localhost:5001/api/getAllContent');
         setContents(response.data);
       } catch (error) {
         console.error('Error fetching content:', error);

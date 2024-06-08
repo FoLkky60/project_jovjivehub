@@ -93,14 +93,14 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    // console.log(values);
     const url = showLogin
       ? "http://localhost:5001/api/login"
       : "http://localhost:5001/api/register";
 
     const config = {
       headers: {
-        // 'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*',
         "Content-Type": "application/json",
       },
       // withCredentials: 'include',

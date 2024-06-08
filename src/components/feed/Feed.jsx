@@ -10,20 +10,74 @@ function Feed() {
   const [showCommentPopup, setShowCommentPopup] = useState(false);
   const [currentPostId, setCurrentPostId] = useState(null);
   const [postDateTime, setPostDateTime] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [authorNames, setAuthorNames] = useState({});
 
   useEffect(() => {
-    fetchPosts();
+    const fetchData = async () => {
+      const cookie = new Cookies();
+      const uid = cookie.get("UID");
+      if (uid) {
+        try {
+          const response = await axios.get(
+            "http://localhost:5001/api/getUserDataByID",
+            {
+              params: { UID: uid },
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          setUserData(response.data.userDate);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    fetchData();
   }, []);
 
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/getAllposts");
-      console.log(response.data);
-      setPosts(response.data);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
+  const getNamebyId = async (uid) => {
+    if (uid) {
+      try {
+        const response = await axios.get(
+          "http://localhost:5001/api/getUserDataByID",
+          {
+            params: { UID: uid },
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        return response.data.userDate.username;
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        return "Anonymous"; // Return a default value in case of error
+      }
     }
+    return "Anonymous"; // Return a default value if no UID is provided
   };
+
+  useEffect(() => {
+    const fetchPostsAndAuthors = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/getAllposts");
+        const sortedPosts = response.data.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
+
+        const authorIds = [...new Set(sortedPosts.map(post => post.author))];
+        const authorNamesTemp = {};
+
+        for (const id of authorIds) {
+          authorNamesTemp[id] = await getNamebyId(id);
+        }
+
+        setAuthorNames(authorNamesTemp);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPostsAndAuthors();
+  }, []);
 
   const handlePostInputChange = (e) => {
     setInputText(e.target.value);
@@ -41,16 +95,20 @@ function Feed() {
     if (inputText.trim() !== "" && postDateTime.trim() !== "") {
       const newPost = {
         text: inputText,
-        author: "John Doe",
-        profilePic: "./images/1.jpg",
+        author: userData._id || "Anonymous",
+        profilePic: "./imges/1.jpg",
         dateTime: postDateTime,
       };
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/posts",
+          "http://localhost:5001/api/posts",
           newPost
         );
-        setPosts([...posts, response.data]);
+        const updatedPosts = [response.data, ...posts];
+        const sortedPosts = updatedPosts.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
         setInputText("");
         setPostDateTime("");
       } catch (error) {
@@ -59,15 +117,23 @@ function Feed() {
     }
   };
 
-  const handleLike = async (postId) => {
+  const handleLike = async (postId, date ,author ) => {
+    console.log(postId, date, 'user',userData._id, 'post onw',author);
+    const newMeet = {
+      postId, meetDate:date,userData._id, author,
+    }
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/posts/${postId}/like`
+        `http://localhost:5001/api/posts/${postId}/like`,
+
       );
       const updatedPosts = posts.map((post) =>
-        post.id === postId ? response.data : post
+        post._id === postId ? response.data : post
       );
-      setPosts(updatedPosts);
+      const sortedPosts = updatedPosts.sort(
+        (a, b) => new Date(b.createDate) - new Date(a.createDate)
+      );
+      setPosts(sortedPosts);
     } catch (error) {
       console.error("Error liking post:", error);
     }
@@ -86,13 +152,16 @@ function Feed() {
     if (commentText.trim() !== "") {
       try {
         const response = await axios.post(
-          `http://localhost:5000/api/posts/${currentPostId}/comments`,
-          { text: commentText, author: "Jane Doe" }
+          `http://localhost:5001/api/posts/${currentPostId}/comments`,
+          { text: commentText, author: userData?.username || "Anonymous" }
         );
         const updatedPosts = posts.map((post) =>
-          post.id === currentPostId ? response.data : post
+          post._id === currentPostId ? response.data : post
         );
-        setPosts(updatedPosts);
+        const sortedPosts = updatedPosts.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
         setCommentText("");
         setShowCommentPopup(false);
       } catch (error) {
@@ -129,13 +198,15 @@ function Feed() {
                 alt="Profile"
                 className="profile-pic"
               />
-              <span className="author-name">{post.author}</span>
+              <span className="author-name">
+                {authorNames[post.author] || "Loading..."}
+              </span>
             </div>
             <div className="post-content">{post.text}</div>
             <div className="post-datetime">{post.dateTime}</div>
             <div className="comment-section">
               <button
-                onClick={() => handleLike(post._id)}
+                onClick={() => handleLike(post._id, post.dateTime, post.author)}
                 className="like-buttons"
               >
                 <span className="material-symbols-outlined">favorite</span>

@@ -44,7 +44,9 @@
   }
   .container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
     padding: 20px;
   }
   
@@ -86,4 +88,18 @@
   
   .all-tasks-completed .fc-daygrid-day {
     background-color: #00ff00 !important; /* Green */
+  }
+
+  .fc-event {
+    font-size: 1.2em; /* Adjust the font size as needed */
+    padding: 5px;    /* Adjust the padding as needed */
+    line-height: 1.5; /* Adjust the line height as needed */
+  }
+  
+  .fc-event-title {
+    font-size: 1.2em; /* Adjust the font size of the title */
+  }
+  
+  .fc-event-description {
+    font-size: 1.1em; /* Adjust the font size of the description */
   }

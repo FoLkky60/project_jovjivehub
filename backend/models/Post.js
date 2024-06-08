@@ -6,8 +6,9 @@ const postSchema = new mongoose.Schema({
   author: String,
   profilePic: String,
   likes: { type: Number, default: 0 },
-  comments: [{ text: String, author: String }],
+  comments: [{ text: String, author: String ,commentDate : { type: Date, default: Date.now }}],
   dateTime: String,
+  createDate: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("Post", postSchema);
