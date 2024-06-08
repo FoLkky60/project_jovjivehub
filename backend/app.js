@@ -19,13 +19,10 @@ const postTask = require("./controllers/postTask");
 const getTaskByID = require("./controllers/getTaskByID");
 const getAllPost = require("./controllers/getAllPost.js");
 const addPosts = require("./controllers/addPosts.js");
-const addPostsComments = require("./controllers/addPostsComments.js");
-const addMeeting = require("./controllers/addMeeting.js");
-const toggleLike = require("./controllers/toggleLike.js");
-const getUserLikes = require("./controllers/getUserLikes.js");
-const getUserMeeting = require("./controllers/getUserMeeting.js");
+const addPostsComments =require("./controllers/addPostsComments.js");
 
-const delMeeting = require("./controllers/delMeeting.js");
+
+
 
 const PORT = 5001;
 
@@ -36,8 +33,8 @@ app.use(bodyParser.json());
 // app.use(cors());
 
 // const corsOptions = {
-//   origin: 'https://localhost:5173/',
-//   optionsSuccessStatus: 200
+//   origin: 'https://localhost:5173/', 
+//   optionsSuccessStatus: 200 
 // };
 // app.use(cors(corsOptions));
 // Enable CORS for all origins
@@ -45,13 +42,13 @@ app.use(cors());
 
 // If you want to allow requests from specific origins:
 // Replace 'https://localhost:5173' with your desired origin
-app.use(
-  cors({
-    origin: "https://localhost:5173",
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: 'https://localhost:5173',
+  methods: ['GET', 'POST'], 
+  credentials: true 
+}));
+
+
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -87,12 +84,7 @@ app.post(
 );
 app.post("/tasks", postTask);
 app.post("/api/posts", addPosts);
-app.post("/api/posts/:id/comments", addPostsComments);
-
-app.post("/api/posts/:id/joins", addMeeting);
-app.post("/api/posts/:id/joins/del", delMeeting);
-
-app.post("/api/posts/:postId/toggleLike", toggleLike);
+app.post('/api/posts/:id/comments',addPostsComments)
 // Uncomment and define the route if needed
 
 app.get("/api/getUserDataByID", getUserDataByID);
@@ -100,8 +92,6 @@ app.get("/api/getAllContent", getAllContent);
 app.get("/api/getPostDataByID", getPostDataByID);
 app.get("/api/tasks/:userId/:date", getTaskByID);
 app.get("/api/getAllposts", getAllPost);
-app.get("/api/getUserLikes", getUserLikes);
-app.get("/api/getUserMeeting", getUserMeeting);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

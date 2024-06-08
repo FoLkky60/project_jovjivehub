@@ -9,6 +9,75 @@ function Feed() {
   const [posts, setPosts] = useState([]);
   const [showCommentPopup, setShowCommentPopup] = useState(false);
   const [currentPostId, setCurrentPostId] = useState(null);
+  const [postDateTime, setPostDateTime] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [authorNames, setAuthorNames] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const cookie = new Cookies();
+      const uid = cookie.get("UID");
+      if (uid) {
+        try {
+          const response = await axios.get(
+            "http://localhost:5001/api/getUserDataByID",
+            {
+              params: { UID: uid },
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          setUserData(response.data.userDate);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+
+  const getNamebyId = async (uid) => {
+    if (uid) {
+      try {
+        const response = await axios.get(
+          "http://localhost:5001/api/getUserDataByID",
+          {
+            params: { UID: uid },
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        return response.data.userDate.username;
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        return "Anonymous"; // Return a default value in case of error
+      }
+    }
+    return "Anonymous"; // Return a default value if no UID is provided
+  };
+
+  useEffect(() => {
+    const fetchPostsAndAuthors = async () => {
+      try {
+        const response = await axios.get("http://localhost:5001/api/getAllposts");
+        const sortedPosts = response.data.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
+
+        const authorIds = [...new Set(sortedPosts.map(post => post.author))];
+        const authorNamesTemp = {};
+
+        for (const id of authorIds) {
+          authorNamesTemp[id] = await getNamebyId(id);
+        }
+
+        setAuthorNames(authorNamesTemp);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPostsAndAuthors();
+  }, []);
 
   const handlePostInputChange = (e) => {
     setInputText(e.target.value);
@@ -26,20 +95,35 @@ function Feed() {
     if (inputText.trim() !== "" && postDateTime.trim() !== "") {
       const newPost = {
         text: inputText,
-        author: "John Doe", 
-        profilePic: "./imges/1.jpg", 
-        likes: 0,
-        comments: [] 
+        author: userData._id || "Anonymous",
+        profilePic: "./imges/1.jpg",
+        dateTime: postDateTime,
       };
       setPosts([...posts, newPost]);
       setInputText("");
     }
   };
 
-  const handleLike = (postId) => {
-    const postIndex = posts.findIndex(post => post.id === postId);
-    if (posts[postIndex].liked) {
-      return; 
+  const handleLike = async (postId, date ,author ) => {
+    console.log(postId, date, 'user',userData._id, 'post onw',author);
+
+    try {
+      // const newMeet = {
+      //   postId, meetDate:date,userData._id, author,
+      // }
+      const response = await axios.post(
+        `http://localhost:5001/api/posts/${postId}/like`,
+
+      );
+      const updatedPosts = posts.map((post) =>
+        post._id === postId ? response.data : post
+      );
+      const sortedPosts = updatedPosts.sort(
+        (a, b) => new Date(b.createDate) - new Date(a.createDate)
+      );
+      setPosts(sortedPosts);
+    } catch (error) {
+      console.error("Error liking post:", error);
     }
     const updatedPosts = [...posts];
     updatedPosts[postIndex] = { ...updatedPosts[postIndex], likes: updatedPosts[postIndex].likes + 1, liked: true };
@@ -54,20 +138,27 @@ function Feed() {
     }
   };
 
-//   const handleSubmitComment = () => {
-//     const trimmedComment = commentText.trim();
-//     if (trimmedComment !== "") {
-//       const updatedPosts = posts.map(post => {
-//         if (post.id === currentPostId) {
-//           return { ...post, comments: [...post.comments, trimmedComment] };
-//         }
-//         return post;
-//       });
-//       setPosts(updatedPosts);
-      
-//       setCommentText(""); 
-//     }
-//   };
+  const handleAddComment = async () => {
+    if (commentText.trim() !== "") {
+      try {
+        const response = await axios.post(
+          `http://localhost:5001/api/posts/${currentPostId}/comments`,
+          { text: commentText, author: userData?.username || "Anonymous" }
+        );
+        const updatedPosts = posts.map((post) =>
+          post._id === currentPostId ? response.data : post
+        );
+        const sortedPosts = updatedPosts.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
+        setCommentText("");
+        setShowCommentPopup(false);
+      } catch (error) {
+        console.error("Error adding comment:", error);
+      }
+    }
+  };
 
   return (
     <div className="feed-container"> 
@@ -89,26 +180,58 @@ function Feed() {
           Post
         </button>
       </div>
-      <div className="post-list"> 
-        {posts.map(post => (
-          <div key={post.id} className="post"> 
-            <div className="post-header"> 
-              <img src={post.profilePic} alt="Profile" className="profile-pic" /> 
-              <span className="author-name">{post.author}</span> 
+      <div className="post-list">
+        {posts.map((post) => (
+          <div key={post._id} className="post">
+            <div className="post-header">
+              <img
+                src={post.profilePic}
+                alt="Profile"
+                className="profile-pic"
+              />
+              <span className="author-name">
+                {authorNames[post.author] || "Loading..."}
+              </span>
             </div>
-            <div className="post-content">{post.text}</div> 
-            
-            <div className="comment-section"> 
-              <button onClick={() => handleLike(post.id)} className="like-buttons">
-                <span className="material-symbols-outlined">
-                    favorite
-                </span>
-              </button> 
-              <button onClick={() => handleCommentButtonClick(post.id)} className="comment-buttons">
-                <span className="material-symbols-outlined">
-                  add
-                </span>
-              </button> 
+            <div className="post-content">{post.text}</div>
+            <div className="post-datetime">{post.dateTime}</div>
+            <div className="comment-section">
+              <button
+                onClick={() => handleLike(post._id, post.dateTime, post.author)}
+                className="like-buttons"
+              >
+                <span className="material-symbols-outlined">favorite</span>
+              </button>
+              <button
+                onClick={() => handleCommentButtonClick(post._id)}
+                className="comment-buttons"
+              >
+                <span className="material-symbols-outlined">add</span>
+              </button>
+            </div>
+            {showCommentPopup && currentPostId === post._id && (
+              <div className="comment-popup">
+                <input
+                  value={commentText}
+                  onChange={handleCommentInputChange}
+                  placeholder="Type your comment here..."
+                  className="comment-input"
+                />
+                <button
+                  onClick={handleAddComment}
+                  className="add-comment-button"
+                >
+                  Add Comment
+                </button>
+              </div>
+            )}
+            <div className="comments-list">
+              {post.comments.map((comment, index) => (
+                <div key={index} className="comment">
+                  <span className="comment-author">{comment.author}</span>:{" "}
+                  {comment.text}
+                </div>
+              ))}
             </div>
               
             
