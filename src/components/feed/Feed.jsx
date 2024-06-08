@@ -119,10 +119,11 @@ function Feed() {
 
   const handleLike = async (postId, date ,author ) => {
     console.log(postId, date, 'user',userData._id, 'post onw',author);
-    const newMeet = {
-      postId, meetDate:date,userData._id, author,
-    }
+
     try {
+      // const newMeet = {
+      //   postId, meetDate:date,userData._id, author,
+      // }
       const response = await axios.post(
         `http://localhost:5001/api/posts/${postId}/like`,
 
