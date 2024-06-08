@@ -11,7 +11,7 @@ function Feed() {
   const [currentPostId, setCurrentPostId] = useState(null);
   const [postDateTime, setPostDateTime] = useState("");
   const [userData, setUserData] = useState(null);
-  const [authorNames, setAuthorNames] = useState({});
+  const [likedPosts, setLikedPosts] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,49 +35,42 @@ function Feed() {
     fetchData();
   }, []);
 
-  const getNamebyId = async (uid) => {
-    if (uid) {
-      try {
-        const response = await axios.get(
-          "http://localhost:5001/api/getUserDataByID",
-          {
-            params: { UID: uid },
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        return response.data.userDate.username;
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        return "Anonymous"; // Return a default value in case of error
-      }
-    }
-    return "Anonymous"; // Return a default value if no UID is provided
-  };
-
   useEffect(() => {
-    const fetchPostsAndAuthors = async () => {
+    const fetchPostsAndLikes = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/getAllposts");
-        const sortedPosts = response.data.sort(
+        const postsResponse = await axios.get(
+          "http://localhost:5001/api/getAllposts"
+        );
+        const sortedPosts = postsResponse.data.sort(
           (a, b) => new Date(b.createDate) - new Date(a.createDate)
         );
         setPosts(sortedPosts);
 
-        const authorIds = [...new Set(sortedPosts.map(post => post.author))];
-        const authorNamesTemp = {};
-
-        for (const id of authorIds) {
-          authorNamesTemp[id] = await getNamebyId(id);
+        if (userData) {
+          // console.log(userData);
+          const likesResponse = await axios.get(
+            "http://localhost:5001/api/getUserLikes",
+            {
+              params: { userId: userData._id },
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          // console.log("Likes response:", likesResponse);
+          const likes = likesResponse.data.reduce((acc, like) => {
+            // console.log(acc, like);
+            acc[like._id] = true;
+            return acc;
+          }, {});
+          setLikedPosts(likes);
+          // console.log("Likes:", likes);
         }
-
-        setAuthorNames(authorNamesTemp);
       } catch (error) {
-        console.error("Error fetching posts:", error);
+        console.error("Error fetching posts or likes:", error);
       }
     };
 
-    fetchPostsAndAuthors();
-  }, []);
+    fetchPostsAndLikes();
+  }, [userData]);
 
   const handlePostInputChange = (e) => {
     setInputText(e.target.value);
@@ -95,7 +88,8 @@ function Feed() {
     if (inputText.trim() !== "" && postDateTime.trim() !== "") {
       const newPost = {
         text: inputText,
-        author: userData._id || "Anonymous",
+        author: userData.username || "Anonymous",
+        authorId: userData._id,
         profilePic: "./imges/1.jpg",
         dateTime: postDateTime,
       };
@@ -117,24 +111,59 @@ function Feed() {
     }
   };
 
-  const handleLike = async (postId, date ,author ) => {
-    console.log(postId, date, 'user',userData._id, 'post onw',author);
-
+  const handleLike = async (postId, date, authorId, member) => {
     try {
-      // const newMeet = {
-      //   postId, meetDate:date,userData._id, author,
-      // }
-      const response = await axios.post(
-        `http://localhost:5001/api/posts/${postId}/like`,
+      const newMeet = {
+        // postId: postId,
+        // hostId: authorId,
+        // memberId: member,
+        // MeetdateTime: date,
+        userId: member, // Ensure userId is included in the request body
+      };
+      // console.log(newMeet);
 
+      // Toggle the like status in the database
+      await axios.post(
+        `http://localhost:5001/api/posts/${postId}/toggleLike`,
+        newMeet
       );
-      const updatedPosts = posts.map((post) =>
-        post._id === postId ? response.data : post
-      );
-      const sortedPosts = updatedPosts.sort(
-        (a, b) => new Date(b.createDate) - new Date(a.createDate)
-      );
-      setPosts(sortedPosts);
+
+      // Toggle the like status in the frontend state
+      setLikedPosts((prevLikedPosts) => ({
+        ...prevLikedPosts,
+        [postId]: !prevLikedPosts[postId],
+      }));
+
+      try {
+        console.log(likedPosts[postId]);
+        if (!likedPosts[postId]) {
+          const newMeet = {
+            postId: postId,
+            hostId: authorId,
+            memberId: member,
+            MeetdateTime: date,
+            userId: member, // Ensure userId is included in the request body
+          };
+
+          const response = await axios.post(
+            `http://localhost:5001/api/posts/${postId}/joins/`,
+            newMeet
+          );
+          console.log("add");
+        } else {
+          const delMeet = {
+            postId: postId,
+            memberId: member,
+          };
+          const response = await axios.post(
+            `http://localhost:5001/api/posts/${postId}/joins/del`,
+            delMeet
+          );
+          console.log("del");
+        }
+      } catch (error) {
+        console.error("Error liking post:", error);
+      }
     } catch (error) {
       console.error("Error liking post:", error);
     }
@@ -154,7 +183,7 @@ function Feed() {
       try {
         const response = await axios.post(
           `http://localhost:5001/api/posts/${currentPostId}/comments`,
-          { text: commentText, author: userData?.username || "Anonymous" }
+          { text: commentText, author: userData.username }
         );
         const updatedPosts = posts.map((post) =>
           post._id === currentPostId ? response.data : post
@@ -199,24 +228,33 @@ function Feed() {
                 alt="Profile"
                 className="profile-pic"
               />
-              <span className="author-name">
-                {authorNames[post.author] || "Loading..."}
-              </span>
+              <span className="author-name">{post.author || "Loading..."}</span>
             </div>
             <div className="post-content">{post.text}</div>
             <div className="post-datetime">{post.dateTime}</div>
+
             <div className="comment-section">
               <button
-                onClick={() => handleLike(post._id, post.dateTime, post.author)}
+                onClick={() =>
+                  handleLike(
+                    post._id,
+                    post.dateTime,
+                    post.authorId,
+                    userData._id
+                  )
+                }
                 className="like-buttons"
               >
-                <span className="material-symbols-outlined">favorite</span>
+                <span className="material-symbols-outlined">
+                  {likedPosts[post._id] ? "check" : "add"}
+                </span>
               </button>
+              {post.likes.length}
               <button
                 onClick={() => handleCommentButtonClick(post._id)}
                 className="comment-buttons"
               >
-                <span className="material-symbols-outlined">add</span>
+                <span className="material-symbols-outlined">chat</span>
               </button>
             </div>
             {showCommentPopup && currentPostId === post._id && (

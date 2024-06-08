@@ -103,3 +103,11 @@
   .fc-event-description {
     font-size: 1.1em; /* Adjust the font size of the description */
   }
+  .fc-event-title {
+    white-space: normal !important; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words */
+  }
+  
+  .fc-event {
+    height: auto !important; /* Ensure event height adjusts to content */
+  }
