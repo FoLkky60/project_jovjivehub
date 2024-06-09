@@ -17,6 +17,9 @@
   width: 50vw;
   border-radius: 20px;
 }
+.leaflet-marker-icon{
+  border-radius: 50%;
+}
 
 .marker-icon {
 
@@ -96,7 +99,7 @@
   width: 300px;
   height: 60vh;
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 20px;
   margin-top: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
@@ -116,7 +119,7 @@
 
 .inputText {
   flex: 1;
-  padding: 10px;
+  padding: 7px;
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-right: 10px;
@@ -124,20 +127,11 @@
 }
 
 .btnSubmit {
-  width: 80px;
-  height: 30px;
-  border: none;
-  padding: 0;
-  margin-top: 0;
-  border-radius: 4px;
-  background-color: #333;
-  color: white;
+  padding: 5px;
   cursor: pointer;
 }
 
-.btnSubmit:hover {
-  background-color: #777777;
-}
+
 
 #commentOutput {
   display: flex;
@@ -153,8 +147,10 @@
   flex-direction: column-reverse;
   padding: 10px;
   border-bottom: 1px solid #eee;
-  background-color: #fff;
+  background-color: #D8EFD3;
   margin-bottom: 10px;
   border-radius: 4px;
+  width: fit-content;
+  border-radius: 20px;
 }
  

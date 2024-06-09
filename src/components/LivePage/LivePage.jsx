@@ -22,6 +22,7 @@ function LivePage({ apiKey }) {
     iconSize: [38, 38], // size of the icon
     iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
     popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+ 
   });
 
   const useQuery = () => {
@@ -161,9 +162,11 @@ function LivePage({ apiKey }) {
               onChange={handleInputChange}
               placeholder="พิมพ์ข้อความของคุณที่นี่"
             />
-            <button className="btnSubmit" onClick={submitComment}>
-              ส่ง
-            </button>
+            <div className="btnSubmit" onClick={submitComment}>
+                <span class="material-symbols-outlined">
+                  send
+                </span>
+            </div>
           </div>
           <div id="commentOutput">
             {comments.map((comment, index) => (
