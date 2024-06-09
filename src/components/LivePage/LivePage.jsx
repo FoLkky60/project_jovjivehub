@@ -5,7 +5,7 @@ import "./LivePage.css";
 import axios from "axios"; // Import axios
 import { useLocation } from "react-router-dom";
 import L from "leaflet";
-
+import { Cookies } from "react-cookie";
 function LivePage({ apiKey }) {
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
@@ -24,6 +24,7 @@ function LivePage({ apiKey }) {
   };
 
   const query = useQuery();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -99,7 +100,7 @@ function LivePage({ apiKey }) {
         {onwPostData && (
           <div className="userBox">
             <div className="userImg">
-              <img src={onwPostData.channelLogo} alt="Channel Logo" />
+              <img src={onwPostData.OnwerId.profilePic} alt="Channel Logo" />
             </div>
             <div className="detailUser">
               <div className="userName">{onwPostData.creatorName}</div>

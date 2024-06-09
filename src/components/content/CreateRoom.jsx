@@ -42,8 +42,9 @@ const CreateRoom = () => {
     formData.append("liveName", liveName);
     formData.append("creatorName", userData.username);
     formData.append("viewers", 0);
+    formData.append("OnwerId", userData._id);
     if (thumbnail) formData.append("thumbnail", thumbnail);
-    if (channelLogo) formData.append("channelLogo", channelLogo);
+    if (channelLogo) formData.append("channelLogo", userData.profilePic);
 
     try {
       const response = await axios.post(

@@ -2,8 +2,10 @@ const Content = require("../models/contentData");
 module.exports = async (req, res) => {
   try {
     const { pid } = req.query;
-    Content.findOne({ _id: pid })
+    // console.log(pid);
+    Content.findOne({ _id: pid }).populate('OnwerId')
       .then((content) => {
+        // console.log("content", content);
         if (content) {
           res.status(200).json({
             postData: content

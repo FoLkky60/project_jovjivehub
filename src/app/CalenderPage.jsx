@@ -124,14 +124,15 @@ const CalenderPage = () => {
       const incompleteDaysCount = await calculateIncompleteDays();
       const today = new Date().toISOString().split("T")[0];
       const lastEmailSentDate = cookies.lastEmailSentDate;
-      // console.log("Last email sent date:", lastEmailSentDate);
-      // console.log("today:", today);
-
+      console.log("Last email sent date:", lastEmailSentDate);
+      console.log("today:", today);
+      console.log("incompleteDaysCount:", incompleteDaysCount);
+      
       if (incompleteDaysCount >= 4 && (!cookies.isEmailSended || lastEmailSentDate !== today)) {
         console.log("Incomplete days >= 4, sending email...");
         setCookie("isEmailSended", true, { path: "/" });
         setCookie("lastEmailSentDate", today, { path: "/" });
-        notifyUser(uid, incompleteDaysCount);
+        // notifyUser(uid, incompleteDaysCount);
         // Call your email notification function here
       } else if (incompleteDaysCount < 4 && cookies.isEmailSended) {
         console.log("Incomplete days < 4, resetting email sent status...");
@@ -281,9 +282,11 @@ const CalenderPage = () => {
         const response = await axios.get(
           `http://localhost:5001/api/tasks/${uid}/${dateString}`
         );
+
         const tasks = response.data ? response.data.tasks : [];
         const completedTasks = tasks.filter((task) => task.done).length;
-        if (completedTasks === 0 && tasks.length > 0) {
+        console.log(date, completedTasks);
+        if (completedTasks === 0 ) {
           count++;
         }
       } catch (error) {

@@ -63,12 +63,12 @@ const RegisterForm = () => {
       errorMessage: "It should be a valid email address!",
       required: true,
     },
-    {
-      id: 3,
-      name: "birthday",
-      type: "date",
-      placeholder: "Birthday",
-    },
+    // {
+    //   id: 3,
+    //   name: "birthday",
+    //   type: "date",
+    //   placeholder: "Birthday",
+    // },
     {
       id: 4,
       name: "password",
