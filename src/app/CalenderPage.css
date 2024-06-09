@@ -6,16 +6,17 @@ body {
 
 .container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  /* flex-wrap: wrap; */
+  justify-content: center;
   align-items: flex-start; /* Align items to the top */
-  padding: 30px;
+  padding: 60px;
   margin: 10px;
-  min-height: 820px;
+  min-height: 700px;
   box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
   background-color: #ffff;
   border-radius: 20px;
-  height: fit-content;
+  /* height: fit-content; */
+  
   
 }
 
@@ -23,26 +24,27 @@ body {
 .calendar-container {
   width: 70%;
   padding: 40px;
+  margin-right: 10px;
   background-color: #ffff;
   border-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
-  
+  min-height: 70vh;
 }
 
 /* To-Do List styles */
 .todo-list {
-  width: 25%;
+  width: 20%;
   padding: 30px;
-  background-color: #ADD899;
+  background-color: #ffff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  height: fit-content; 
   border-radius: 20px;
+  height: fit-content;
 
 }
 
 .todo-list ul {
   list-style-type: none;
-  padding: 0;
+  padding: 10px;
 }
 
 .todo-list li {
@@ -140,4 +142,45 @@ body {
   padding: 5px;
 }
 
+.meeting{
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+}
+.meetDetails{
+  display: flex;
+  justify-content: space-around;
+  align-items: start;
+  flex-direction: column;
+}
+.meetText{
+  
+  font-size: 1rem;
+  margin: 10px;
+}
 
+.TopicMeet{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  padding-top: 10px;
+}
+
+.TopicMeet2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 2rem;
+  padding-top: 10px;
+}
+
+.editMeetBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #8f9562;
+}

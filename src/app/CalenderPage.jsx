@@ -338,9 +338,9 @@ const CalenderPage = () => {
           />
         </div>
         <div className="todo-list">
-          <h2>To-Do List for {selectedDate}</h2>
+          <div className="TopicMeet"> To-Do List for {selectedDate}</div>
           {selectedDate !== currentDateString && (
-            <button onClick={() => setIsEditable(!isEditable)}>
+            <button className="editMeetBtn" onClick={() => setIsEditable(!isEditable)}>
               {isEditable ? "Disable Editing" : "Enable Editing"}
             </button>
           )}
@@ -367,16 +367,16 @@ const CalenderPage = () => {
           <div>
             {meeting && meeting.length > 0 && (
               <div className="meeting">
-                <h2>Meeting</h2>
-                <ul>
+                <div className="TopicMeet2">Meeting</div>
+                <div className="meetDetails" >
                   {meeting.map((meet, index) => (
-                    <li key={index}>
-                      <p>title:{meet.postId.text}</p>
-                      <p>by:{meet.postId.author}</p>
-                      <p>date :{meet.postId.dateTime}</p>
-                    </li>
+                    <div  key={index}>
+                    <div className="meetText">Tital :{meet.postId.text}</div>
+                    <div className="meetText">By :{meet.postId.author}</div>
+                    <div className="meetText">Date :{meet.postId.dateTime}</div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>
@@ -393,6 +393,22 @@ const CalenderPage = () => {
           <button onClick={handleAddOrUpdateEvent}>ตกลง</button>
         </div>
       )}
+       <footer className="foot">
+      <div className="footer-content">
+        <div className="footer-section">
+          <h2>About Us</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor consequat magna, nec tincidunt turpis dictum quis.</p>
+        </div>
+        <div className="footer-section">
+          <h2>Contact Us</h2>
+          <p>Email: jogjive@gmail.com</p>
+          <p>Phone: 123-456-7890</p>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <p>&copy; 2024 YourWebsite. All rights reserved.</p>
+      </div>
+    </footer>
     </>
   );
 };
