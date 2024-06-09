@@ -6,7 +6,7 @@ function FeedPage() {
   return (
     <>
     <Navbar/>
-    <div className="feed-head"> Anonymous <br/> Live Feed</div>
+    <div className="feed-head"> Anonymous Live Feed</div>
     <Feed/>
     <footer className="foot">
       <div className="footer-content">

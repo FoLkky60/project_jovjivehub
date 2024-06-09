@@ -25,7 +25,8 @@ function ContentPage() {
   return (
     <>
       <Navbar />
-      <div className="feed-head"> Anonymous <br/> Live Feed</div>
+      <div className="feed-head"> Wellcom to Jogjivehub</div>
+   
       <div className="Live_text">อีเว้นตอนนี้</div>
       <CreateRoom />
       <div className="conTainerForm">

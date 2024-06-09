@@ -215,9 +215,11 @@ function Feed() {
           onChange={handleDateTimeChange}
           className="datetime-input"
         />
-        <button onClick={handlePost} className="post-button">
-          Post
-        </button>
+        <div onClick={handlePost} className="post-button">
+        <span class="material-symbols-outlined">
+          send
+          </span>
+        </div>
       </div>
       <div className="post-list">
         {posts.map((post) => (
@@ -265,12 +267,14 @@ function Feed() {
                   placeholder="Type your comment here..."
                   className="comment-input"
                 />
-                <button
+                <div
                   onClick={handleAddComment}
                   className="add-comment-button"
                 >
-                  Add Comment
-                </button>
+                  <span class="material-symbols-outlined">
+                  send
+                  </span>
+                </div>
               </div>
             )}
             <div className="comments-list">

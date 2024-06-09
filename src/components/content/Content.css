@@ -16,7 +16,6 @@
     
 }
 
-
 .thumb img {
     width: 293px;
     height: 250px;
@@ -30,6 +29,7 @@
     align-items: center;
     padding: 2px;
     background-color: rgb(255, 255, 255);
+    border-radius: 20px;
     
 }
 
