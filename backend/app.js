@@ -27,6 +27,9 @@ const getUserLikes = require("./controllers/getUserLikes.js");
 const getUserMeeting = require("./controllers/getUserMeeting.js");
 const checkTasks = require("./controllers/checkTasks.js");
 
+const saveUserLocation = require("./controllers/saveUserLocation.js");
+const getOtherUsersLocations = require("./controllers/getOtherUsersLocations.js");
+
 const {
   updateUsername,
   updateProfilePic,
@@ -98,7 +101,7 @@ app.post("/api/posts/:id/comments", addPostsComments);
 
 app.post("/api/posts/:id/joins", addMeeting);
 app.post("/api/posts/:id/joins/del", delMeeting);
-
+app.post("/api/saveUserLocation", saveUserLocation);
 app.post("/api/posts/:postId/toggleLike", toggleLike);
 app.post("/api/checkTasks", checkTasks);
 // Uncomment and define the route if needed
@@ -109,7 +112,7 @@ app.post(
   upload.fields([{ name: "profilePic" }]),
   updateProfilePic
 );
-
+app.get("/api/getOtherUsersLocations", getOtherUsersLocations);
 app.get("/api/getUserDataByID", getUserDataByID);
 app.get("/api/getAllContent", getAllContent);
 app.get("/api/getPostDataByID", getPostDataByID);
