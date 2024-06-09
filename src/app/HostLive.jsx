@@ -9,9 +9,7 @@ function HostLive() {
       <Navbar></Navbar>
 
       <LivePage></LivePage>
-      <div className="leaveRoom">
-        <button className="leavebtn">Leave Room</button>
-      </div>
+      
       <footer className="foot">
       <div className="footer-content">
         <div className="footer-section">

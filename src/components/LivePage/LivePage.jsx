@@ -71,6 +71,7 @@ function LivePage({ apiKey }) {
   ];
 
   return (
+    <>
     <div className="mapContainer">
       <div className="maps">
         <MapContainer
@@ -134,7 +135,14 @@ function LivePage({ apiKey }) {
         </div>
         <div className="chat_text">Chat</div>
       </div>
+      
     </div>
+    <div className="leaveRoom">
+        <button className="leavebtn">Leave Room</button>
+      </div>
+    </>
+    
+    
   );
 }
 
