@@ -25,7 +25,9 @@ function ContentPage() {
   return (
     <>
       <Navbar />
-      <div className="feed-head"> Wellcom to Jogjivehub</div>
+      <div className="feed-head">
+        <div className="welcomeTaxt">Welcome to Jogjivehub</div>
+      </div>
    
       <div className="Live_text">อีเว้นตอนนี้</div>
       <CreateRoom />
