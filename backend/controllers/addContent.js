@@ -12,7 +12,7 @@ function reformatPath(path) {
   
 module.exports = async (req, res) => {
     try {
-        const { liveName, creatorName, viewers } = req.body;
+        const { liveName, creatorName, viewers ,OnwerId} = req.body;
 
         const thumbnail = req.files['thumbnail'] ? reformatPath(req.files['thumbnail'][0].path ): undefined;
         const channelLogo = req.files['channelLogo'] ? reformatPath(req.files['channelLogo'][0].path) : undefined;
@@ -23,7 +23,8 @@ module.exports = async (req, res) => {
           creatorName,
           viewers: parseInt(viewers, 10),
           thumbnail,
-          channelLogo
+          channelLogo,
+          OnwerId,
         });
     
         // Save the document to the database

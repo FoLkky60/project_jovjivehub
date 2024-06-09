@@ -5,15 +5,20 @@ import "./LivePage.css";
 import axios from "axios"; // Import axios
 import { useLocation } from "react-router-dom";
 import L from "leaflet";
+import { Cookies } from "react-cookie";
+
+const cookies = new Cookies();
 
 function LivePage({ apiKey }) {
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const latestCommentRef = useRef(null);
   const [onwPostData, setOwmPostData] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  const [otherUsers, setOtherUsers] = useState([]);
 
-  const customIcon = L.icon({
-    iconUrl: "/imges/prof.png",
+  const customIcon = (iconUrl) => L.icon({
+    iconUrl: iconUrl || "/imges/prof.png",
     iconSize: [38, 38], // size of the icon
     iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
     popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
@@ -28,7 +33,6 @@ function LivePage({ apiKey }) {
     const fetchData = async () => {
       try {
         const id = query.get("id");
-        // console.log(id);
         const response = await axios.get(
           "http://localhost:5001/api/getPostDataByID",
           {
@@ -45,7 +49,45 @@ function LivePage({ apiKey }) {
     fetchData();
   }, []);
 
-  // console.log(onwPostData);
+  useEffect(() => {
+    // Get the user's current location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        // console.log( latitude, longitude );
+        setUserLocation([latitude, longitude]);
+
+        // Save the user's location to the database
+        try {
+          const pid = query.get("id");
+          const uid = cookies.get("UID");
+          await axios.post("http://localhost:5001/api/saveUserLocation", {
+            userId: uid,
+            latitude,
+            longitude,
+            roomId: pid, // Assuming roomId is the same as the post ID
+          });
+        } catch (error) {
+          console.error("Error saving user location:", error);
+        }
+
+        // Fetch other users' locations
+        try {
+          const pid = query.get("id");
+          const response = await axios.get(
+            "http://localhost:5001/api/getOtherUsersLocations",
+            {
+              params: { roomId: pid },
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          setOtherUsers(response.data.users);
+        } catch (error) {
+          console.error("Error fetching other users' locations:", error);
+        }
+      });
+    }
+  }, []);
 
   const handleInputChange = (event) => {
     setCommentInput(event.target.value);
@@ -64,85 +106,87 @@ function LivePage({ apiKey }) {
     }
   }, [comments]);
 
-  const positions = [
-    [13.736717, 100.523186],
-    [13.724894, 100.493025],
-    [13.758703, 100.534437],
-  ];
-
   return (
     <>
-    <div className="mapContainer">
-      <div className="maps">
-        <MapContainer
-          className="MapBox"
-          center={[13.736717, 100.523186]}
-          zoom={13}
-          zoomControl={false}
-        >
+      <div className="mapContainer">
+        <div className="maps">
+          <MapContainer
+            className="MapBox"
+            center={userLocation || [13.736717, 100.523186]}
+            zoom={13}
+            zoomControl={false}
+          >
+            {onwPostData && (
+              <div className="roomName">
+                <div className="textRoom">{onwPostData.liveName}</div>
+              </div>
+            )}
+            <TileLayer
+              url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`}
+            />
+            {/* {userLocation && (
+              <Marker position={userLocation} icon={customIcon(onwPostData.OnwerId.profilePic)}>
+                <Popup>
+                  Your location
+                </Popup>
+              </Marker>
+            )} */}
+            {otherUsers.map((user, index) => (
+              <Marker key={index} position={[user.location.latitude, user.location.longitude]} icon={customIcon(user.memberId.profilePic)}>
+                <Popup>
+                  {user.memberId.username}
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
           {onwPostData && (
-            <div className="roomName">
-              <div className="textRoom">{onwPostData.liveName}</div>
+            <div className="userBox">
+              <div className="userImg">
+                <img src={onwPostData.OnwerId.profilePic} alt="Channel Logo" />
+              </div>
+              <div className="detailUser">
+                <div className="userName">{onwPostData.OnwerId.username}</div>
+                <div className="userAdd">@{onwPostData.OnwerId.username}</div>
+              </div>
             </div>
           )}
-          <TileLayer
-            url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`}
-          />
-          {positions.map((position, index) => (
-            <Marker key={index} position={position} icon={customIcon}>
-              <Popup>
-                ประเทศไทย! <br /> ยินดีต้อนรับ!
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-        {onwPostData && (
-          <div className="userBox">
-            <div className="userImg">
-              <img src={onwPostData.channelLogo} alt="Channel Logo" />
-            </div>
-            <div className="detailUser">
-              <div className="userName">{onwPostData.creatorName}</div>
-              <div className="userAdd">@{onwPostData.creatorName}</div>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
 
-      <div className="containerBox">
-        <div className="comment_box">
-          <input
-            className="inputText"
-            type="text"
-            value={commentInput}
-            onChange={handleInputChange}
-            placeholder="พิมพ์ข้อความของคุณที่นี่"
-          />
-          <button className="btnSubmit" onClick={submitComment}>
-            ส่ง
-          </button>
+        <div className="containerBox">
+          <div className="comment_box">
+            <input
+              className="inputText"
+              type="text"
+              value={commentInput}
+              onChange={handleInputChange}
+              placeholder="พิมพ์ข้อความของคุณที่นี่"
+            />
+            <button className="btnSubmit" onClick={submitComment}>
+              ส่ง
+            </button>
+          </div>
+          <div id="commentOutput">
+            {comments.map((comment, index) => (
+              <div
+                key={index}
+                className="comment"
+                ref={index === comments.length - 1 ? latestCommentRef : null}
+              >
+                {comment}
+              </div>
+            ))}
+          </div>
+          <div className="chat_text">Chat</div>
         </div>
-        <div id="commentOutput">
-          {comments.map((comment, index) => (
-            <div
-              key={index}
-              className="comment"
-              ref={index === comments.length - 1 ? latestCommentRef : null}
-            >
-              {comment}
-            </div>
-          ))}
-        </div>
-        <div className="chat_text">Chat</div>
+        
       </div>
-      
-    </div>
-    <div className="leaveRoom">
-        <button className="leavebtn">Leave Room</button>
-      </div>
+{onwPostData && (<div className="leaveRoom">
+          
+{onwPostData.OnwerId._id == cookies.get("UID") && (<button className="leavebtn">Leave Room</button>)}
+
+        </div>)}
+        
     </>
-    
-    
   );
 }
 

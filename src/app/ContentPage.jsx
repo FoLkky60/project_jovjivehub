@@ -38,9 +38,9 @@ function ContentPage() {
               key={index}
               id = {data._id}
               thumbnail={data.thumbnail}
-              channelLogo={data.channelLogo}
+              channelLogo={data.OnwerId.profilePic || "./imges/prof.png" }
               liveName={data.liveName}
-              creatorName={data.creatorName}
+              creatorName={data.OnwerId.username}
               viewers={data.viewers}
             />
           ))}

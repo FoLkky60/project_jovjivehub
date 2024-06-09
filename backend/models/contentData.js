@@ -16,9 +16,10 @@ const ContentSchema = new Schema({
   creatorName: {
     type: String,
   },
+  OnwerId: { type: mongoose.Schema.Types.ObjectId, ref: "UserDB" },
   viewers: {
     type: Number,
-    default: 0
+    default: 0,
   },
 });
 
