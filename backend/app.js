@@ -7,6 +7,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const path = require("path");
+const nodemailer = require("nodemailer");
 
 const storeUserController = require("./controllers/stroreUsercontroller");
 const loginUserController = require("./controllers/loginUserController");
@@ -24,6 +25,7 @@ const addMeeting = require("./controllers/addMeeting.js");
 const toggleLike = require("./controllers/toggleLike.js");
 const getUserLikes = require("./controllers/getUserLikes.js");
 const getUserMeeting = require("./controllers/getUserMeeting.js");
+const checkTasks = require("./controllers/checkTasks.js");
 
 const delMeeting = require("./controllers/delMeeting.js");
 
@@ -93,6 +95,7 @@ app.post("/api/posts/:id/joins", addMeeting);
 app.post("/api/posts/:id/joins/del", delMeeting);
 
 app.post("/api/posts/:postId/toggleLike", toggleLike);
+app.post("/api/checkTasks", checkTasks);
 // Uncomment and define the route if needed
 
 app.get("/api/getUserDataByID", getUserDataByID);

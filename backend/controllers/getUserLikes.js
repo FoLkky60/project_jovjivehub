@@ -3,7 +3,7 @@ const Meeting = require("../models/Meeting");
 
 module.exports = async (req, res) => {
   const { userId } = req.query;
-  console.log(userId);
+//   console.log(userId);
   try {
     const likes = await Post.find({ likes: userId }).select("_id");
     // const postbyid = await Meeting.find({ postId: likes }).populate("postId");

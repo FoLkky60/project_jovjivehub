@@ -5,7 +5,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 import Navbar from "../components/nav/MyNavbar";
 import axios from "axios";
 import "../app/CalenderPage.css";
-import { Cookies } from "react-cookie";
+import { Cookies, useCookies } from "react-cookie";
+
 Object.defineProperty(String.prototype, "capitalize", {
   value: function () {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -60,6 +61,7 @@ const generateExercisePlan = () => {
   }
   return exercisePlan;
 };
+
 function transformData(data) {
   return data.map((item) => {
     return {
@@ -68,8 +70,6 @@ function transformData(data) {
         item.postId.text.capitalize() +
         " by ".capitalize() +
         item.postId.author.capitalize(),
-      // author: item.postId.author,
-      // authorId: item.postId.authorId,
       start: item.MeetdateTime,
       backgroundColor: "#ff00ff",
     };
@@ -84,15 +84,19 @@ const CalenderPage = () => {
   const [toDoList, setToDoList] = useState(generateExercisePlan());
   const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
   const [meeting, setMeeting] = useState([]);
-
-  const [incompleteDays, setIncompleteDays] = useState(0);
   const [evnetmeeting, setEvnetMeeting] = useState([]);
+  const [incompleteDays, setIncompleteDays] = useState(0);
+  const [cookies, setCookie] = useCookies(["isEmailSended"]);
   const cookie = new Cookies();
   const uid = cookie.get("UID");
+
+  const currentDateString = new Date().toISOString().split("T")[0];
+  const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
     if (selectedDate) {
       fetchTasksForDate(selectedDate);
+      setIsEditable(selectedDate === currentDateString);
     }
   }, [selectedDate]);
 
@@ -115,6 +119,28 @@ const CalenderPage = () => {
     fetchInitialEvents();
   }, []);
 
+  useEffect(() => {
+    const checkIncompleteDays = async () => {
+      const incompleteDaysCount = await calculateIncompleteDays();
+      const today = new Date().toISOString().split("T")[0];
+      const lastEmailSentDate = cookies.lastEmailSentDate;
+      // console.log("Last email sent date:", lastEmailSentDate);
+      // console.log("today:", today);
+
+      if (incompleteDaysCount >= 4 && (!cookies.isEmailSended || lastEmailSentDate !== today)) {
+        console.log("Incomplete days >= 4, sending email...");
+        setCookie("isEmailSended", true, { path: "/" });
+        setCookie("lastEmailSentDate", today, { path: "/" });
+        notifyUser(uid, incompleteDaysCount);
+        // Call your email notification function here
+      } else if (incompleteDaysCount < 4 && cookies.isEmailSended) {
+        console.log("Incomplete days < 4, resetting email sent status...");
+        setCookie("isEmailSended", false, { path: "/" });
+      }
+    };
+    checkIncompleteDays();
+  }, [toDoList]);
+
   const fetchInitialEvents = async () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
@@ -124,6 +150,7 @@ const CalenderPage = () => {
       { length: day },
       (_, i) => `${year}-${month}-${(i + 1).toString().padStart(2, "0")}`
     );
+
     if (uid) {
       try {
         const meetResponse = await axios.get(
@@ -136,8 +163,6 @@ const CalenderPage = () => {
         const meets = meetResponse.data;
         setEvnetMeeting(transformData(meets));
         setMeeting(meets);
-        // console.log(meets);
-        // console.log(meets[0].postId);
       } catch (error) {
         console.error("Error fetching user meeting:", error);
       }
@@ -153,7 +178,6 @@ const CalenderPage = () => {
           : generateSampleTasks(toDoList[date]);
         const completedTasks = tasks.filter((task) => task.done).length;
         let backgroundColor = getBackgroundColor(completedTasks, tasks.length);
-
         return {
           title: `${completedTasks}/${tasks.length} tasks done`,
           start: date,
@@ -162,8 +186,6 @@ const CalenderPage = () => {
         };
       })
     );
-
-    // setMeeting(meetResponse);
 
     setEvents(events);
   };
@@ -177,10 +199,8 @@ const CalenderPage = () => {
   const handleDateClick = (arg) => {
     const clickedDate = new Date(arg.date);
     const currentDate = new Date();
-    // console.log(arg.date);
     if (clickedDate <= currentDate) {
       setSelectedDate(arg.dateStr);
-      // console.log(events);
     }
   };
 
@@ -202,52 +222,17 @@ const CalenderPage = () => {
     }
   };
 
-  const notifyUser = async (userId, incompleteDays) => {
-    try {
-      await axios.post("http://localhost:5001/api/checkTasks", {
-        userId,
-        incompleteDays,
-      });
-    } catch (error) {
-      console.error("Error notifying user", error);
-    }
-  };
-  
-  const calculateIncompleteDays = (toDoList) => {
-    let count = 0;
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-
-    for (let i = 0; i < 3; i++) {
-      const date = new Date(currentDate);
-      date.setDate(date.getDate() - i);
-      const dateString = `${year}-${month}-${date.getDate().toString().padStart(2, "0")}`;
-      const tasks = toDoList[dateString] || [];
-      const completedTasks = tasks.filter((task) => task.done).length;
-      if (completedTasks !== tasks.length) {
-        count++;
-      }
-    }
-
-    return count;
-  };
-
-
   const handleTaskChange = async (taskIndex) => {
-    const updatedTasks = tasksForSelectedDate.map((task, index) => (index === taskIndex ? { ...task, done: !task.done } : task));
+    const updatedTasks = tasksForSelectedDate.map((task, index) =>
+      index === taskIndex ? { ...task, done: !task.done } : task
+    );
     setTasksForSelectedDate(updatedTasks);
     setToDoList((prev) => ({ ...prev, [selectedDate]: updatedTasks }));
     await saveTasks(uid, selectedDate, updatedTasks);
     updateEventsForDate(selectedDate, updatedTasks);
 
-    const incompleteDaysCount = calculateIncompleteDays(toDoList);
+    const incompleteDaysCount = await calculateIncompleteDays();
     setIncompleteDays(incompleteDaysCount);
-
-    if (incompleteDaysCount >= 3) {
-      // notifyUser(uid, incompleteDaysCount);
-      console.log('have incom');
-    }
   };
 
   const saveTasks = async (uid, date, tasks) => {
@@ -278,6 +263,48 @@ const CalenderPage = () => {
     );
   };
 
+  const calculateIncompleteDays = async () => {
+    let count = 0;
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+
+    for (let i = 0; i < 4; i++) {
+      const date = new Date(currentDate);
+      date.setDate(date.getDate() - i);
+      const dateString = `${year}-${month}-${date
+        .getDate()
+        .toString()
+        .padStart(2, "0")}`;
+
+      try {
+        const response = await axios.get(
+          `http://localhost:5001/api/tasks/${uid}/${dateString}`
+        );
+        const tasks = response.data ? response.data.tasks : [];
+        const completedTasks = tasks.filter((task) => task.done).length;
+        if (completedTasks === 0 && tasks.length > 0) {
+          count++;
+        }
+      } catch (error) {
+        console.error("Error fetching tasks", error);
+      }
+    }
+
+    return count;
+  };
+
+  const notifyUser = async (userId, incompleteDays) => {
+    try {
+      await axios.post("http://localhost:5001/api/checkTasks", {
+        userId,
+        incompleteDays,
+      });
+    } catch (error) {
+      console.error("Error notifying user", error);
+    }
+  };
+
   const renderEventContent = (eventInfo) => (
     <>
       <div className="fc-event-title">{eventInfo.event.title}</div>
@@ -294,102 +321,79 @@ const CalenderPage = () => {
       return "some-tasks-completed";
     else return "all-tasks-completed";
   };
-  
-  // const meeting = [
-  //   {
-  //     id: "a",
-  //     title: "my event",
-  //     start: "2024-06-03",
-  //     backgroundColor: "#ff00ff",
-  //   },
-  //   {
-  //     id: "b",
-  //     title: "my event2",
-  //     start: "2024-06-05",
-  //     backgroundColor: "#ff00ff",
-  //   },
-  // ];
 
   return (
     <>
-    <Navbar />
-  
-    <div className="container">
-      <div className="todo-list">
-        <h2>To-Do List for {selectedDate}</h2>
-        <ul>
-          {tasksForSelectedDate.map((task, index) => (
-            <li key={index}>
-              <input
-                type="checkbox"
-                checked={task.done}
-                onChange={() => handleTaskChange(index)}
-              />
-              {task.task}
-            </li>
-          ))}
-        </ul>
-        
-          {meeting && meeting.length > 0 && (
-            <div className="meeting">
-              <h2 className="meetH2">Meeting</h2>
-              <div className="meetDetail">
-                {meeting.map((meet, index) => (
-                  <li key={index}>
-                    <p>title:{meet.postId.text}</p>
-                    <p>by:{meet.postId.author}</p>
-                    <p>date :{meet.postId.dateTime}</p>
-                  </li>
-                ))}
-              </div>
-            </div>
+      <Navbar />
+      <div className="container">
+        <div className="calendar-container">
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            events={[...events, ...evnetmeeting]}
+            dateClick={handleDateClick}
+            eventContent={renderEventContent}
+            eventClassNames={eventClassNames}
+            id="Calen"
+          />
+        </div>
+        <div className="todo-list">
+          <h2>To-Do List for {selectedDate}</h2>
+          {selectedDate !== currentDateString && (
+            <button onClick={() => setIsEditable(!isEditable)}>
+              {isEditable ? "Disable Editing" : "Enable Editing"}
+            </button>
           )}
+          <ul>
+            {tasksForSelectedDate.map((task, index) => (
+              <li key={index}>
+                {isEditable ? (
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    onChange={() => handleTaskChange(index)}
+                  />
+                ) : (
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    readOnly
+                  />
+                )}
+                {task.task}
+              </li>
+            ))}
+          </ul>
           <div>
+            {meeting && meeting.length > 0 && (
+              <div className="meeting">
+                <h2>Meeting</h2>
+                <ul>
+                  {meeting.map((meet, index) => (
+                    <li key={index}>
+                      <p>title:{meet.postId.text}</p>
+                      <p>by:{meet.postId.author}</p>
+                      <p>date :{meet.postId.dateTime}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      <div className="calendar-container">
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={[...events, ...evnetmeeting]}
-          dateClick={handleDateClick}
-          eventContent={renderEventContent}
-          eventClassNames={eventClassNames}
-          className='Calen'
-          
-        />
-      </div>
-    </div>
-    {showPopup && (
-      <div className="popup">
-        <input
-          type="text"
-          value={popupText}
-          onChange={(e) => setPopupText(e.target.value)}
-          placeholder="กรุณาใส่ข้อความ"
-        />
-        <button onClick={handleAddOrUpdateEvent}>ตกลง</button>
-      </div>
-    )}
-    <footer className="foot">
-      <div className="footer-content">
-        <div className="footer-section">
-          <h2>About Us</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor consequat magna, nec tincidunt turpis dictum quis.</p>
+      {showPopup && (
+        <div className="popup">
+          <input
+            type="text"
+            value={popupText}
+            onChange={(e) => setPopupText(e.target.value)}
+            placeholder="กรุณาใส่ข้อความ"
+          />
+          <button onClick={handleAddOrUpdateEvent}>ตกลง</button>
         </div>
-        <div className="footer-section">
-          <h2>Contact Us</h2>
-          <p>Email: jogjive@gmail.com</p>
-          <p>Phone: 123-456-7890</p>
-        </div>
-      </div>
-      <div className="footer-bottom">
-        <p>&copy; 2024 YourWebsite. All rights reserved.</p>
-      </div>
-    </footer>
-
-   
-  </>
+      )}
+    </>
   );
 };
 
