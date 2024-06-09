@@ -23,6 +23,7 @@ body {
 /* Calendar container styles */
 .calendar-container {
   width: 70%;
+  min-width: 500px;
   padding: 40px;
   margin-right: 10px;
   background-color: #ffff;
@@ -34,6 +35,7 @@ body {
 /* To-Do List styles */
 .todo-list {
   width: 20%;
+  min-width: 300px;
   padding: 30px;
   background-color: #ffff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -183,4 +185,42 @@ body {
   align-items: center;
   width: 100%;
   background-color: #8f9562;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    padding: 60px;
+    margin: 10px;
+    min-height: 700px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    background-color: #ffff;
+    border-radius: 20px;
+    /* height: fit-content; */
+    
+    
+  }
+  .todo-list {
+    width: 100%;
+    margin-top: 20px;
+    padding: 30px;
+    background-color: #ffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    height: fit-content;
+  
+  }
+  .calendar-container {
+    width: 100%;
+    padding: 40px;
+    margin-right: 10px;
+    background-color: #ffff;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    min-height: 20vh;
+  }
+
 }

@@ -265,7 +265,7 @@ function Feed() {
                   value={commentText}
                   onChange={handleCommentInputChange}
                   placeholder="Type your comment here..."
-                  className="comment-input"
+                  className="comment-input-feed"
                 />
                 <div
                   onClick={handleAddComment}
@@ -280,12 +280,12 @@ function Feed() {
             <div className="comments-list">
             
               {post.comments.map((comment, index) => (
-                <div key={index} className="comment">
+                <div key={index} className="commentFeed">
                   {/* <div className="comment-profile">
                     <img src='../../../public/imges/13.avif' alt="Profile" />
                   </div> */}
                   <div className="comment-content">
-                    <div className="comment-author">{comment.author}</div>
+                    <div className="comment-author">{comment.author}:</div>
                     <div className="comment-text">{comment.text}</div>
                   </div>
                 </div>

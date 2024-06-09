@@ -13,6 +13,7 @@
   margin: 10px;
 }
 .MapBox{
+  min-width: 300px;
   height: 60vh;
   width: 50vw;
   border-radius: 20px;
@@ -40,6 +41,7 @@
 }
 
 .containerBox{
+  min-width: 300px;
   background-color: #c1c1c1;
   width: 20vw;
   height: 60vh;
@@ -153,4 +155,43 @@
   width: fit-content;
   border-radius: 20px;
 }
- 
+@media screen and (max-width: 768px) {
+  .mapContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content:center ;
+    width: 100%;
+    height: 100vh;
+    margin-top: 50px;
+    padding: 30px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; 
+  }
+  .MapBox{
+  display: flex;
+  justify-content: center;
+  min-width: 300px;
+  height: 60vh;
+  width: 80vw;
+  border-radius: 20px;
+}
+.containerBox {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 80vw;
+  height: 60vh;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  max-height: 250px;
+}
+.roomName{
+  width: 80vw;
+  background-color: rgba(0, 0, 0, 0.8);
+  position:absolute;
+  padding: 20px;
+  z-index: 1010;
+}
+
+}
