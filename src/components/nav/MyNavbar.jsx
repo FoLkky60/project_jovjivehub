@@ -123,16 +123,22 @@ function Navbar() {
       <div className="End">
         
         <div className="end-item">
-        <Link to="/profile">
+        {/* <Link to="/profile">
           <span className="material-symbols-outlined">calendar_month</span>
-        </Link>
+        </Link> */}
           {isLogin ? (
-            <div className="side-main" id="logout" onClick={handleLogout}>
-              <div className="side-item">
+            <div className="side-main" id="logout" >
+              <div className="endSideitem">
                 {/* <p>{userData.username}</p> */}
                 <div className="icon">
-                  <span className="material-symbols-outlined">logout</span>
+                  <Link to="/profile">
+                    <span className="material-symbols-outlined">person</span>
+                  </Link>
+                 
                 </div>
+                <div onClick={handleLogout}>
+                    <span className="material-symbols-outlined">logout</span>
+                  </div>
               </div>
             </div>
           ) : (

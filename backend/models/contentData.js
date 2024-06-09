@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ContentSchema = new Schema({
   thumbnail: {
     type: String,
-    default: "/imges/1.jpg",
+    default: "/imges/prof.png",
   },
   channelLogo: {
     type: String,

@@ -50,7 +50,7 @@
 
 .roomName{
   width: 50vw;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.8);
   position:absolute;
   padding: 20px;
   z-index: 1010;

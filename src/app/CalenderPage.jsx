@@ -312,63 +312,84 @@ const CalenderPage = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="container">
-        <div className="calendar-container">
-          <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin]}
-            initialView="dayGridMonth"
-            events={[...events, ...evnetmeeting]}
-            dateClick={handleDateClick}
-            eventContent={renderEventContent}
-            eventClassNames={eventClassNames}
-            id="Calen"
-          />
-        </div>
-        <div className="todo-list">
-          <h2>To-Do List for {selectedDate}</h2>
-          <ul>
-            {tasksForSelectedDate.map((task, index) => (
-              <li key={index}>
-                <input
-                  type="checkbox"
-                  checked={task.done}
-                  onChange={() => handleTaskChange(index)}
-                />
-                {task.task}
-              </li>
-            ))}
-          </ul>
-          <div>
-            {meeting && meeting.length > 0 && (
-              <div className="meeting">
-                <h2>Meeting</h2>
-                <ul>
-                  {meeting.map((meet, index) => (
-                    <li key={index}>
-                      <p>title:{meet.postId.text}</p>
-                      <p>by:{meet.postId.author}</p>
-                      <p>date :{meet.postId.dateTime}</p>
-                    </li>
-                  ))}
-                </ul>
+    <Navbar />
+  
+    <div className="container">
+      <div className="todo-list">
+        <h2>To-Do List for {selectedDate}</h2>
+        <ul>
+          {tasksForSelectedDate.map((task, index) => (
+            <li key={index}>
+              <input
+                type="checkbox"
+                checked={task.done}
+                onChange={() => handleTaskChange(index)}
+              />
+              {task.task}
+            </li>
+          ))}
+        </ul>
+        
+          {meeting && meeting.length > 0 && (
+            <div className="meeting">
+              <h2 className="meetH2">Meeting</h2>
+              <div className="meetDetail">
+                {meeting.map((meet, index) => (
+                  <li key={index}>
+                    <p>title:{meet.postId.text}</p>
+                    <p>by:{meet.postId.author}</p>
+                    <p>date :{meet.postId.dateTime}</p>
+                  </li>
+                ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
+          <div>
         </div>
       </div>
-      {showPopup && (
-        <div className="popup">
-          <input
-            type="text"
-            value={popupText}
-            onChange={(e) => setPopupText(e.target.value)}
-            placeholder="กรุณาใส่ข้อความ"
-          />
-          <button onClick={handleAddOrUpdateEvent}>ตกลง</button>
+      <div className="calendar-container">
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={[...events, ...evnetmeeting]}
+          dateClick={handleDateClick}
+          eventContent={renderEventContent}
+          eventClassNames={eventClassNames}
+          className='Calen'
+          
+        />
+      </div>
+    </div>
+    {showPopup && (
+      <div className="popup">
+        <input
+          type="text"
+          value={popupText}
+          onChange={(e) => setPopupText(e.target.value)}
+          placeholder="กรุณาใส่ข้อความ"
+        />
+        <button onClick={handleAddOrUpdateEvent}>ตกลง</button>
+      </div>
+    )}
+    <footer className="foot">
+      <div className="footer-content">
+        <div className="footer-section">
+          <h2>About Us</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor consequat magna, nec tincidunt turpis dictum quis.</p>
         </div>
-      )}
-    </>
+        <div className="footer-section">
+          <h2>Contact Us</h2>
+          <p>Email: jogjive@gmail.com</p>
+          <p>Phone: 123-456-7890</p>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <p>&copy; 2024 YourWebsite. All rights reserved.</p>
+      </div>
+    </footer>
+
+   
+  </>
   );
 };
 

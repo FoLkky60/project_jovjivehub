@@ -4,7 +4,7 @@ import Navbar from '../components/nav/MyNavbar';
 
 function Profile() {
   const [name, setName] = useState(localStorage.getItem('profileName') || "Johndee");
-  const [image, setImage] = useState(localStorage.getItem('profileImage') || "./imges/Bg.jpg");
+  const [image, setImage] = useState(localStorage.getItem('profileImage') || "./imges/prof.png");
 
   useEffect(() => {
     localStorage.setItem('profileName', name);
@@ -17,6 +17,8 @@ function Profile() {
       setName(newName);
     }
   };
+
+  
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];

@@ -11,3 +11,14 @@
     margin-bottom: 30px;
     padding: auto;
 }
+
+.leaveRoom{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+.leavebtn{
+    width: 120px;
+    background-color: red;
+}

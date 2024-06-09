@@ -58,7 +58,7 @@
     
 }
 #last-taxt{
-    color: orange;
+    color: #8f9562;
     letter-spacing: 1px;
     
 }
@@ -91,6 +91,9 @@
     width: 24px;
     cursor: pointer;
     margin: 0;
+}
+.endSideitem{
+    display: flex;
 }
 
 @media (max-width: 768px) {

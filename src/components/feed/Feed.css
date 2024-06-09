@@ -136,13 +136,20 @@
 }
 
 .comments-list {
+  
   margin-top: 10px;
 }
 
 .comment {
+  
   margin-top: 5px;
 }
 
 .comment-author {
   font-weight: bold;
+}
+.comment-profile img{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }

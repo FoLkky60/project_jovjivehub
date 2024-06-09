@@ -90,7 +90,7 @@ function Feed() {
         text: inputText,
         author: userData.username || "Anonymous",
         authorId: userData._id,
-        profilePic: "./imges/1.jpg",
+        profilePic: "./imges/prof.png",
         dateTime: postDateTime,
       };
       try {
@@ -274,10 +274,16 @@ function Feed() {
               </div>
             )}
             <div className="comments-list">
+            
               {post.comments.map((comment, index) => (
                 <div key={index} className="comment">
-                  <span className="comment-author">{comment.author}</span>:{" "}
-                  {comment.text}
+                  {/* <div className="comment-profile">
+                    <img src='../../../public/imges/13.avif' alt="Profile" />
+                  </div> */}
+                  <div className="comment-content">
+                    <div className="comment-author">{comment.author}</div>
+                    <div className="comment-text">{comment.text}</div>
+                  </div>
                 </div>
               ))}
             </div>
