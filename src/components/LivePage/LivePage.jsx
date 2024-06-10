@@ -227,7 +227,7 @@ function LivePage({ apiKey }) {
       {onwPostData && (
         <div className="leaveRoom">
           {onwPostData.OnwerId._id == cookies.get("UID") && (
-            <button className="leavebtn" onClick={leaveRoom}>Leave Room</button>
+            <button className="leavebtn" onClick={leaveRoom}>End Live</button>
           )}
         </div>
       )}

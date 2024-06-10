@@ -29,7 +29,7 @@ function ContentPage() {
         <div className="welcomeTaxt">Welcome to Jogjivehub</div>
       </div>
    
-      <div className="Live_text">อีเว้นตอนนี้</div>
+      <div className="Live_text">Live</div>
       <CreateRoom />
       <div className="conTainerForm">
         <div className="itemCon">
