@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./LivePage.css";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import L from "leaflet";
 import { Cookies } from "react-cookie";
 
@@ -16,6 +16,7 @@ function LivePage({ apiKey }) {
   const [onwPostData, setOwmPostData] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [otherUsers, setOtherUsers] = useState([]);
+  const navigate = useNavigate();
 
   const customIcon = (iconUrl) =>
     L.icon({
@@ -136,6 +137,21 @@ function LivePage({ apiKey }) {
     }
   }, [comments]);
 
+  const leaveRoom = async () => {
+    try {
+      const pid = query.get("id");
+      const uid = cookies.get("UID");
+      await axios.post("http://localhost:5001/api/leaveRoom", {
+        userId: uid,
+        roomId: pid,
+      });
+      // Redirect to another page after leaving the room
+      navigate("/");
+    } catch (error) {
+      console.error("Error leaving the room:", error);
+    }
+  };
+
   return (
     <>
       <div className="mapContainer">
@@ -187,7 +203,7 @@ function LivePage({ apiKey }) {
               placeholder="พิมพ์ข้อความของคุณที่นี่"
             />
             <div className="btnSubmit" onClick={submitComment}>
-              <span class="material-symbols-outlined">send</span>
+              <span className="material-symbols-outlined">send</span>
             </div>
           </div>
           <div id="commentOutput">
@@ -211,7 +227,7 @@ function LivePage({ apiKey }) {
       {onwPostData && (
         <div className="leaveRoom">
           {onwPostData.OnwerId._id == cookies.get("UID") && (
-            <button className="leavebtn">Leave Room</button>
+            <button className="leavebtn" onClick={leaveRoom}>Leave Room</button>
           )}
         </div>
       )}
@@ -220,3 +236,5 @@ function LivePage({ apiKey }) {
 }
 
 export default LivePage;
+
+

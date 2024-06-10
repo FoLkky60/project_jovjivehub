@@ -30,6 +30,8 @@ const addContentComment = require("./controllers/addContentComment.js");
 const saveUserLocation = require("./controllers/saveUserLocation.js");
 const getOtherUsersLocations = require("./controllers/getOtherUsersLocations.js");
 const getContentCommentByPost = require("./controllers/getContentCommentByPost.js");
+const leaveRoom = require("./controllers/leaveRoom.js");
+
 const CustTask = require('./models/CustTask');
 
 const {
@@ -105,6 +107,7 @@ app.post("/api/posts/:id/joins", addMeeting);
 app.post("/api/posts/:id/joins/del", delMeeting);
 app.post("/api/saveUserLocation", saveUserLocation);
 app.post("/api/posts/:postId/toggleLike", toggleLike);
+app.post("/api/leaveRoom", leaveRoom);
 app.post("/api/checkTasks", checkTasks);
 // Uncomment and define the route if needed
 

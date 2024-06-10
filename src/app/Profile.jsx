@@ -13,9 +13,13 @@ function Profile() {
   const [image, setImage] = useState(
     localStorage.getItem("profileImage") || "./imges/prof.png"
   );
-  const [imageFile, setImageFile] = useState(null); // New state to store the image file
   const [comments, setComments] = useState([]);
   const [userData, setUserData] = useState(null);
+
+  const [isNameModalVisible, setIsNameModalVisible] = useState(false);
+  const [isImageModalVisible, setIsImageModalVisible] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newImageFile, setNewImageFile] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("profileName", name);
@@ -43,15 +47,18 @@ function Profile() {
     fetchData();
   }, []);
 
-  const handleNameChange = async () => {
-    const newName = prompt("กรุณากรอกชื่อใหม่");
+  const handleNameChange = () => {
+    setIsNameModalVisible(true);
+  };
+
+  const handleNameConfirm = async () => {
     if (newName !== null && newName !== "") {
       setName(newName);
 
       const uid = cookies.get("UID");
       if (uid) {
         try {
-          await axios.post("http://localhost:5001/api/user/updateUsername", {
+          await axios.post("http://localhost:5001/api/updateUsername", {
             uid,
             newUsername: newName,
           });
@@ -59,26 +66,28 @@ function Profile() {
           console.error("Error updating username:", error);
         }
       }
+      setIsNameModalVisible(false);
     }
   };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setImageFile(file); // Store the file in state
+      setNewImageFile(file); // Store the file in state
       const reader = new FileReader();
       reader.onload = () => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+      setIsImageModalVisible(true);
     }
   };
 
-  const handleImageUpload = async () => {
+  const handleImageConfirm = async () => {
     const uid = cookies.get("UID");
-    if (uid && imageFile) {
+    if (uid && newImageFile) {
       const formData = new FormData();
-      formData.append("profilePic", imageFile);
+      formData.append("profilePic", newImageFile);
       formData.append("uid", uid);
       try {
         await axios.post(
@@ -90,6 +99,7 @@ function Profile() {
             },
           }
         );
+        setIsImageModalVisible(false);
       } catch (error) {
         console.error("Error updating profile picture:", error);
       }
@@ -123,16 +133,42 @@ function Profile() {
             </div>
             <div className="profile-username">@{userData.username}</div>
           </div>
-
-          {/* Button to upload the selected image */}
-          <button onClick={handleImageUpload}>Upload Profile Picture</button>
         </div>
       )}
 
-      {/* Display placeholder text */}
+      {/* Display placeholder text
       <div className="comments">
         <p>No comments available.</p>
-      </div>
+      </div> */}
+
+      {/* Name Change Modal */}
+      {isNameModalVisible && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Change Name</h2>
+            <input
+              type="text"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Enter new name"
+            />
+            <button onClick={handleNameConfirm}>Confirm</button>
+            <button onClick={() => setIsNameModalVisible(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* Image Change Modal */}
+      {isImageModalVisible && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Change Profile Picture</h2>
+            <img src={image} alt="New Profile Preview" className="profile-preview" />
+            <button onClick={handleImageConfirm}>Confirm</button>
+            <button onClick={() => setIsImageModalVisible(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
