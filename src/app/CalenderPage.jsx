@@ -85,7 +85,7 @@ const CalenderPage = () => {
   const cookie = new Cookies();
   const uid = cookie.get("UID");
 
-  let a = new Date()
+  let a = new Date();
   const currentDateString = a.toISOString().split("T")[0];
 
   const [isEditable, setIsEditable] = useState(false);
@@ -98,7 +98,7 @@ const CalenderPage = () => {
     if (selectedDate) {
       fetchTasksForDate(selectedDate);
       fetchCustomTasksForDate(selectedDate);
-      
+
       console.log(currentDateString);
       setIsEditable(selectedDate === currentDateString);
     }
@@ -469,9 +469,7 @@ const CalenderPage = () => {
                 className="editMeetBtn"
                 onClick={() => setIsshowPopup(!isshowPopup)}
               >
-                {isshowPopup
-                  ? " Cancel"
-                  : "Add"}
+                {isshowPopup ? " Cancel" : "Add"}
               </button>
             )}
           </div>
@@ -549,41 +547,23 @@ const CalenderPage = () => {
             onChange={(e) => setPopupText(e.target.value)}
             placeholder="Enter task"
           />
-          <div className="addBtnEvent">
-          <button className="addTask" onClick={handleAddTask}>Add</button>
-          <button className="addTask"  onClick={handleAddOrUpdateEvent}>Save</button>
-          </div>
-          <div>
-            {tasksForSelectedDate.map((task, index) => (
-              
-              <div className="eventItem" key={index}>
-                {isEditable ? (
-                  <input
-                    type="checkbox"
-                    checked={task.done}
-                    onChange={() => handleTaskChange(index)}
-                   
-                  />
-                ) : (
-                  <input
-                    type="checkbox"
-                    checked={task.done}
-                    disabled={!isEditable}
-                    className="checkBoxItem"
-                  />
-                )}
-                {task.task}
-              </div>
-            
-              
+          <button onClick={handleAddTask}>Add Task</button>
+          <ul>
+            {customTasks.map((task, index) => (
+              <li key={index} className="itempopup">
+                {task}
+                <button
+                  onClick={() => handleDeleteTask(index)}
+                  className="delbtn"
+                >
+                  Delete
+                </button>
+              </li>
             ))}
-          </div>
-          
-          
+          </ul>
+          <button onClick={handleAddOrUpdateEvent}>Save Event</button>
         </div>
-        
       )}
-      
 
       <footer className="foot">
         <div className="footer-content">
