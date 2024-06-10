@@ -10,7 +10,7 @@ function ContentPage() {
   useEffect(() => {
     const fetchContents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/getAllPost');
+        const response = await axios.get('http://localhost:5001/api/getAllContent');
         setContents(response.data);
       } catch (error) {
         console.error('Error fetching content:', error);
@@ -25,7 +25,10 @@ function ContentPage() {
   return (
     <>
       <Navbar />
-      <div className="feed-head"> Anonymous <br/> Live Feed</div>
+      <div className="feed-head">
+        <div className="welcomeTaxt">Welcome to Jogjivehub</div>
+      </div>
+   
       <div className="Live_text">อีเว้นตอนนี้</div>
       <CreateRoom />
       <div className="conTainerForm">
@@ -35,15 +38,39 @@ function ContentPage() {
               key={index}
               id = {data._id}
               thumbnail={data.thumbnail}
-              channelLogo={data.channelLogo}
+              channelLogo={data.OnwerId.profilePic || "./imges/prof.png" }
               liveName={data.liveName}
-              creatorName={data.creatorName}
+              creatorName={data.OnwerId.username}
               viewers={data.viewers}
             />
           ))}
         </div>
       </div>
-      <footer className="foot">ig :jogjivehub_01</footer>
+      <footer className="foot">
+      <div className="footer-content">
+        <div className="footer-section">
+          <h2>About Us</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor consequat magna, nec tincidunt turpis dictum quis.</p>
+        </div>
+        <div className="footer-section">
+          <h2>Contact Us</h2>
+          <p>Email: jogjive@gmail.com</p>
+          <p>Phone: 123-456-7890</p>
+        </div>
+        {/* <div className="footer-section">
+          <h2>Follow Us</h2>
+          <div className="social-icons">
+            <a href="#"><i className="fab fa-facebook-f"></i></a>
+            <a href="#"><i className="fab fa-twitter"></i></a>
+            <a href="#"><i className="fab fa-instagram"></i></a>
+          </div>
+        </div> */}
+      </div>
+      <div className="footer-bottom">
+        <p>&copy; 2024 YourWebsite. All rights reserved.</p>
+      </div>
+    </footer>
+
     </>
   );
 }

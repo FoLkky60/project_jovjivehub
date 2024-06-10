@@ -42,7 +42,7 @@ function Navbar() {
       if (uid) {
         try {
           const response = await axios.get(
-            "http://localhost:5000/api/getUserDataByID",
+            "http://localhost:5001/api/getUserDataByID",
             {
               params: { UID: uid },
               headers: { "Content-Type": "application/json" },
@@ -121,15 +121,24 @@ function Navbar() {
       )}
 
       <div className="End">
+        
         <div className="end-item">
+        {/* <Link to="/profile">
+          <span className="material-symbols-outlined">calendar_month</span>
+        </Link> */}
           {isLogin ? (
-            <div className="side-main" id="logout" onClick={handleLogout}>
-              <div className="side-item">
-                <p>{userData.username}</p>
+            <div className="side-main" id="logout" >
+              <div className="endSideitem">
+                {/* <p>{userData.username}</p> */}
                 <div className="icon">
-                  <span className="material-symbols-outlined">logout</span>
+                  <Link to="/profile">
+                    <span className="material-symbols-outlined">person</span>
+                  </Link>
+                 
                 </div>
-                <div className="side-taxt">Logout</div>
+                <div onClick={handleLogout}>
+                    <span className="material-symbols-outlined">logout</span>
+                  </div>
               </div>
             </div>
           ) : (

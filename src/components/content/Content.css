@@ -12,9 +12,9 @@
     width: 317px;
     height:340px;
     padding: 10px;
+    background-color: #ffff;
     
 }
-
 
 .thumb img {
     width: 293px;
@@ -29,6 +29,7 @@
     align-items: center;
     padding: 2px;
     background-color: rgb(255, 255, 255);
+    border-radius: 20px;
     
 }
 

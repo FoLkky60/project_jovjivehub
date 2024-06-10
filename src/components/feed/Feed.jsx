@@ -1,44 +1,172 @@
-import React, { useState } from "react";
-import './Feed.css'; // Import CSS file for styling
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Feed.css"; // Import CSS file for styling
+import { Cookies } from "react-cookie";
 
 function Feed() {
   const [inputText, setInputText] = useState("");
   const [commentText, setCommentText] = useState("");
   const [posts, setPosts] = useState([]);
-  const [showCommentPopup, setShowCommentPopup] = useState(false); 
+  const [showCommentPopup, setShowCommentPopup] = useState(false);
   const [currentPostId, setCurrentPostId] = useState(null);
+  const [postDateTime, setPostDateTime] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [likedPosts, setLikedPosts] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const cookie = new Cookies();
+      const uid = cookie.get("UID");
+      if (uid) {
+        try {
+          const response = await axios.get(
+            "http://localhost:5001/api/getUserDataByID",
+            {
+              params: { UID: uid },
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          setUserData(response.data.userDate);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchPostsAndLikes = async () => {
+      try {
+        const postsResponse = await axios.get(
+          "http://localhost:5001/api/getAllposts"
+        );
+        const sortedPosts = postsResponse.data.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
+
+        if (userData) {
+          // console.log(userData);
+          const likesResponse = await axios.get(
+            "http://localhost:5001/api/getUserLikes",
+            {
+              params: { userId: userData._id },
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+          // console.log("Likes response:", likesResponse);
+          const likes = likesResponse.data.reduce((acc, like) => {
+            // console.log(acc, like);
+            acc[like._id] = true;
+            return acc;
+          }, {});
+          setLikedPosts(likes);
+          // console.log("Likes:", likes);
+        }
+      } catch (error) {
+        console.error("Error fetching posts or likes:", error);
+      }
+    };
+
+    fetchPostsAndLikes();
+  }, [userData]);
 
   const handlePostInputChange = (e) => {
     setInputText(e.target.value);
   };
 
-//   const handleCommentInputChange = (e) => {
-//     setCommentText(e.target.value);
-//   };
+  const handleCommentInputChange = (e) => {
+    setCommentText(e.target.value);
+  };
 
-  const handlePost = () => {
-    if (inputText.trim() !== "") {
+  const handleDateTimeChange = (e) => {
+    setPostDateTime(e.target.value);
+  };
+
+  const handlePost = async () => {
+    if (inputText.trim() !== "" && postDateTime.trim() !== "") {
       const newPost = {
-        id: Math.random().toString(36).substring(7),
         text: inputText,
-        author: "John Doe", 
-        profilePic: "./imges/1.jpg", 
-        likes: 0,
-        comments: [] 
+        author: userData.username || "Anonymous",
+        authorId: userData._id,
+        profilePic: "./imges/prof.png",
+        dateTime: postDateTime,
       };
-      setPosts([...posts, newPost]);
-      setInputText("");
+      try {
+        const response = await axios.post(
+          "http://localhost:5001/api/posts",
+          newPost
+        );
+        const updatedPosts = [response.data, ...posts];
+        const sortedPosts = updatedPosts.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
+        setInputText("");
+        setPostDateTime("");
+      } catch (error) {
+        console.error("Error creating post:", error);
+      }
     }
   };
 
-  const handleLike = (postId) => {
-    const postIndex = posts.findIndex(post => post.id === postId);
-    if (posts[postIndex].liked) {
-      return; 
+  const handleLike = async (postId, date, authorId, member) => {
+    try {
+      const newMeet = {
+        // postId: postId,
+        // hostId: authorId,
+        // memberId: member,
+        // MeetdateTime: date,
+        userId: member, // Ensure userId is included in the request body
+      };
+      // console.log(newMeet);
+
+      // Toggle the like status in the database
+      await axios.post(
+        `http://localhost:5001/api/posts/${postId}/toggleLike`,
+        newMeet
+      );
+
+      // Toggle the like status in the frontend state
+      setLikedPosts((prevLikedPosts) => ({
+        ...prevLikedPosts,
+        [postId]: !prevLikedPosts[postId],
+      }));
+
+      try {
+        console.log(likedPosts[postId]);
+        if (!likedPosts[postId]) {
+          const newMeet = {
+            postId: postId,
+            hostId: authorId,
+            memberId: member,
+            MeetdateTime: date,
+            userId: member, // Ensure userId is included in the request body
+          };
+
+          const response = await axios.post(
+            `http://localhost:5001/api/posts/${postId}/joins/`,
+            newMeet
+          );
+          console.log("add");
+        } else {
+          const delMeet = {
+            postId: postId,
+            memberId: member,
+          };
+          const response = await axios.post(
+            `http://localhost:5001/api/posts/${postId}/joins/del`,
+            delMeet
+          );
+          console.log("del");
+        }
+      } catch (error) {
+        console.error("Error liking post:", error);
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
     }
-    const updatedPosts = [...posts];
-    updatedPosts[postIndex] = { ...updatedPosts[postIndex], likes: updatedPosts[postIndex].likes + 1, liked: true };
-    setPosts(updatedPosts);
   };
 
   const handleCommentButtonClick = (postId) => {
@@ -50,85 +178,122 @@ function Feed() {
     }
   };
 
-//   const handleSubmitComment = () => {
-//     const trimmedComment = commentText.trim();
-//     if (trimmedComment !== "") {
-//       const updatedPosts = posts.map(post => {
-//         if (post.id === currentPostId) {
-//           return { ...post, comments: [...post.comments, trimmedComment] };
-//         }
-//         return post;
-//       });
-//       setPosts(updatedPosts);
-      
-//       setCommentText(""); 
-//     }
-//   };
+  const handleAddComment = async () => {
+    if (commentText.trim() !== "") {
+      try {
+        const response = await axios.post(
+          `http://localhost:5001/api/posts/${currentPostId}/comments`,
+          { text: commentText, author: userData.username }
+        );
+        const updatedPosts = posts.map((post) =>
+          post._id === currentPostId ? response.data : post
+        );
+        const sortedPosts = updatedPosts.sort(
+          (a, b) => new Date(b.createDate) - new Date(a.createDate)
+        );
+        setPosts(sortedPosts);
+        setCommentText("");
+        setShowCommentPopup(false);
+      } catch (error) {
+        console.error("Error adding comment:", error);
+      }
+    }
+  };
 
   return (
-    <div className="feed-container"> 
-     
-      <div>                                         
+    <div className="feed-container">
+      <div className="create-post-container">
         <input
           value={inputText}
           onChange={handlePostInputChange}
           placeholder="Type your message here..."
-          className="message-input" 
+          className="message-input"
         />
-        <button onClick={handlePost} className="post-button">Post</button> 
+        <input
+          type="datetime-local"
+          value={postDateTime}
+          onChange={handleDateTimeChange}
+          className="datetime-input"
+        />
+        <div onClick={handlePost} className="post-button">
+        <span class="material-symbols-outlined">
+          send
+          </span>
+        </div>
       </div>
-      <div className="post-list"> 
-        {posts.map(post => (
-          <div key={post.id} className="post"> 
-            <div className="post-header"> 
-              <img src={post.profilePic} alt="Profile" className="profile-pic" /> 
-              <span className="author-name">{post.author}</span> 
+      <div className="post-list">
+        {posts.map((post) => (
+          <div key={post._id} className="post">
+            <div className="post-header">
+              <img
+                src={post.profilePic}
+                alt="Profile"
+                className="profile-pic"
+              />
+              <span className="author-name">{post.author || "Loading..."}</span>
             </div>
-            <div className="post-content">{post.text}</div> 
-            
-            <div className="comment-section"> 
-              <button onClick={() => handleLike(post.id)} className="like-buttons">
+            <div className="post-content">{post.text}</div>
+            <div className="post-datetime">{post.dateTime}</div>
+
+            <div className="comment-section">
+              <button
+                onClick={() =>
+                  handleLike(
+                    post._id,
+                    post.dateTime,
+                    post.authorId,
+                    userData._id
+                  )
+                }
+                className="like-buttons"
+              >
                 <span className="material-symbols-outlined">
-                    favorite
+                  {likedPosts[post._id] ? "check" : "add"}
                 </span>
-              </button> 
-              <button onClick={() => handleCommentButtonClick(post.id)} className="comment-buttons">
-                <span className="material-symbols-outlined">
-                  add
-                </span>
-              </button> 
+              </button>
+              {post.likes.length}
+              <button
+                onClick={() => handleCommentButtonClick(post._id)}
+                className="comment-buttons"
+              >
+                <span className="material-symbols-outlined">chat</span>
+              </button>
             </div>
-              
+            {showCommentPopup && currentPostId === post._id && (
+              <div className="comment-popup">
+                <input
+                  value={commentText}
+                  onChange={handleCommentInputChange}
+                  placeholder="Type your comment here..."
+                  className="comment-input-feed"
+                />
+                <div
+                  onClick={handleAddComment}
+                  className="add-comment-button"
+                >
+                  <span class="material-symbols-outlined">
+                  send
+                  </span>
+                </div>
+              </div>
+            )}
+            <div className="comments-list">
             
+              {post.comments.map((comment, index) => (
+                <div key={index} className="commentFeed">
+                  {/* <div className="comment-profile">
+                    <img src='../../../public/imges/13.avif' alt="Profile" />
+                  </div> */}
+                  <div className="comment-content">
+                    <div className="comment-author">{comment.author}:</div>
+                    <div className="comment-text">{comment.text}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
-
-      {/* {showCommentPopup && (
-        <div className="comment-popup">
-            
-          <input
-            value={commentText}
-            onChange={handleCommentInputChange}
-            placeholder="Add a comment..."
-            className="comment-input" 
-          />
-          <button onClick={handleSubmitComment} className="post-buttons">
-            <span className="material-symbols-outlined">
-                send
-            </span>
-          </button>
-          <ul className="comment-list">
-            {posts
-              .filter(post => post.id === currentPostId)
-              .flatMap(post => post.comments)
-              .map((comment, index) => (
-                <li key={index} className="comment">{comment}</li> 
-                
-              ))}
-          </ul>
-        </div>
-      )} */}
     </div>
   );
 }

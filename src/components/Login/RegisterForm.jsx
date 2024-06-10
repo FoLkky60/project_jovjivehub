@@ -2,18 +2,18 @@ import React from "react";
 import { useState } from "react";
 import "./RegisterForm.css";
 import FormInput from "./FormInput";
-import { Link  , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 
 const RegisterForm = () => {
-  const [showLogin, setShowLogin] = useState(true); // เริ่มต้นโชว์ฟอร์ม Login
+  const [showLogin, setShowLogin] = useState(true);
   const [cookies, setCookie] = useCookies(['user']);
   const navigate = useNavigate();
-
   const handleToggleForm = () => {
-    setShowLogin(!showLogin); // สลับสถานะการแสดงฟอร์ม
+    setShowLogin(false); 
   };
+
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -63,12 +63,12 @@ const RegisterForm = () => {
       errorMessage: "It should be a valid email address!",
       required: true,
     },
-    {
-      id: 3,
-      name: "birthday",
-      type: "date",
-      placeholder: "Birthday",
-    },
+    // {
+    //   id: 3,
+    //   name: "birthday",
+    //   type: "date",
+    //   placeholder: "Birthday",
+    // },
     {
       id: 4,
       name: "password",
@@ -93,14 +93,14 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    // console.log(values);
     const url = showLogin
-      ? "http://localhost:5000/api/login"
-      : "http://localhost:5000/api/register";
+      ? "http://localhost:5001/api/login"
+      : "http://localhost:5001/api/register";
 
     const config = {
       headers: {
-        // 'Access-Control-Allow-Origin': '*', 
+        'Access-Control-Allow-Origin': '*',
         "Content-Type": "application/json",
       },
       // withCredentials: 'include',
@@ -108,13 +108,14 @@ const RegisterForm = () => {
 
     try {
       const response = await axios.post(url, values, config);
-
+      console.log(response.data);
       if (response.status === 200) {
-        console.log(response.data); // Process the response data as needed
-        setCookie('UID', response.data.userDate, { path: '/' });
+        console.log(response.data);
+         // Process the response data as needed
+        setCookie("UID", response.data.userDate, { path: "/" });
         // alert(`Success: ${response.data.message}`);
         // return <Redirect to="/" />;
-        navigate('/')
+        navigate("/");
       } else {
         alert(`Error: ${response.data.message}`);
         throw new Error("Failed to fetch");
@@ -143,18 +144,26 @@ const RegisterForm = () => {
     <div className="Wrapper">
       <div className="Register">
         <form onSubmit={handleSubmit}>
-          <h1 id="RegisBar">{showLogin ? "Login" : "Register"}</h1>
-          {showLogin ? renderFormInputs(inputlogin) : renderFormInputs(inputs)}
-          <div className="btn-submit">
-            <div>
+          {/* <h1 id="RegisBar">{showLogin ? "Login" : "Register"}</h1> */}
+          <div>
+          <button
+                className="RegisForm"
+                onClick={() => setShowLogin(true)}
+                type="button"
+              >
+                Login
+              </button>
               <button
                 className="LoginForm"
                 onClick={handleToggleForm}
                 type="button"
               >
-                {showLogin ? "Sign up" : "Login"}
+                Register
               </button>
+              
             </div>
+          {showLogin ? renderFormInputs(inputlogin) : renderFormInputs(inputs)}
+          <div className="btn-submit">
             <div>
               <button className="Submit" type="submit">
                 Submit

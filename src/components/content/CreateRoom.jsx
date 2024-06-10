@@ -19,7 +19,7 @@ const CreateRoom = () => {
       if (uid) {
         try {
           const response = await axios.get(
-            "http://localhost:5000/api/getUserDataByID",
+            "http://localhost:5001/api/getUserDataByID",
             {
               params: { UID: uid },
               headers: { "Content-Type": "application/json" },
@@ -42,12 +42,13 @@ const CreateRoom = () => {
     formData.append("liveName", liveName);
     formData.append("creatorName", userData.username);
     formData.append("viewers", 0);
+    formData.append("OnwerId", userData._id);
     if (thumbnail) formData.append("thumbnail", thumbnail);
-    if (channelLogo) formData.append("channelLogo", channelLogo);
+    if (channelLogo) formData.append("channelLogo", userData.profilePic);
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/content",
+        "http://localhost:5001/content",
         formData,
         {
           headers: {
@@ -122,13 +123,13 @@ const CreateRoom = () => {
               </div>
 
               <button type="submit">Create Content</button>
-              <button
+              {/* <button
                 type="button"
                 className="close-button"
                 onClick={() => setShowPopup(false)}
               >
                 Close
-              </button>
+              </button> */}
             </form>
           </div>
         </div>

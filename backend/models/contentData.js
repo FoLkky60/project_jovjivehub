@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const ContentSchema = new Schema({
   thumbnail: {
     type: String,
-    default: "/imges/1.jpg",
+    default: "/imges/prof.png",
   },
   channelLogo: {
     type: String,
@@ -16,9 +16,10 @@ const ContentSchema = new Schema({
   creatorName: {
     type: String,
   },
+  OnwerId: { type: mongoose.Schema.Types.ObjectId, ref: "UserDB" },
   viewers: {
     type: Number,
-    default: 0
+    default: 0,
   },
 });
 

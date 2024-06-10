@@ -1,45 +1,252 @@
+/* Global styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: center;
+  align-items: flex-start; /* Align items to the top */
+  padding: 60px;
+  margin: 10px;
+  min-height: 700px;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+  background-color: #ffff;
+  border-radius: 20px;
+  /* height: fit-content; */
+  
+  
+}
+
+/* Calendar container styles */
+.calendar-container {
+  width: 70%;
+  min-width: 500px;
+  padding: 40px;
+  margin-right: 10px;
+  background-color: #ffff;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+  min-height: 70vh;
+}
+
+/* To-Do List styles */
+.todo-list {
+  width: 20%;
+  min-width: 300px;
+  padding: 30px;
+  background-color: #ffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  height: fit-content;
+
+}
+
+.todo-list ul {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.todo-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.todo-list input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Popup styles */
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.popup input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.popup button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.popup button.delbtn{
+  padding: 10px 20px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  max-width: 100px;
+}
+.popup button:hover {
+  background-color: #0056b3;
+}
+.Admibtn{
+  display: flex;
+  justify-content: center;
+  padding: px 10px 0px 10px;
+  
+}
+.Admibtn button{
+  max-width: 80px;
+  padding: 0px 20px 0px 20px;
+}
+.itempopup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 3em sans-serif;
+}
+/* .itempopup .delbtn{
+  
+} */
+/* Calendar custom styles */
+.Calen {
+  width: 1000px;
+  height: 500px;
+  border-radius: 20px;
+}
 
 
- 
-  .popup {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+/* Footer styles */
+.foot {
+  width: 100%;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+}
+
+.footer-section {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.footer-section h2 {
+  font-size: 1.5rem;
+}
+
+.footer-section p {
+  margin: 5px 0;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+}
+
+.footer-bottom p {
+  font-size: 0.8rem;
+}
+.meetDetail{
+  width: 100%;
+  
+  padding: 20px;
+}
+.meetH2{
+  padding: 5px;
+}
+
+.meeting{
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+}
+.meetDetails{
+  display: flex;
+  justify-content: space-around;
+  align-items: start;
+  flex-direction: column;
+}
+.meetText{
+  
+  font-size: 1rem;
+  margin: 10px;
+}
+
+.TopicMeet{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  padding-top: 10px;
+}
+
+.TopicMeet2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 2rem;
+  padding-top: 10px;
+}
+
+.editMeetBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #8f9562;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Align items to the top */
+    padding: 60px;
+    margin: 10px;
+    min-height: 700px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    background-color: #ffff;
+    border-radius: 20px;
+    /* height: fit-content; */
+    
+    
   }
-
-  .popup input {
+  .todo-list {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    margin-top: 20px;
+    padding: 30px;
+    background-color: #ffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    height: fit-content;
+  
   }
-  
-  
-  .popup button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  .calendar-container {
+    width: 100%;
+    padding: 40px;
+    margin-right: 10px;
+    background-color: #ffff;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
+    min-height: 20vh;
   }
-  
 
-  .popup button:hover {
-    background-color: #0056b3;
-  }
-  
- 
-  #Calen {
-    width: 1000px; 
-    height: 500px; 
-  }
-  
+}

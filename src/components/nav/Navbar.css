@@ -58,7 +58,7 @@
     
 }
 #last-taxt{
-    color: orange;
+    color: #8f9562;
     letter-spacing: 1px;
     
 }
@@ -80,12 +80,20 @@
     margin: 25px;
 }
 
-.end-item {
+/* .end-item {
     margin-left: 20px;
-}
+} */
 
 .material-symbols-outlined{
     color:rgb(0, 0, 0);
+}
+#logout{
+    width: 24px;
+    cursor: pointer;
+    margin: 0;
+}
+.endSideitem{
+    display: flex;
 }
 
 @media (max-width: 768px) {
