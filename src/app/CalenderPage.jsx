@@ -63,17 +63,12 @@ const generateExercisePlan = () => {
 };
 
 function transformData(data) {
-  return data.map((item) => {
-    return {
-      id: item.postId._id,
-      title:
-        item.postId.text.capitalize() +
-        " by ".capitalize() +
-        item.postId.author.capitalize(),
-      start: item.MeetdateTime,
-      backgroundColor: "#ff00ff",
-    };
-  });
+  return data.map((item) => ({
+    id: item.postId._id,
+    title: `${item.postId.text.capitalize()} by ${item.postId.author.capitalize()}`,
+    start: item.MeetdateTime,
+    backgroundColor: "#ff00ff",
+  }));
 }
 
 const CalenderPage = () => {
@@ -84,18 +79,27 @@ const CalenderPage = () => {
   const [toDoList, setToDoList] = useState(generateExercisePlan());
   const [tasksForSelectedDate, setTasksForSelectedDate] = useState([]);
   const [meeting, setMeeting] = useState([]);
-  const [evnetmeeting, setEvnetMeeting] = useState([]);
+  const [eventMeeting, setEventMeeting] = useState([]);
   const [incompleteDays, setIncompleteDays] = useState(0);
   const [cookies, setCookie] = useCookies(["isEmailSended"]);
   const cookie = new Cookies();
   const uid = cookie.get("UID");
 
-  const currentDateString = new Date().toISOString().split("T")[0];
+  let a = new Date()
+  const currentDateString = a.toISOString().split("T")[0];
+
   const [isEditable, setIsEditable] = useState(false);
+  const [isshowPopup, setIsshowPopup] = useState(false);
+  const [customTasks, setCustomTasks] = useState([]); // State for custom tasks
+  const [myCustomTasks, setMyCustomTasks] = useState([]);
+  const [myCustomEvents, setMyCustomEvents] = useState([]);
 
   useEffect(() => {
     if (selectedDate) {
       fetchTasksForDate(selectedDate);
+      fetchCustomTasksForDate(selectedDate);
+      
+      console.log(currentDateString);
       setIsEditable(selectedDate === currentDateString);
     }
   }, [selectedDate]);
@@ -115,6 +119,19 @@ const CalenderPage = () => {
     }
   };
 
+  const fetchCustomTasksForDate = async (date) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5001/api/customTasks/${uid}/${date}`
+      );
+      const customTasks = response.data ? response.data.tasks : [];
+      setMyCustomTasks(customTasks);
+      setCustomTasks(customTasks.map((task) => task.task)); // Set custom tasks for the popup
+    } catch (error) {
+      console.error("Error fetching custom tasks", error);
+    }
+  };
+
   useEffect(() => {
     fetchInitialEvents();
   }, []);
@@ -124,18 +141,16 @@ const CalenderPage = () => {
       const incompleteDaysCount = await calculateIncompleteDays();
       const today = new Date().toISOString().split("T")[0];
       const lastEmailSentDate = cookies.lastEmailSentDate;
-      console.log("Last email sent date:", lastEmailSentDate);
-      console.log("today:", today);
-      console.log("incompleteDaysCount:", incompleteDaysCount);
-      
-      if (incompleteDaysCount >= 4 && (!cookies.isEmailSended || lastEmailSentDate !== today)) {
-        console.log("Incomplete days >= 4, sending email...");
+
+      if (
+        incompleteDaysCount >= 4 &&
+        (!cookies.isEmailSended || lastEmailSentDate !== today)
+      ) {
         setCookie("isEmailSended", true, { path: "/" });
         setCookie("lastEmailSentDate", today, { path: "/" });
-        // notifyUser(uid, incompleteDaysCount);
+        notifyUser(uid, incompleteDaysCount);
         // Call your email notification function here
       } else if (incompleteDaysCount < 4 && cookies.isEmailSended) {
-        console.log("Incomplete days < 4, resetting email sent status...");
         setCookie("isEmailSended", false, { path: "/" });
       }
     };
@@ -151,7 +166,21 @@ const CalenderPage = () => {
       { length: day },
       (_, i) => `${year}-${month}-${(i + 1).toString().padStart(2, "0")}`
     );
+    const datesFullmonth = Array.from(
+      { length: day },
+      (_, i) => `${year}-${month}-${(i + 1).toString().padStart(2, "0")}`
+    );
+    const daysInMonth = new Date(year, month, 0).getDate();
 
+    const datesFullMonth = Array.from(
+      { length: daysInMonth },
+      (_, i) =>
+        `${year}-${month.toString().padStart(2, "0")}-${(i + 1)
+          .toString()
+          .padStart(2, "0")}`
+    );
+
+    // console.log(datesFullMonth);
     if (uid) {
       try {
         const meetResponse = await axios.get(
@@ -162,7 +191,7 @@ const CalenderPage = () => {
           }
         );
         const meets = meetResponse.data;
-        setEvnetMeeting(transformData(meets));
+        setEventMeeting(transformData(meets));
         setMeeting(meets);
       } catch (error) {
         console.error("Error fetching user meeting:", error);
@@ -188,7 +217,29 @@ const CalenderPage = () => {
       })
     );
 
-    setEvents(events);
+    // Fetch custom tasks and add them to events
+    const customEventsPromises = datesFullMonth.map(async (date) => {
+      const response = await axios.get(
+        `http://localhost:5001/api/customTasks/${uid}/${date}`
+      );
+      const customTasks = response.data ? response.data.tasks : [];
+      if (customTasks.length > 0) {
+        return {
+          title: `Custom Event: ${customTasks.length} tasks`,
+          start: date,
+          color: "#0000FF",
+          // description: customTasks.map((task) => task.task).join(", "),
+        };
+      }
+      return null;
+    });
+
+    const customEvents = (await Promise.all(customEventsPromises)).filter(
+      (event) => event !== null
+    );
+    console.log(customEvents);
+    setMyCustomEvents(customEvents);
+    setEvents([...events]);
   };
 
   const getBackgroundColor = (completedTasks, totalTasks) => {
@@ -200,27 +251,56 @@ const CalenderPage = () => {
   const handleDateClick = (arg) => {
     const clickedDate = new Date(arg.date);
     const currentDate = new Date();
+    console.log(isshowPopup);
     if (clickedDate <= currentDate) {
       setSelectedDate(arg.dateStr);
+    } else if (clickedDate > currentDate) {
+      setSelectedDate(arg.dateStr);
+      if (isshowPopup) {
+        setShowPopup(true);
+        console.log(showPopup);
+      }
     }
   };
 
-  const handleAddOrUpdateEvent = () => {
+  const handleAddOrUpdateEvent = async () => {
     setShowPopup(false);
-    const title = popupText.trim();
-    if (title) {
+    if (customTasks.length > 0) {
       const newEvent = {
-        title,
+        title: `Custom Event`,
         start: selectedDate,
         color: "#0000FF",
-        description: "",
+        description: customTasks.join(", "), // Join tasks as description
       };
-      setEvents((prevEvents) =>
-        prevEvents
-          .filter((event) => event.start !== selectedDate)
-          .concat(newEvent)
-      );
+      setEvents((prevEvents) => [
+        ...prevEvents.filter((event) => event.start !== selectedDate),
+        newEvent,
+      ]);
+      const newCustomTasks = generateSampleTasks(customTasks);
+      setMyCustomTasks(newCustomTasks);
+      await saveCustomTasks(uid, selectedDate, newCustomTasks);
+      setCustomTasks([]); // Clear custom tasks after adding
+      setIsshowPopup(false)
     }
+  };
+
+  const handleAddTask = () => {
+    const task = popupText.trim();
+    if (task) {
+      setCustomTasks([...customTasks, task]);
+      setPopupText(""); // Clear input after adding
+    }
+  };
+
+  const handleDeleteTask = async (index) => {
+    const updatedTasks = customTasks.filter((_, i) => i !== index);
+    setCustomTasks(updatedTasks);
+    setMyCustomTasks(updatedTasks.map((task) => ({ task, done: false }))); // Update myCustomTasks state
+    await saveCustomTasks(
+      uid,
+      selectedDate,
+      updatedTasks.map((task) => ({ task, done: false }))
+    ); // Save updated tasks to backend
   };
 
   const handleTaskChange = async (taskIndex) => {
@@ -236,6 +316,15 @@ const CalenderPage = () => {
     setIncompleteDays(incompleteDaysCount);
   };
 
+  const handleCustomTaskChange = async (taskIndex) => {
+    const updatedTasks = myCustomTasks.map((task, index) =>
+      index === taskIndex ? { ...task, done: !task.done } : task
+    );
+    setMyCustomTasks(updatedTasks);
+    await saveCustomTasks(uid, selectedDate, updatedTasks);
+    updateCustomEventsForDate(selectedDate, updatedTasks);
+  };
+
   const saveTasks = async (uid, date, tasks) => {
     try {
       await axios.post("http://localhost:5001/tasks", {
@@ -245,6 +334,18 @@ const CalenderPage = () => {
       });
     } catch (error) {
       console.error("Error saving tasks", error);
+    }
+  };
+
+  const saveCustomTasks = async (uid, date, tasks) => {
+    try {
+      await axios.post("http://localhost:5001/api/customTasks", {
+        userId: uid,
+        date,
+        tasks,
+      });
+    } catch (error) {
+      console.error("Error saving custom tasks", error);
     }
   };
 
@@ -261,6 +362,19 @@ const CalenderPage = () => {
 
     setEvents((prevEvents) =>
       prevEvents.map((event) => (event.start === date ? updatedEvent : event))
+    );
+  };
+
+  const updateCustomEventsForDate = (date, tasks) => {
+    const newEvent = {
+      title: `Custom Event`,
+      start: date,
+      color: "#0000FF",
+      description: tasks.map((task) => task.task).join(", "), // Join tasks as description
+    };
+
+    setEvents((prevEvents) =>
+      prevEvents.map((event) => (event.start === date ? newEvent : event))
     );
   };
 
@@ -285,8 +399,7 @@ const CalenderPage = () => {
 
         const tasks = response.data ? response.data.tasks : [];
         const completedTasks = tasks.filter((task) => task.done).length;
-        console.log(date, completedTasks);
-        if (completedTasks === 0 ) {
+        if (completedTasks === 0) {
           count++;
         }
       } catch (error) {
@@ -333,7 +446,7 @@ const CalenderPage = () => {
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
-            events={[...events, ...evnetmeeting]}
+            events={[...events, ...eventMeeting, ...myCustomEvents]}
             dateClick={handleDateClick}
             eventContent={renderEventContent}
             eventClassNames={eventClassNames}
@@ -342,11 +455,27 @@ const CalenderPage = () => {
         </div>
         <div className="todo-list">
           <div className="TopicMeet"> To-Do List for {selectedDate}</div>
-          {selectedDate !== currentDateString && (
-            <button className="editMeetBtn" onClick={() => setIsEditable(!isEditable)}>
-              {isEditable ? "Disable Editing" : "Enable Editing"}
-            </button>
-          )}
+          <div className="Admibtn">
+            {selectedDate !== currentDateString && (
+              <button
+                className="editMeetBtn"
+                onClick={() => setIsEditable(!isEditable)}
+              >
+                {isEditable ? "Disable Editing" : "Enable Editing"}
+              </button>
+            )}
+            {selectedDate !== currentDateString && (
+              <button
+                className="editMeetBtn"
+                onClick={() => setIsshowPopup(!isshowPopup)}
+              >
+                {isshowPopup
+                  ? " Cancel"
+                  : "Add Custom Task "}
+              </button>
+            )}
+          </div>
+
           <ul>
             {tasksForSelectedDate.map((task, index) => (
               <li key={index}>
@@ -360,23 +489,50 @@ const CalenderPage = () => {
                   <input
                     type="checkbox"
                     checked={task.done}
-                    readOnly
+                    disabled={!isEditable}
                   />
                 )}
                 {task.task}
               </li>
             ))}
           </ul>
+          {myCustomTasks && (
+            <div>
+              My Custom Task
+              <ul>
+                {myCustomTasks.map((task, index) => (
+                  <li key={index}>
+                    {isEditable ? (
+                      <input
+                        type="checkbox"
+                        checked={task.done}
+                        onChange={() => handleCustomTaskChange(index)}
+                      />
+                    ) : (
+                      <input
+                        type="checkbox"
+                        checked={task.done}
+                        disabled={!isEditable}
+                      />
+                    )}
+                    {task.task}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div>
             {meeting && meeting.length > 0 && (
               <div className="meeting">
                 <div className="TopicMeet2">Meeting</div>
-                <div className="meetDetails" >
+                <div className="meetDetails">
                   {meeting.map((meet, index) => (
-                    <div  key={index}>
-                    <div className="meetText">Tital :{meet.postId.text}</div>
-                    <div className="meetText">By :{meet.postId.author}</div>
-                    <div className="meetText">Date :{meet.postId.dateTime}</div>
+                    <div key={index}>
+                      <div className="meetText">Title: {meet.postId.text}</div>
+                      <div className="meetText">By: {meet.postId.author}</div>
+                      <div className="meetText">
+                        Date: {meet.postId.dateTime}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -391,27 +547,45 @@ const CalenderPage = () => {
             type="text"
             value={popupText}
             onChange={(e) => setPopupText(e.target.value)}
-            placeholder="กรุณาใส่ข้อความ"
+            placeholder="Enter task"
           />
-          <button onClick={handleAddOrUpdateEvent}>ตกลง</button>
+          <button onClick={handleAddTask}>Add Task</button>
+          <ul>
+            {customTasks.map((task, index) => (
+              <li key={index} className="itempopup">
+                {task}
+                <button
+                  onClick={() => handleDeleteTask(index)}
+                  className="delbtn"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleAddOrUpdateEvent}>Save Event</button>
         </div>
       )}
-       <footer className="foot">
-      <div className="footer-content">
-        <div className="footer-section">
-          <h2>About Us</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempor consequat magna, nec tincidunt turpis dictum quis.</p>
+
+      <footer className="foot">
+        <div className="footer-content">
+          <div className="footer-section">
+            <h2>About Us</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+              tempor consequat magna, nec tincidunt turpis dictum quis.
+            </p>
+          </div>
+          <div className="footer-section">
+            <h2>Contact Us</h2>
+            <p>Email: jogjive@gmail.com</p>
+            <p>Phone: 123-456-7890</p>
+          </div>
         </div>
-        <div className="footer-section">
-          <h2>Contact Us</h2>
-          <p>Email: jogjive@gmail.com</p>
-          <p>Phone: 123-456-7890</p>
+        <div className="footer-bottom">
+          <p>&copy; 2024 YourWebsite. All rights reserved.</p>
         </div>
-      </div>
-      <div className="footer-bottom">
-        <p>&copy; 2024 YourWebsite. All rights reserved.</p>
-      </div>
-    </footer>
+      </footer>
     </>
   );
 };

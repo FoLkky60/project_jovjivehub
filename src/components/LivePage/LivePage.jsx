@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./LivePage.css";
-import axios from "axios"; // Import axios
+import axios from "axios";
 import { useLocation } from "react-router-dom";
 import L from "leaflet";
 import { Cookies } from "react-cookie";
@@ -17,13 +17,13 @@ function LivePage({ apiKey }) {
   const [userLocation, setUserLocation] = useState(null);
   const [otherUsers, setOtherUsers] = useState([]);
 
-  const customIcon = (iconUrl) => L.icon({
-    iconUrl: iconUrl || "/imges/prof.png",
-    iconSize: [38, 38], // size of the icon
-    iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-    popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
- 
-  });
+  const customIcon = (iconUrl) =>
+    L.icon({
+      iconUrl: iconUrl || "/imges/prof.png",
+      iconSize: [38, 38],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+    });
 
   const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -41,7 +41,7 @@ function LivePage({ apiKey }) {
             headers: { "Content-Type": "application/json" },
           }
         );
-        setOwmPostData(response.data.postData); // Set the data correctly
+        setOwmPostData(response.data.postData);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -51,14 +51,11 @@ function LivePage({ apiKey }) {
   }, []);
 
   useEffect(() => {
-    // Get the user's current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const { latitude, longitude } = position.coords;
-        // console.log( latitude, longitude );
         setUserLocation([latitude, longitude]);
 
-        // Save the user's location to the database
         try {
           const pid = query.get("id");
           const uid = cookies.get("UID");
@@ -66,13 +63,12 @@ function LivePage({ apiKey }) {
             userId: uid,
             latitude,
             longitude,
-            roomId: pid, // Assuming roomId is the same as the post ID
+            roomId: pid,
           });
         } catch (error) {
           console.error("Error saving user location:", error);
         }
 
-        // Fetch other users' locations
         try {
           const pid = query.get("id");
           const response = await axios.get(
@@ -90,14 +86,47 @@ function LivePage({ apiKey }) {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const id = query.get("id");
+        const response = await axios.get(
+          "http://localhost:5001/api/getContentCommentByPost",
+          {
+            params: { postId: id },
+          }
+        );
+        setComments(response.data);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, []);
+
   const handleInputChange = (event) => {
     setCommentInput(event.target.value);
   };
 
-  const submitComment = () => {
+  const submitComment = async () => {
     if (commentInput.trim() !== "") {
-      setComments([...comments, commentInput]);
-      setCommentInput("");
+      try {
+        const id = query.get("id");
+        const uid = cookies.get("UID");
+        const response = await axios.post(
+          "http://localhost:5001/api/addContentComment",
+          {
+            postId: id,
+            userId: uid,
+            text: commentInput,
+          }
+        );
+        setComments([...comments, response.data]);
+        setCommentInput("");
+      } catch (error) {
+        console.error("Error submitting comment:", error);
+      }
     }
   };
 
@@ -125,18 +154,13 @@ function LivePage({ apiKey }) {
             <TileLayer
               url={`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`}
             />
-            {/* {userLocation && (
-              <Marker position={userLocation} icon={customIcon(onwPostData.OnwerId.profilePic)}>
-                <Popup>
-                  Your location
-                </Popup>
-              </Marker>
-            )} */}
             {otherUsers.map((user, index) => (
-              <Marker key={index} position={[user.location.latitude, user.location.longitude]} icon={customIcon(user.memberId.profilePic)}>
-                <Popup>
-                  {user.memberId.username}
-                </Popup>
+              <Marker
+                key={index}
+                position={[user.location.latitude, user.location.longitude]}
+                icon={customIcon(user.memberId.profilePic)}
+              >
+                <Popup>{user.memberId.username}</Popup>
               </Marker>
             ))}
           </MapContainer>
@@ -163,9 +187,7 @@ function LivePage({ apiKey }) {
               placeholder="พิมพ์ข้อความของคุณที่นี่"
             />
             <div className="btnSubmit" onClick={submitComment}>
-                <span class="material-symbols-outlined">
-                  send
-                </span>
+              <span class="material-symbols-outlined">send</span>
             </div>
           </div>
           <div id="commentOutput">
@@ -175,20 +197,24 @@ function LivePage({ apiKey }) {
                 className="comment"
                 ref={index === comments.length - 1 ? latestCommentRef : null}
               >
-                {comment}
+                <div className="commentTextDetail">
+                  <div className="commentText">{comment.userId.username}:</div>
+                  <div className="commentText">{comment.text}</div>
+                </div>
               </div>
             ))}
           </div>
           <div className="chat_text">Chat</div>
         </div>
-        
       </div>
-{onwPostData && (<div className="leaveRoom">
-          
-{onwPostData.OnwerId._id == cookies.get("UID") && (<button className="leavebtn">Leave Room</button>)}
 
-        </div>)}
-        
+      {onwPostData && (
+        <div className="leaveRoom">
+          {onwPostData.OnwerId._id == cookies.get("UID") && (
+            <button className="leavebtn">Leave Room</button>
+          )}
+        </div>
+      )}
     </>
   );
 }

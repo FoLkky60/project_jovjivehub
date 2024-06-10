@@ -2,13 +2,18 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const cookieParser = require("cookie-parser");
 
-module.exports = (req, res) => {
+module.exports = async ( req, res) => {
   const { email, password } = req.body;
     console.log(req.body);
 
-  User.findOne({ email: email })
-    .then((user) => {
+  await User.findOne({ email: email })
+    .then(async (user) =>  {
       if (user) {
+        
+        // const salt = await bcrypt.genSalt(10); 
+        // const hash = await bcrypt.hash(password, salt);
+        // console.log(hash);
+        // await console.log(user.password);
         bcrypt
           .compare(password, user.password)
           .then((match) => {
@@ -19,11 +24,9 @@ module.exports = (req, res) => {
                 message: "Logged in successfully",
                 userDate: user._id,
               });
-              // res.cookie("myCookie", "cookieValue", {
-              //   maxAge: 9000,
-              //   httpOnly: true,
-              // });
+
             } else {
+              console.log('Not macthed');
               res.status(401).json({ message: "Incorrect password" });
             }
           })

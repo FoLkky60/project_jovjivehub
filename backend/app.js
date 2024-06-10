@@ -26,9 +26,11 @@ const toggleLike = require("./controllers/toggleLike.js");
 const getUserLikes = require("./controllers/getUserLikes.js");
 const getUserMeeting = require("./controllers/getUserMeeting.js");
 const checkTasks = require("./controllers/checkTasks.js");
-
+const addContentComment = require("./controllers/addContentComment.js");
 const saveUserLocation = require("./controllers/saveUserLocation.js");
 const getOtherUsersLocations = require("./controllers/getOtherUsersLocations.js");
+const getContentCommentByPost = require("./controllers/getContentCommentByPost.js");
+const CustTask = require('./models/CustTask');
 
 const {
   updateUsername,
@@ -98,7 +100,7 @@ app.post(
 app.post("/tasks", postTask);
 app.post("/api/posts", addPosts);
 app.post("/api/posts/:id/comments", addPostsComments);
-
+app.post('/api/addContentComment', addContentComment);
 app.post("/api/posts/:id/joins", addMeeting);
 app.post("/api/posts/:id/joins/del", delMeeting);
 app.post("/api/saveUserLocation", saveUserLocation);
@@ -112,6 +114,35 @@ app.post(
   upload.fields([{ name: "profilePic" }]),
   updateProfilePic
 );
+
+app.post('/api/customTasks', async (req, res) => {
+  const { userId, date, tasks } = req.body;
+  try {
+    let custTask = await CustTask.findOne({ userId, date });
+    if (custTask) {
+      custTask.tasks = tasks;
+    } else {
+      custTask = new CustTask({ userId, date, tasks });
+    }
+    await custTask.save();
+    res.status(200).json(custTask);
+  } catch (error) {
+    res.status(500).json({ error: 'Error saving custom tasks' });
+  }
+});
+
+// Fetch custom tasks
+app.get('/api/customTasks/:userId/:date', async (req, res) => {
+  const { userId, date } = req.params;
+  try {
+    const custTask = await CustTask.findOne({ userId, date });
+    res.status(200).json(custTask);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching custom tasks' });
+  }
+});
+
+
 app.get("/api/getOtherUsersLocations", getOtherUsersLocations);
 app.get("/api/getUserDataByID", getUserDataByID);
 app.get("/api/getAllContent", getAllContent);
@@ -120,6 +151,7 @@ app.get("/api/tasks/:userId/:date", getTaskByID);
 app.get("/api/getAllposts", getAllPost);
 app.get("/api/getUserLikes", getUserLikes);
 app.get("/api/getUserMeeting", getUserMeeting);
+app.get('/api/getContentCommentByPost', getContentCommentByPost);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

@@ -89,11 +89,37 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
-
+.popup button.delbtn{
+  padding: 10px 20px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  max-width: 100px;
+}
 .popup button:hover {
   background-color: #0056b3;
 }
-
+.Admibtn{
+  display: flex;
+  justify-content: center;
+  padding: px 10px 0px 10px;
+  
+}
+.Admibtn button{
+  max-width: 80px;
+  padding: 0px 20px 0px 20px;
+}
+.itempopup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 3em sans-serif;
+}
+/* .itempopup .delbtn{
+  
+} */
 /* Calendar custom styles */
 .Calen {
   width: 1000px;

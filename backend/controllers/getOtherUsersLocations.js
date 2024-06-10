@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     const usersInRoom = await Room.find({ roomId }).populate(
       "memberId",
     );
-    console.log("users in room:", usersInRoom);
+    // console.log("users in room:", usersInRoom);
     res.status(200).json({ users: usersInRoom });
   } catch (error) {
     console.error("Error fetching other users' locations:", error);

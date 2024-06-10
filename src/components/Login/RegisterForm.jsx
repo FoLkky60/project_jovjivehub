@@ -108,9 +108,10 @@ const RegisterForm = () => {
 
     try {
       const response = await axios.post(url, values, config);
-
+      console.log(response.data);
       if (response.status === 200) {
-        console.log(response.data); // Process the response data as needed
+        console.log(response.data);
+         // Process the response data as needed
         setCookie("UID", response.data.userDate, { path: "/" });
         // alert(`Success: ${response.data.message}`);
         // return <Redirect to="/" />;
