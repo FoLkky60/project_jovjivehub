@@ -280,7 +280,7 @@ const CalenderPage = () => {
       setMyCustomTasks(newCustomTasks);
       await saveCustomTasks(uid, selectedDate, newCustomTasks);
       setCustomTasks([]); // Clear custom tasks after adding
-      setIsshowPopup(false)
+      setIsshowPopup(false);
     }
   };
 
@@ -461,7 +461,7 @@ const CalenderPage = () => {
                 className="editMeetBtn"
                 onClick={() => setIsEditable(!isEditable)}
               >
-                {isEditable ? "Disable Editing" : "Enable Editing"}
+                {isEditable ? "Disable" : "Enable"}
               </button>
             )}
             {selectedDate !== currentDateString && (
@@ -471,7 +471,7 @@ const CalenderPage = () => {
               >
                 {isshowPopup
                   ? " Cancel"
-                  : "Add Custom Task "}
+                  : "Add"}
               </button>
             )}
           </div>
@@ -549,23 +549,41 @@ const CalenderPage = () => {
             onChange={(e) => setPopupText(e.target.value)}
             placeholder="Enter task"
           />
-          <button onClick={handleAddTask}>Add Task</button>
-          <ul>
-            {customTasks.map((task, index) => (
-              <li key={index} className="itempopup">
-                {task}
-                <button
-                  onClick={() => handleDeleteTask(index)}
-                  className="delbtn"
-                >
-                  Delete
-                </button>
-              </li>
+          <div className="addBtnEvent">
+          <button className="addTask" onClick={handleAddTask}>Add</button>
+          <button className="addTask"  onClick={handleAddOrUpdateEvent}>Save</button>
+          </div>
+          <div>
+            {tasksForSelectedDate.map((task, index) => (
+              
+              <div className="eventItem" key={index}>
+                {isEditable ? (
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    onChange={() => handleTaskChange(index)}
+                   
+                  />
+                ) : (
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    disabled={!isEditable}
+                    className="checkBoxItem"
+                  />
+                )}
+                {task.task}
+              </div>
+            
+              
             ))}
-          </ul>
-          <button onClick={handleAddOrUpdateEvent}>Save Event</button>
+          </div>
+          
+          
         </div>
+        
       )}
+      
 
       <footer className="foot">
         <div className="footer-content">
